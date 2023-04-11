@@ -13,6 +13,7 @@ import EscortList from '../modules/Custom/Escorts/EscortsList'
 import CountryList from '../modules/Custom/Country/CountryList'
 import CityList from '../modules/Custom/City/CityList'
 import AdList from '../modules/Custom/ClassifiedAds/Adlist'
+import EscortDetails from '../modules/Custom/Escorts/EscortDetails'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -103,6 +104,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <EscortList className='card-xxl-stretch mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/escorts/:escortId/details'
+          element={
+            <SuspensedView>
+              <EscortDetails className='' />
             </SuspensedView>
           }
         />

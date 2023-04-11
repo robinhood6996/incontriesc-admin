@@ -107,7 +107,7 @@ const EscortList: React.FC<Props> = ({className}) => {
                 <td>
                   <div className='d-flex justify-content-end flex-shrink-0'>
                     <a
-                      href='/'
+                      href='/metronic8/react/demo1/escorts/1/details'
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                     >
                       <KTSVG
