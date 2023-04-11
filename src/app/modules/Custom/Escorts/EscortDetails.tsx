@@ -16,6 +16,7 @@ import EscortDetailsReviews from './EscortDetailsReviews'
 import EscortDetailsVideos from './EscortDetailsVideos'
 import EscortDetailsPrivateCityTour from './EscortDetailsPrivateCityTour'
 import EscortDetailsBuyAdvertising from './EscortDetailsBuyAdvertising'
+import EscortDetailsBannerAdvertising from './EscortDetailsBannerAdvertising'
 
 type Props = {
   className: string
@@ -397,7 +398,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='banner_advertising_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Banner Advertising</div>
+            <div className='accordion-body'>
+              <EscortDetailsBannerAdvertising />
+            </div>
           </div>
         </div>
         {/* Banner Advertising end */}
