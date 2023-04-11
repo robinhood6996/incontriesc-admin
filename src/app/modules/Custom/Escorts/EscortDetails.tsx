@@ -7,6 +7,7 @@ import EscortDetailsLanguageInfo from './EscortDetailsLanguageInfo'
 import EscortDetailsAboutMe from './EscortDetailsAboutMe'
 import EscortDetailsBasicBiography from './EscortDetailsBasicBiography'
 import EscortDetailsWorkingCities from './EscortDetailsWorkingCities'
+import EscortDetailsServices from './EscortDetailsServices'
 
 type Props = {
   className: string
@@ -154,7 +155,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='services_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>services</div>
+            <div className='accordion-body'>
+              <EscortDetailsServices />
+            </div>
           </div>
         </div>
         {/* services end */}
