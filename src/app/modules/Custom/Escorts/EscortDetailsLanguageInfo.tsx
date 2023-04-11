@@ -49,7 +49,7 @@ export default function EscortDetailsLanguageInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>English</label>
             <div className='d-flex'>
-              {englishLanguageOptions.map((option) => (
+              {englishLanguageOptions.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -58,6 +58,7 @@ export default function EscortDetailsLanguageInfo() {
                       name='english'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 0}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -74,7 +75,7 @@ export default function EscortDetailsLanguageInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>French</label>
             <div className='d-flex'>
-              {frenchLanguageOptions.map((option) => (
+              {frenchLanguageOptions.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -83,6 +84,7 @@ export default function EscortDetailsLanguageInfo() {
                       name='french'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 1}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -99,7 +101,7 @@ export default function EscortDetailsLanguageInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>German</label>
             <div className='d-flex'>
-              {germanLanguageOptions.map((option) => (
+              {germanLanguageOptions.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -108,6 +110,7 @@ export default function EscortDetailsLanguageInfo() {
                       name='german'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 2}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -124,7 +127,7 @@ export default function EscortDetailsLanguageInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>Italian</label>
             <div className='d-flex'>
-              {italianLanguageOptions.map((option) => (
+              {italianLanguageOptions.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -133,6 +136,7 @@ export default function EscortDetailsLanguageInfo() {
                       name='eye_color'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 3}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -149,7 +153,7 @@ export default function EscortDetailsLanguageInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>Russian</label>
             <div className='d-flex'>
-              {russianLanguageOptions.map((option) => (
+              {russianLanguageOptions.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -158,6 +162,7 @@ export default function EscortDetailsLanguageInfo() {
                       name='eye_color'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 0}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -174,7 +179,7 @@ export default function EscortDetailsLanguageInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>Spanish</label>
             <div className='d-flex'>
-              {spanishLanguageOptions.map((option) => (
+              {spanishLanguageOptions.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -183,6 +188,7 @@ export default function EscortDetailsLanguageInfo() {
                       name='eye_color'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 0}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
