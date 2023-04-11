@@ -51,7 +51,7 @@ export default function EscortDetailsPhysicalFeature() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>Hair color</label>
             <div className='d-flex'>
-              {hairColorTypes.map((option) => (
+              {hairColorTypes.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -60,6 +60,7 @@ export default function EscortDetailsPhysicalFeature() {
                       name='hair_color'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 1}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -77,7 +78,7 @@ export default function EscortDetailsPhysicalFeature() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>Eye color</label>
             <div className='d-flex'>
-              {eyeColorTypes.map((option) => (
+              {eyeColorTypes.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -86,6 +87,7 @@ export default function EscortDetailsPhysicalFeature() {
                       name='eye_color'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 2}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -105,7 +107,7 @@ export default function EscortDetailsPhysicalFeature() {
             {hairLengthOptions?.map((option, index) => {
               return (
                 <>
-                  <option key={index} value={option.value}>
+                  <option key={index} value={option.value} selected={index === 3}>
                     {option.label}
                   </option>
                 </>
@@ -119,7 +121,9 @@ export default function EscortDetailsPhysicalFeature() {
           <label className='form-label fw-bolder text-dark fs-6'>Height</label>
           <select className='form-select' aria-label='Select example'>
             <option>Select height</option>
-            <option value='1'>One</option>
+            <option value='1' selected>
+              5"
+            </option>
             <option value='1'>One</option>
             <option value='1'>One</option>
             <option value='1'>One</option>
@@ -131,7 +135,9 @@ export default function EscortDetailsPhysicalFeature() {
           <label className='form-label fw-bolder text-dark fs-6'>Weight</label>
           <select className='form-select' aria-label='Select example'>
             <option>Select weight</option>
-            <option value='1'>One</option>
+            <option value='1' selected>
+              62 KG
+            </option>
             <option value='1'>One</option>
             <option value='1'>One</option>
             <option value='1'>One</option>
@@ -143,7 +149,9 @@ export default function EscortDetailsPhysicalFeature() {
           <label className='form-label fw-bolder text-dark fs-6'>Size clothes</label>
           <select className='form-select' aria-label='Select example'>
             <option>Select size clothes</option>
-            <option value='1'>One</option>
+            <option value='1' selected>
+              6
+            </option>
             <option value='1'>One</option>
             <option value='1'>One</option>
             <option value='1'>One</option>
@@ -155,7 +163,9 @@ export default function EscortDetailsPhysicalFeature() {
           <label className='form-label fw-bolder text-dark fs-6'>Shoe size</label>
           <select className='form-select' aria-label='Select example'>
             <option>Select shoe size</option>
-            <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
+            <option value='1' selected>
+              38 EU / 7.5 US / 5.5 UK
+            </option>
             <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
             <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
             <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
@@ -171,7 +181,7 @@ export default function EscortDetailsPhysicalFeature() {
               placeholder='eg. 90-60-90'
               type='text'
               autoComplete='off'
-              //   {...formik.getFieldProps('firstname')}
+              defaultValue={'90-60-90'}
               className={clsx('w-100 form-control form-control-lg form-control-solid')}
             />
           </div>
@@ -180,7 +190,7 @@ export default function EscortDetailsPhysicalFeature() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6'>Pubic hair</label>
             <div className='d-flex'>
-              {pubicHairTypes.map((option) => (
+              {pubicHairTypes.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -189,6 +199,7 @@ export default function EscortDetailsPhysicalFeature() {
                       name='pubic_hair'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 3}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -205,7 +216,9 @@ export default function EscortDetailsPhysicalFeature() {
           <label className='form-label fw-bolder text-dark fs-6'>Breast size</label>
           <select className='form-select' aria-label='Select example'>
             <option>Select Breast size</option>
-            <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
+            <option value='1' selected>
+              38 EU / 7.5 US / 5.5 UK
+            </option>
             <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
             <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
             <option value='1'>38 EU / 7.5 US / 5.5 UK</option>
@@ -218,7 +231,7 @@ export default function EscortDetailsPhysicalFeature() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6'>Breast</label>
             <div className='d-flex'>
-              {breastTypes.map((option) => (
+              {breastTypes.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -227,6 +240,7 @@ export default function EscortDetailsPhysicalFeature() {
                       name='breastType'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 1}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}

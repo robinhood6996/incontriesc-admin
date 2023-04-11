@@ -60,7 +60,7 @@ export default function BasicBiographyDetails() {
                       name='category'
                       id={option.value}
                       value={option.value}
-                      checked={index === 1}
+                      defaultChecked={index === 1}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -86,7 +86,7 @@ export default function BasicBiographyDetails() {
                       name='sex'
                       id={option.value}
                       value={option.value}
-                      checked={index === 0}
+                      defaultChecked={index === 0}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -124,7 +124,7 @@ export default function BasicBiographyDetails() {
                       name='ethnicity'
                       id={option.value}
                       value={option.value}
-                      checked={index === 3}
+                      defaultChecked={index === 3}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}

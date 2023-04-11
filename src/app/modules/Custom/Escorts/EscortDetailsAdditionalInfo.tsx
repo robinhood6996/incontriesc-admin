@@ -14,7 +14,7 @@ export default function EscortDetailsAdditionalInfo() {
   return (
     <div className='row'>
       <div className='my-5'>
-        <h2 className='text-base mb-1'>Physical Feature</h2>
+        <h2 className='text-base mb-1'>Additional Physical Feature</h2>
       </div>
 
       <div className='row border rounded p-4'>
@@ -23,7 +23,7 @@ export default function EscortDetailsAdditionalInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>To smoke</label>
             <div className='d-flex'>
-              {toSmokeTypes.map((option) => (
+              {toSmokeTypes.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -32,6 +32,7 @@ export default function EscortDetailsAdditionalInfo() {
                       name='to_smoke'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 2}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -48,7 +49,7 @@ export default function EscortDetailsAdditionalInfo() {
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>Drinking</label>
             <div className='d-flex'>
-              {drinkingTypes.map((option) => (
+              {drinkingTypes.map((option, index) => (
                 <>
                   <div className='form-check form-check-custom form-check-solid me-3'>
                     <input
@@ -57,6 +58,7 @@ export default function EscortDetailsAdditionalInfo() {
                       name='drinking'
                       id={option.value}
                       value={option.value}
+                      defaultChecked={index === 2}
                     />
                     <label key={option.value} className='form-check-label fs-6'>
                       {option.label}
@@ -92,6 +94,7 @@ export default function EscortDetailsAdditionalInfo() {
                   name='tattoos2'
                   id={'no'}
                   value={'no'}
+                  defaultChecked={true}
                 />
                 <label key={'tattoo2'} className='form-check-label fs-6'>
                   No
@@ -113,6 +116,7 @@ export default function EscortDetailsAdditionalInfo() {
                   name='piercings1'
                   id={'PiercingsYes'}
                   value={'yes'}
+                  defaultChecked={true}
                 />
                 <label key={'Piercings1'} className='form-check-label fs-6'>
                   Yes
