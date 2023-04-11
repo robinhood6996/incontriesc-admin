@@ -8,6 +8,11 @@ import EscortDetailsAboutMe from './EscortDetailsAboutMe'
 import EscortDetailsBasicBiography from './EscortDetailsBasicBiography'
 import EscortDetailsWorkingCities from './EscortDetailsWorkingCities'
 import EscortDetailsServices from './EscortDetailsServices'
+import EscortDetailsWorkingHours from './EscortDetailsWorkingHours'
+import EscortDetailsRates from './EscortDetailsRates'
+import EscortDetailsContact from './EscortDetailsContact'
+import EscortDetailsPgotos from './EscortDetailsPgotos'
+import EscortDetailsReviews from './EscortDetailsReviews'
 
 type Props = {
   className: string
@@ -181,7 +186,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='working_hours_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Working Hours</div>
+            <div className='accordion-body'>
+              <EscortDetailsWorkingHours />
+            </div>
           </div>
         </div>
         {/* Working Hours end */}
@@ -205,7 +212,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='rates_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Rates</div>
+            <div className='accordion-body'>
+              <EscortDetailsRates />
+            </div>
           </div>
         </div>
         {/* Rates end */}
@@ -229,7 +238,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='contact_details_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Contact Details</div>
+            <div className='accordion-body'>
+              <EscortDetailsContact />
+            </div>
           </div>
         </div>
         {/* Contact Details end */}
@@ -253,7 +264,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='photo_gallary_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Photo Gallary</div>
+            <div className='accordion-body'>
+              <EscortDetailsPgotos />
+            </div>
           </div>
         </div>
         {/* Photo Gallary end */}
@@ -277,7 +290,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='Reviews_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Reviews</div>
+            <div className='accordion-body'>
+              <EscortDetailsReviews />
+            </div>
           </div>
         </div>
         {/* Reviews end */}
