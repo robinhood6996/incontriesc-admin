@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AboutMeDetails = () => {
+const EscortDetailsAboutMe = () => {
   return (
     <div className='row border rounded p-4'>
       {/* About Me / on me start */}
@@ -44,4 +44,4 @@ const AboutMeDetails = () => {
   )
 }
 
-export default AboutMeDetails
+export default EscortDetailsAboutMe

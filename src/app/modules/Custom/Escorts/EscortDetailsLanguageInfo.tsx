@@ -38,14 +38,14 @@ export default function EscortDetailsLanguageInfo() {
     {label: 'Excellent/Native', value: 'native'},
   ]
   return (
-    <div className='row'>
+    <div className='row border rounded p-4'>
       <div className='row my-5'>
         <h2 className='text-base mb-1'>Language Information</h2>
       </div>
 
       <div className='row border rounded p-4'>
         {/* English Language start */}
-        <div className='col-lg-6 col-12 my-5'>
+        <div className='col-lg-6 col-12 my-5 mx-auto'>
           <div>
             <label className='form-label fw-bolder text-dark fs-6 required'>English</label>
             <div className='d-flex'>

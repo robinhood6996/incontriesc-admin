@@ -4,8 +4,9 @@ import clsx from 'clsx'
 import EscortDetailsPhysicalFeature from './EscortDetailsPhysicalFeature'
 import EscortDetailsAdditionalInfo from './EscortDetailsAdditionalInfo'
 import EscortDetailsLanguageInfo from './EscortDetailsLanguageInfo'
-import BasicBiographyDetails from './BasicBiographyDetails'
-import AboutMeDetails from './AboutMeDetails'
+import EscortDetailsAboutMe from './EscortDetailsAboutMe'
+import EscortDetailsBasicBiography from './EscortDetailsBasicBiography'
+import EscortDetailsWorkingCities from './EscortDetailsWorkingCities'
 
 type Props = {
   className: string
@@ -37,7 +38,7 @@ const EscortDetails: React.FC<Props> = ({className}) => {
           >
             <>
               <div className='row '>
-                <BasicBiographyDetails />
+                <EscortDetailsBasicBiography />
                 <EscortDetailsPhysicalFeature />
                 <EscortDetailsAdditionalInfo />
                 <EscortDetailsLanguageInfo />
@@ -76,7 +77,7 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             data-bs-parent='#basic_biography_accordion'
           >
             <div className='accordion-body'>
-              <AboutMeDetails />
+              <EscortDetailsAboutMe />
             </div>
           </div>
         </div>
@@ -127,7 +128,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='working_cities_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Working Cities</div>
+            <div className='accordion-body'>
+              <EscortDetailsWorkingCities />
+            </div>
           </div>
         </div>
         {/* Working Cities end */}

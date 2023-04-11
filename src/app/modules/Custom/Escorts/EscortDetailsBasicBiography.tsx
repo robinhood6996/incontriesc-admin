@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import React from 'react'
 
-export default function BasicBiographyDetails() {
+export default function EscortDetailsBasicBiography() {
   const ethnicityTypes = [
     {value: 'asian', label: 'Asian'},
     {value: 'black', label: 'Black'},
