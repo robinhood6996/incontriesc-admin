@@ -101,7 +101,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='languages_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Languages</div>
+            <div className='accordion-body'>
+              <EscortDetailsLanguageInfo />
+            </div>
           </div>
         </div>
         {/* Languages end */}
