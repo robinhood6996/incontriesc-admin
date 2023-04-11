@@ -14,6 +14,8 @@ import EscortDetailsContact from './EscortDetailsContact'
 import EscortDetailsPgotos from './EscortDetailsPgotos'
 import EscortDetailsReviews from './EscortDetailsReviews'
 import EscortDetailsVideos from './EscortDetailsVideos'
+import EscortDetailsPrivateCityTour from './EscortDetailsPrivateCityTour'
+import EscortDetailsBuyAdvertising from './EscortDetailsBuyAdvertising'
 
 type Props = {
   className: string
@@ -343,7 +345,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='city_tour_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>City Tour</div>
+            <div className='accordion-body'>
+              <EscortDetailsPrivateCityTour />
+            </div>
           </div>
         </div>
         {/* City Tour end */}
@@ -367,7 +371,9 @@ const EscortDetails: React.FC<Props> = ({className}) => {
             aria-labelledby='buy_advertising_accordion'
             data-bs-parent='#basic_biography_accordion'
           >
-            <div className='accordion-body'>Buy Advertising</div>
+            <div className='accordion-body'>
+              <EscortDetailsBuyAdvertising />
+            </div>
           </div>
         </div>
         {/* Buy Advertising end */}
