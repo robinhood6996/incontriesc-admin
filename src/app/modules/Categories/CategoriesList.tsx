@@ -1,38 +1,73 @@
-import React, {Key, useState} from 'react'
+import React, {Key, useEffect, useState} from 'react'
 import {Button} from 'react-bootstrap'
 import {KTSVG} from '../../../_metronic/helpers'
 import CreateCategory from './CreateCategory'
 import DeleteModal from '../Custom/Common/DeleteModal'
 import EditCategory from '../Custom/Common/EditCategory'
-import {useGetAllCategoryQuery} from '../../../redux/features/api/category/categoryApi'
+import {
+  useDeleteCategoryMutation,
+  useGetAllCategoryQuery,
+} from '../../../redux/features/api/category/categoryApi'
 import Loader from '../../Components/Custom Components/common/Loader'
 import NotFoundComponent from '../../Components/Custom Components/common/NotFoundComponent'
 import ErrorComponent from '../../Components/Custom Components/common/ErrorComponent'
+import {ToastContainer, toast} from 'react-toastify'
 
 type Props = {
   className: string
 }
 
 const CategoriesList: React.FC<Props> = ({className}) => {
-  const [show, setShow] = useState(false)
+  const [showCreateModal, setShowCreateModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
   const [deleteCategoryId, setDeleteCategoryId] = useState<string>('')
 
   // api call
   const {data, isFetching, isSuccess, isError} = useGetAllCategoryQuery(null)
-  console.log('data', data)
-  const handleClose = () => {
-    setShow(!show)
+  const [deleteCategory, {isLoading, isError: isErrorDelete, isSuccess: isSuccessDelete}] =
+    useDeleteCategoryMutation()
+
+  const handleCreateModal = () => {
+    setShowCreateModal(!showCreateModal)
   }
 
-  const handleDelete = () => {
+  const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
   }
 
   const handleEdit = () => {
     setEditModal(!editModal)
   }
+
+  const handleDelete = () => {
+    if (deleteCategoryId !== '') {
+      deleteCategory(deleteCategoryId)
+    }
+    setDeleteModal(false)
+  }
+
+  //toast
+  useEffect(() => {
+    if (!isLoading && !isErrorDelete && isSuccessDelete) {
+      toast.success('Successfully deleted category', {
+        hideProgressBar: true,
+        toastId: 'categoryDeleteSuccess',
+      })
+    }
+    if (!isLoading && isErrorDelete && !isSuccessDelete) {
+      toast.error('Failed to deleted category', {
+        hideProgressBar: true,
+        toastId: 'categoryDeleteError',
+      })
+    }
+    return () => {
+      setTimeout(() => {
+        toast.dismiss('categoryDeleteSuccess')
+        toast.dismiss('categoryDeleteError')
+      }, 2000)
+    }
+  }, [isErrorDelete, isLoading, isSuccessDelete])
 
   return (
     <>
@@ -42,7 +77,7 @@ const CategoriesList: React.FC<Props> = ({className}) => {
         <>
           <div className='d-flex justify-content-end mb-2'>
             <Button
-              onClick={() => setShow(true)}
+              onClick={() => setShowCreateModal(true)}
               className='btn btn-sm fw-bold btn-primary'
               data-bs-toggle='modal'
               data-bs-target='#kt_modal_create_app'
@@ -139,7 +174,7 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                                   className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                   onClick={() => {
                                     setDeleteCategoryId(category?._id)
-                                    handleDelete()
+                                    handleDeleteModal()
                                   }}
                                 >
                                   <KTSVG
@@ -159,8 +194,13 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                   {/* end::Table container */}
                 </div>
                 {/* begin::Body */}
-                <CreateCategory show={show} handleClose={handleClose} />
-                <DeleteModal id={deleteCategoryId} show={deleteModal} handleClose={handleDelete} />
+                <CreateCategory show={showCreateModal} handleClose={handleCreateModal} />
+                <DeleteModal
+                  id={deleteCategoryId}
+                  show={deleteModal}
+                  handleModal={handleDeleteModal}
+                  handleDelete={handleDelete}
+                />
                 <EditCategory show={editModal} handleClose={handleEdit} />
               </div>
             </>
@@ -171,6 +211,7 @@ const CategoriesList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
+      <ToastContainer />
     </>
   )
 }

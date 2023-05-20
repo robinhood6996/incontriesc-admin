@@ -1,17 +1,19 @@
 import React, {useState} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
-import DeleteModal from "../Common/DeleteModal";
+import DeleteModal from '../Common/DeleteModal'
 
 type Props = {
   className: string
 }
 
 const UserList: React.FC<Props> = ({className}) => {
-
   const [deleteModal, setDeleteModal] = useState(false)
-  const handleDelete = () => {
+
+  const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
   }
+
+  const handleDelete = () => {}
 
   return (
     <div className={`card ${className}`}>
@@ -21,7 +23,7 @@ const UserList: React.FC<Props> = ({className}) => {
           <span className='card-label fw-bold fs-3 mb-1'>Users</span>
         </h3>
         <h3 className='card-title align-items-start flex-column'>
-        <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Members</span>
+          <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Members</span>
         </h3>
         {/*<div*/}
         {/*  className='card-toolbar'*/}
@@ -108,18 +110,23 @@ const UserList: React.FC<Props> = ({className}) => {
                 </td>
                 <td className='text-end'>
                   <div className='d-flex flex-column w-100 me-2'>
-                    <div className="form-check form-switch form-check-custom form-check-solid">
-                      <input className="form-check-input h-20px w-30px" type="checkbox" value="" id="flexSwitchDefault"/>
+                    <div className='form-check form-switch form-check-custom form-check-solid'>
+                      <input
+                        className='form-check-input h-20px w-30px'
+                        type='checkbox'
+                        value=''
+                        id='flexSwitchDefault'
+                      />
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className='d-flex justify-content-end flex-shrink-0'>
                     <a
-                        href='/'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
+                      href='/'
+                      className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                     >
-                      <i className="bi bi-eye fs-5"></i>
+                      <i className='bi bi-eye fs-5'></i>
                     </a>
                     <a
                       href='/'
@@ -137,7 +144,7 @@ const UserList: React.FC<Props> = ({className}) => {
                       <KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />
                     </a>
                     <button
-                        onClick={handleDelete}
+                      onClick={handleDeleteModal}
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                     >
                       <KTSVG
@@ -155,7 +162,12 @@ const UserList: React.FC<Props> = ({className}) => {
         </div>
         {/* end::Table container */}
       </div>
-      <DeleteModal show={deleteModal} handleClose={handleDelete} />
+      <DeleteModal
+        id={''}
+        show={deleteModal}
+        handleModal={handleDeleteModal}
+        handleDelete={handleDelete}
+      />
       {/* begin::Body */}
     </div>
   )

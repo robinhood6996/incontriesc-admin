@@ -1,6 +1,4 @@
 import {apiSlice} from '../apiSlice'
-// import {setAvailableCountries} from '../globalSearch'
-// import {setIsLoggedOut, userLoggedIn, userLoggedOut} from './authSlice'
 
 export const categoryApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,6 +8,21 @@ export const categoryApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       providesTags: ['getAllCategory'],
+    }),
+    createCategory: builder.mutation({
+      query: (apiData) => ({
+        url: '/category',
+        method: 'POST',
+        body: apiData,
+      }),
+      invalidatesTags: ['getAllCategory'],
+    }),
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getAllCategory'],
     }),
     getBDSMSearch: builder.query({
       query: () => ({
@@ -21,4 +34,9 @@ export const categoryApi = apiSlice.injectEndpoints({
   }),
 })
 
-export const {useGetAllCategoryQuery, useGetBDSMSearchQuery} = categoryApi
+export const {
+  useGetAllCategoryQuery,
+  useGetBDSMSearchQuery,
+  useDeleteCategoryMutation,
+  useCreateCategoryMutation,
+} = categoryApi

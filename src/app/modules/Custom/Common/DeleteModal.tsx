@@ -5,11 +5,11 @@ import {KTSVG} from '../../../../_metronic/helpers'
 type Props = {
   id: string
   show: boolean
-  handleClose: () => void
+  handleModal: () => void
+  handleDelete: () => void
 }
 
-export default function DeleteModal({id, show, handleClose}: Props) {
-  console.log('delete id', id)
+export default function DeleteModal({id, show, handleModal, handleDelete}: Props) {
   return (
     <div>
       <Modal
@@ -18,11 +18,11 @@ export default function DeleteModal({id, show, handleClose}: Props) {
         aria-hidden='true'
         dialogClassName='modal-dialog modal-dialog-centered mw-600px'
         show={show}
-        onHide={handleClose}
+        onHide={handleModal}
       >
         <div className='modal-header justify-content-end'>
           {/* begin::Close */}
-          <div className='btn btn-sm btn-icon btn-active-color-primary' onClick={handleClose}>
+          <div className='btn btn-sm btn-icon btn-active-color-primary' onClick={handleModal}>
             <KTSVG className='svg-icon-1' path='/media/icons/duotune/arrows/arr061.svg' />
           </div>
           {/* end::Close */}
@@ -38,10 +38,10 @@ export default function DeleteModal({id, show, handleClose}: Props) {
             <p className='text-center text-gray-600'>Are you sure you want to remove ?</p>
           </div>
           <div className='d-flex justify-content-end mb-2'>
-            <Button className='btn btn-sm me-3 fw-bold btn-secondary' onClick={handleClose}>
+            <Button className='btn btn-sm me-3 fw-bold btn-secondary' onClick={handleModal}>
               Close
             </Button>
-            <Button className='btn btn-sm fw-bold btn-danger' onClick={handleClose}>
+            <Button className='btn btn-sm fw-bold btn-danger' onClick={handleDelete}>
               Delete
             </Button>
           </div>
