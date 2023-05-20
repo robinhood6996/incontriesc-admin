@@ -99,22 +99,18 @@ const EscortList: React.FC<Props> = ({className}) => {
                 </td>
                 <td className='text-end'>
                   <div className='d-flex flex-column w-100 me-2'>
-                    <div className='d-flex flex-stack mb-2'>
-                      <span className='text-muted me-2 fs-7 fw-semibold'>Active</span>
+                    <div className='form-check form-switch form-check-custom form-check-solid'>
+                      <input
+                        className='form-check-input h-20px w-30px'
+                        type='checkbox'
+                        value=''
+                        id='flexSwitchDefault'
+                      />
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className='d-flex justify-content-end flex-shrink-0'>
-                    <a
-                      href='/escorts/1/details'
-                      className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                    >
-                      <KTSVG
-                        path='/media/icons/duotune/general/gen019.svg'
-                        className='svg-icon-3'
-                      />
-                    </a>
                     <a
                       href='/'
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
