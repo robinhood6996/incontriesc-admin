@@ -1,11 +1,14 @@
-import React, {Key} from 'react'
+import React, {Key, useEffect, useState} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import DeleteModal from '../Common/DeleteModal'
 import Loader from '../../../Components/Custom Components/common/Loader'
 import {ToastContainer, toast} from 'react-toastify'
-import {useGetAllEscortsQuery} from '../../../../redux/features/api/escorts/escortsApi'
+import {
+  useDeleteSingleEscortMutation,
+  useGetAllEscortsQuery,
+} from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 
 type Props = {
@@ -13,7 +16,48 @@ type Props = {
 }
 
 const EscortList: React.FC<Props> = ({className}) => {
+  const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
+  const [deleteModal, setDeleteModal] = useState(false)
+  //api call
   const {data, isFetching, isError, isSuccess} = useGetAllEscortsQuery(null)
+  const [
+    deleteEscort,
+    {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
+  ] = useDeleteSingleEscortMutation()
+
+  const handleDeleteModal = () => {
+    setDeleteModal(!deleteModal)
+  }
+
+  const handleDelete = () => {
+    if (deleteEscortUserName !== '') {
+      deleteEscort(deleteEscortUserName)
+    }
+    setDeleteModal(false)
+  }
+
+  //toast
+  useEffect(() => {
+    if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
+      toast.success('Successfully deleted escort', {
+        hideProgressBar: true,
+        toastId: 'escortDeleteSuccess',
+      })
+    }
+    if (!isLoadingDelete && isErrorDelete && !isSuccessDelete) {
+      toast.error('Failed to deleted escort', {
+        hideProgressBar: true,
+        toastId: 'escortDeleteError',
+      })
+    }
+    return () => {
+      setTimeout(() => {
+        toast.dismiss('escortDeleteSuccess')
+        toast.dismiss('escortDeleteError')
+      }, 2000)
+    }
+  }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
+
   return (
     <>
       {isFetching ? (
@@ -86,6 +130,7 @@ const EscortList: React.FC<Props> = ({className}) => {
                               category: string
                               createdAt: string
                               profileImage: string
+                              username: string
                             },
                             index: Key
                           ) => {
@@ -156,24 +201,27 @@ const EscortList: React.FC<Props> = ({className}) => {
                                   </td>
                                   <td>
                                     <div className='d-flex justify-content-end flex-shrink-0'>
-                                      <a
-                                        href='/'
+                                      <button
                                         className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
+                                        // onClick={handleEdit}
                                       >
                                         <KTSVG
                                           path='/media/icons/duotune/art/art005.svg'
                                           className='svg-icon-3'
                                         />
-                                      </a>
-                                      <a
-                                        href='/'
+                                      </button>
+                                      <button
                                         className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                                        onClick={() => {
+                                          setDeleteEscortUserName(escort?.username)
+                                          handleDeleteModal()
+                                        }}
                                       >
                                         <KTSVG
                                           path='/media/icons/duotune/general/gen027.svg'
                                           className='svg-icon-3'
                                         />
-                                      </a>
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -188,6 +236,11 @@ const EscortList: React.FC<Props> = ({className}) => {
                   </div>
                   {/* end::Table container */}
                 </div>
+                <DeleteModal
+                  show={deleteModal}
+                  handleModal={handleDeleteModal}
+                  handleDelete={handleDelete}
+                />
                 {/* begin::Body */}
               </div>
             </>

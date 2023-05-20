@@ -196,7 +196,6 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                 {/* begin::Body */}
                 <CreateCategory show={showCreateModal} handleClose={handleCreateModal} />
                 <DeleteModal
-                  id={deleteCategoryId}
                   show={deleteModal}
                   handleModal={handleDeleteModal}
                   handleDelete={handleDelete}

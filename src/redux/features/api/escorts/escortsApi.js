@@ -28,6 +28,13 @@ export const escortsApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getSingleEscortDetails'],
     }),
+    deleteSingleEscort: builder.mutation({
+      query: (username) => ({
+        url: `/escort/delete?username=${username}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getAllEscorts'],
+    }),
     getEscortProfile: builder.query({
       query: () => ({
         url: `/escort/profile`,
@@ -122,4 +129,5 @@ export const {
   useUpdateServicesDataMutation,
   useDeleteEscortImageMutation,
   useDeleteEscortVideoMutation,
+  useDeleteSingleEscortMutation,
 } = escortsApi

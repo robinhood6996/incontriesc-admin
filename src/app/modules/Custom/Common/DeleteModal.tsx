@@ -3,13 +3,12 @@ import {Button, Modal} from 'react-bootstrap'
 import {KTSVG} from '../../../../_metronic/helpers'
 
 type Props = {
-  id: string
   show: boolean
   handleModal: () => void
   handleDelete: () => void
 }
 
-export default function DeleteModal({id, show, handleModal, handleDelete}: Props) {
+export default function DeleteModal({show, handleModal, handleDelete}: Props) {
   return (
     <div>
       <Modal
