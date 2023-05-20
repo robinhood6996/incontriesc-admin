@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
 import DeleteModal from '../Common/DeleteModal'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
@@ -38,6 +38,28 @@ const UserList: React.FC<Props> = ({className}) => {
     setDeleteModal(false)
   }
 
+  //toast
+  useEffect(() => {
+    if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
+      toast.success('Successfully deleted user', {
+        hideProgressBar: true,
+        toastId: 'userDeleteSuccess',
+      })
+    }
+    if (!isLoadingDelete && isErrorDelete && !isSuccessDelete) {
+      toast.error('Failed to deleted user', {
+        hideProgressBar: true,
+        toastId: 'userDeleteError',
+      })
+    }
+    return () => {
+      setTimeout(() => {
+        toast.dismiss('userDeleteSuccess')
+        toast.dismiss('userDeleteSuccess')
+      }, 2000)
+    }
+  }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
+
   return (
     <>
       {isFetching ? (
@@ -46,7 +68,7 @@ const UserList: React.FC<Props> = ({className}) => {
         <>
           {data?.length > 0 ? (
             <>
-              <div className='d-flex justify-content-end mb-2'>
+              {/* <div className='d-flex justify-content-end mb-2'>
                 <Button
                   // onClick={() => setShowCreateModal(true)}
                   className='btn btn-sm fw-bold btn-primary'
@@ -55,7 +77,7 @@ const UserList: React.FC<Props> = ({className}) => {
                 >
                   Create
                 </Button>
-              </div>
+              </div> */}
               <div className={`card ${className}`}>
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
