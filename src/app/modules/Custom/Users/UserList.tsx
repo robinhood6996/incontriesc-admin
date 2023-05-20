@@ -1,36 +1,45 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
+import DeleteModal from "../Common/DeleteModal";
 
 type Props = {
   className: string
 }
 
 const UserList: React.FC<Props> = ({className}) => {
+
+  const [deleteModal, setDeleteModal] = useState(false)
+  const handleDelete = () => {
+    setDeleteModal(!deleteModal)
+  }
+
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
       <div className='card-header border-0 pt-5'>
         <h3 className='card-title align-items-start flex-column'>
           <span className='card-label fw-bold fs-3 mb-1'>Users</span>
-          <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Members</span>
         </h3>
-        <div
-          className='card-toolbar'
-          data-bs-toggle='tooltip'
-          data-bs-placement='top'
-          data-bs-trigger='hover'
-          title='Click to add a user'
-        >
-          <a
-            href='/'
-            className='btn btn-sm btn-light-primary'
-            // data-bs-toggle='modal'
-            // data-bs-target='#kt_modal_invite_friends'
-          >
-            <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-            New Member
-          </a>
-        </div>
+        <h3 className='card-title align-items-start flex-column'>
+        <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Members</span>
+        </h3>
+        {/*<div*/}
+        {/*  className='card-toolbar'*/}
+        {/*  data-bs-toggle='tooltip'*/}
+        {/*  data-bs-placement='top'*/}
+        {/*  data-bs-trigger='hover'*/}
+        {/*  title='Click to add a user'*/}
+        {/*>*/}
+        {/*  <a*/}
+        {/*    href='/'*/}
+        {/*    className='btn btn-sm btn-light-primary'*/}
+        {/*    // data-bs-toggle='modal'*/}
+        {/*    // data-bs-target='#kt_modal_invite_friends'*/}
+        {/*  >*/}
+        {/*    <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />*/}
+        {/*    New Member*/}
+        {/*  </a>*/}
+        {/*</div>*/}
       </div>
       {/* end::Header */}
       {/* begin::Body */}
@@ -99,13 +108,19 @@ const UserList: React.FC<Props> = ({className}) => {
                 </td>
                 <td className='text-end'>
                   <div className='d-flex flex-column w-100 me-2'>
-                    <div className='d-flex flex-stack mb-2'>
-                      <span className='text-muted me-2 fs-7 fw-semibold'>Active</span>
+                    <div className="form-check form-switch form-check-custom form-check-solid">
+                      <input className="form-check-input h-20px w-30px" type="checkbox" value="" id="flexSwitchDefault"/>
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className='d-flex justify-content-end flex-shrink-0'>
+                    <a
+                        href='/'
+                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
+                    >
+                      <i className="bi bi-eye fs-5"></i>
+                    </a>
                     <a
                       href='/'
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
@@ -121,15 +136,15 @@ const UserList: React.FC<Props> = ({className}) => {
                     >
                       <KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />
                     </a>
-                    <a
-                      href='/'
+                    <button
+                        onClick={handleDelete}
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                     >
                       <KTSVG
                         path='/media/icons/duotune/general/gen027.svg'
                         className='svg-icon-3'
                       />
-                    </a>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -140,6 +155,7 @@ const UserList: React.FC<Props> = ({className}) => {
         </div>
         {/* end::Table container */}
       </div>
+      <DeleteModal show={deleteModal} handleClose={handleDelete} />
       {/* begin::Body */}
     </div>
   )

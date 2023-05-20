@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import {Button} from 'react-bootstrap'
 import {KTSVG} from '../../../_metronic/helpers'
 import CreateCategory from './CreateCategory'
+import DeleteModal from "../Custom/Common/DeleteModal";
+import EditCategory from "../Custom/Common/EditCategory";
 
 type Props = {
   className: string
@@ -9,9 +11,20 @@ type Props = {
 
 const CategoriesList: React.FC<Props> = ({className}) => {
   const [show, setShow] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [editModal, setEditModal] = useState(false)
   const handleClose = () => {
     setShow(!show)
   }
+
+  const handleDelete = () => {
+    setDeleteModal(!deleteModal)
+  }
+
+  const handleEdit = () => {
+    setEditModal(!editModal)
+  }
+  
   return (
     <>
       <div className='d-flex justify-content-end mb-2'>
@@ -162,21 +175,21 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                         className='svg-icon-3'
                       />
                     </a>
-                    <a
-                      href='/'
+                    <button
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
+                      onClick={handleEdit}
                     >
                       <KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />
-                    </a>
-                    <a
-                      href='/'
+                    </button>
+                    <button
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                      onClick={handleDelete}
                     >
                       <KTSVG
                         path='/media/icons/duotune/general/gen027.svg'
                         className='svg-icon-3'
                       />
-                    </a>
+                    </button>
                   </td>
                 </tr>
 
@@ -216,21 +229,21 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                         className='svg-icon-3'
                       />
                     </a>
-                    <a
-                      href='/'
+                    <button
+                        onClick={handleEdit}
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                     >
                       <KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />
-                    </a>
-                    <a
-                      href='/'
+                    </button>
+                    <button
                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                      onClick={handleDelete}
                     >
                       <KTSVG
                         path='/media/icons/duotune/general/gen027.svg'
                         className='svg-icon-3'
                       />
-                    </a>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -242,6 +255,8 @@ const CategoriesList: React.FC<Props> = ({className}) => {
         </div>
         {/* begin::Body */}
         <CreateCategory show={show} handleClose={handleClose} />
+        <DeleteModal show={deleteModal} handleClose={handleDelete} />
+        <EditCategory show={editModal} handleClose={handleEdit} />
       </div>
     </>
   )
