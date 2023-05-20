@@ -114,6 +114,30 @@ const DashboardWrapper: FC = () => {
     <>
       <PageTitle breadcrumbs={[]}>{intl.formatMessage({id: 'MENU.DASHBOARD'})}</PageTitle>
       <DashboardPage />
+      {/* <button
+        className='btn btn-primary mx-2'
+        onClick={() => {
+          dispatch(increment())
+        }}
+      >
+        Increment
+      </button>
+      <button
+        className='btn btn-primary mx-2'
+        onClick={() => {
+          dispatch(decrement())
+        }}
+      >
+        Decrement
+      </button>
+      <button
+        className='btn btn-primary mx-2'
+        onClick={() => {
+          dispatch(incrementByAmount(5))
+        }}
+      >
+        Increment By 5
+      </button> */}
     </>
   )
 }
