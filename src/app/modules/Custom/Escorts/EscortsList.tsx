@@ -245,7 +245,7 @@ const EscortList: React.FC<Props> = ({className}) => {
               </div>
             </>
           ) : (
-            <NotFoundComponent type='Category List' />
+            <NotFoundComponent type='Escorts List' />
           )}
         </>
       ) : (

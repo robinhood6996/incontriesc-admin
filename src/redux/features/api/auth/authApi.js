@@ -28,9 +28,17 @@ export const authApi = apiSlice.injectEndpoints({
     getAllUser: builder.query({
       query: () => ({
         url: `/auth/user`,
-        method: 'GET'
-      })
-    })
+        method: 'GET',
+      }),
+      providesTags: ['getAllUser'],
+    }),
+    deleteSingleUser: builder.mutation({
+      query: (username) => ({
+        url: `/auth/delete-user?username=${username}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getAllUser'],
+    }),
 
     // userLoggedOut: builder.query({
     //   query: () => ({
@@ -56,4 +64,4 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 })
 
-export const {useUserLoggedInMutation, useGetAllUserQuery } = authApi
+export const {useUserLoggedInMutation, useGetAllUserQuery, useDeleteSingleUserMutation} = authApi
