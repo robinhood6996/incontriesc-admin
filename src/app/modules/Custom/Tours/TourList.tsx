@@ -1,18 +1,18 @@
 import React, {Key} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
-import {useGetAllFreeAdsQuery} from '../../../../redux/features/api/freeAds/freeAdsApi'
 import Loader from '../../../Components/Custom Components/common/Loader'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import moment from 'moment'
+import {useGetAllCityToursQuery} from '../../../../redux/features/api/cityTourApi/cityTourApi'
 
 type Props = {
   className: string
 }
 
-const AdList: React.FC<Props> = ({className}) => {
+const TourList: React.FC<Props> = ({className}) => {
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetAllFreeAdsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetAllCityToursQuery(null)
 
   return (
     <>
@@ -214,4 +214,4 @@ const AdList: React.FC<Props> = ({className}) => {
   )
 }
 
-export default AdList
+export default TourList

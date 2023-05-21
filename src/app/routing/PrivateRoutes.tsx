@@ -14,6 +14,7 @@ import CountryList from '../modules/Custom/Country/CountryList'
 import CityList from '../modules/Custom/City/CityList'
 import AdList from '../modules/Custom/ClassifiedAds/Adlist'
 import EscortDetails from '../modules/Custom/Escorts/EscortDetails'
+import TourList from '../modules/Custom/Tours/TourList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -136,6 +137,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <AdList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/tours'
+          element={
+            <SuspensedView>
+              <TourList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />
