@@ -11,12 +11,19 @@ import {
 } from '../../../../redux/features/api/auth/authApi'
 import {Button} from 'react-bootstrap'
 import Loader from '../../../Components/Custom Components/common/Loader'
+import PaginationSetQuery from '../../../Components/Custom Components/common/PaginationSetQuery'
 
 type Props = {
   className: string
 }
 
 const UserList: React.FC<Props> = ({className}) => {
+  const limit: number = 16
+  const [page, setPage] = useState(1)
+  const [searchParams, setSearchParams] = useState({
+    limit,
+    offset: 0,
+  })
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteUserName, setDeleteUserName] = useState<string>('')
 
@@ -68,24 +75,55 @@ const UserList: React.FC<Props> = ({className}) => {
         <>
           {data?.length > 0 ? (
             <>
-              {/* <div className='d-flex justify-content-end mb-2'>
-                <Button
-                  // onClick={() => setShowCreateModal(true)}
-                  className='btn btn-sm fw-bold btn-primary'
-                  data-bs-toggle='modal'
-                  data-bs-target='#kt_modal_create_app'
-                >
-                  Create
-                </Button>
-              </div> */}
+              <div className='card card-xxl-stretch mb-5 mb-xl-8'>
+                <div className='row p-3 align-items-center'>
+                  <div className='col-lg-3 col-md-4 col-12'>
+                    <input
+                      className='form-control form-control-lg form-control-solid border border-secondary'
+                      placeholder='Search user name'
+                      type='text'
+                      autoComplete='off'
+                    />
+                  </div>
+                  <div className='col-lg-2 col-md-4 col-6'>
+                    <select className='form-select' aria-label='Select example'>
+                      <option>Select city</option>
+                      <option value='1'>Milan</option>
+                      <option value='1'>Rome</option>
+                    </select>
+                  </div>
+                  <div className='col-lg-1 col-md-4 col-6'>
+                    <Button
+                      // onClick={() => setShowCreateModal(true)}
+                      className='btn fw-bold btn-primary'
+                      data-bs-toggle='modal'
+                      data-bs-target='#kt_modal_create_app'
+                    >
+                      Search
+                    </Button>
+                  </div>
+                  <div className='col-lg-2 col-md-4 col-6'>
+                    <Button
+                      // onClick={() => setShowCreateModal(true)}
+                      className='btn fw-bold btn-primary'
+                      data-bs-toggle='modal'
+                      data-bs-target='#kt_modal_create_app'
+                    >
+                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+                      Create User
+                    </Button>
+                  </div>
+                </div>
+              </div>
               <div className={`card ${className}`}>
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
                     <span className='card-label fw-bold fs-3 mb-1'>Users</span>
-                  </h3>
-                  <h3 className='card-title align-items-start flex-column'>
                     <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Members</span>
                   </h3>
+                  {/* <h3 className='card-title align-items-start flex-column'>
+                    <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Members</span>
+                  </h3> */}
                 </div>
                 <div className='card-body py-3'>
                   <div className='table-responsive'>
@@ -202,6 +240,15 @@ const UserList: React.FC<Props> = ({className}) => {
                   handleDelete={handleDelete}
                 />
               </div>
+              <PaginationSetQuery
+                limit={limit}
+                page={page}
+                dataLength={10}
+                params={searchParams}
+                setParams={setSearchParams}
+                setPage={setPage}
+                totalPage={10}
+              />
             </>
           ) : (
             <NotFoundComponent type='Users List' />

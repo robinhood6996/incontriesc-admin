@@ -75,9 +75,9 @@ const PaginationSetQuery = ({
   }
   return (
     <>
-      <div className='row my-5 align-items-center justify-content-center'>
+      <div className='d-flex justify-content-center'>
         <button
-          className='btn btn-primary col-1 fw-bolder fs-5'
+          className='btn btn-primary fw-bolder fs-5'
           disabled={page === 1}
           onClick={() => {
             changePagination('minus')
@@ -85,16 +85,16 @@ const PaginationSetQuery = ({
         >
           {'<'}
         </button>
-        <div className='col-2'>
+        <div className='w-25'>
           <form
             action=''
-            className='form w-100 fv-plugins-bootstrap5 fv-plugins-framework'
+            className='form fv-plugins-bootstrap5 fv-plugins-framework'
             onSubmit={() => {
               changePagination('input')
             }}
           >
             <input
-              className='form-control w-100'
+              className='form-control w-25'
               type='number'
               min={1}
               ref={offsetRef}
@@ -106,7 +106,7 @@ const PaginationSetQuery = ({
           </form>
         </div>
         <button
-          className='btn btn-primary col-1 fw-bolder fs-5'
+          className='btn btn-primary fw-bolder fs-5'
           disabled={dataLength < limit}
           onClick={() => {
             changePagination('plus')
