@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import * as Yup from 'yup'
 import clsx from 'clsx'
 import {Link} from 'react-router-dom'
@@ -7,6 +7,9 @@ import {useFormik} from 'formik'
 import {getUserByToken, login} from '../core/_requests'
 import {toAbsoluteUrl} from '../../../../_metronic/helpers'
 import {useAuth} from '../core/Auth'
+import {useUserLoggedInMutation} from '../../../../redux/features/api/auth/authApi'
+import {useDispatch} from 'react-redux'
+import {userLoggedIn} from '../../../../redux/features/auth/authSlice'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -34,26 +37,43 @@ const initialValues = {
 export function Login() {
   const [loading, setLoading] = useState(false)
   const {saveAuth, setCurrentUser} = useAuth()
+  const dispatch = useDispatch()
+
+  const [userLogin, {data, isLoading, isSuccess, isError, error}] = useUserLoggedInMutation()
 
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
     onSubmit: async (values, {setStatus, setSubmitting}) => {
-      setLoading(true)
-      try {
-        const {data: auth} = await login(values.email, values.password)
-        saveAuth(auth)
-        const {data: user} = await getUserByToken(auth.api_token)
-        setCurrentUser(user)
-      } catch (error) {
-        console.error(error)
-        saveAuth(undefined)
-        setStatus('The login details are incorrect')
-        setSubmitting(false)
-        setLoading(false)
+      const data = {
+        email: values.email,
+        password: values.password,
       }
+      if (values.email && values.password) {
+        userLogin(data)
+      }
+      // setLoading(true)
+      // try {
+      //   const {data: auth} = await login(values.email, values.password)
+      //   saveAuth(auth)
+      //   const {data: user} = await getUserByToken(auth.api_token)
+      //   setCurrentUser(user)
+      // } catch (error) {
+      //   console.error(error)
+      //   saveAuth(undefined)
+      //   setStatus('The login details are incorrect')
+      //   setSubmitting(false)
+      //   setLoading(false)
+      // }
     },
   })
+
+  useEffect(() => {
+    if (!isLoading && !isError && isSuccess && data) {
+      console.log('login data', data)
+      dispatch(userLoggedIn(data))
+    }
+  }, [data, isError, isLoading, isSuccess])
 
   return (
     <form
@@ -205,23 +225,28 @@ export function Login() {
           className='btn btn-primary'
           disabled={formik.isSubmitting || !formik.isValid}
         >
-          {!loading && <span className='indicator-label'>Continue</span>}
-          {loading && (
+          {!isLoading && <span className='indicator-label'>Continue</span>}
+          {isLoading && (
             <span className='indicator-progress' style={{display: 'block'}}>
               Please wait...
               <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
             </span>
           )}
         </button>
+        {isError && (
+          <>
+            <p className='text-center text-danger my-2'>{data?.message}</p>
+          </>
+        )}
       </div>
       {/* end::Action */}
 
-      <div className='text-gray-500 text-center fw-semibold fs-6'>
+      {/* <div className='text-gray-500 text-center fw-semibold fs-6'>
         Not a Member yet?{' '}
         <Link to='/auth/registration' className='link-primary'>
           Sign up
         </Link>
-      </div>
+      </div> */}
     </form>
   )
 }

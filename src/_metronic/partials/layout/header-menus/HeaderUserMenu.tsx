@@ -4,9 +4,13 @@ import {Link} from 'react-router-dom'
 import {useAuth} from '../../../../app/modules/auth'
 import {Languages} from './Languages'
 import {toAbsoluteUrl} from '../../../helpers'
+import {useDispatch, useSelector} from 'react-redux'
+import {userLoggedOut} from '../../../../redux/features/auth/authSlice'
 
 const HeaderUserMenu: FC = () => {
-  const {currentUser, logout} = useAuth()
+  // const {currentUser, logout} = useAuth()
+  const dispatch = useDispatch()
+  const currentUser = useSelector((state: any) => state?.adminUser)
   return (
     <div
       className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px'
@@ -124,7 +128,12 @@ const HeaderUserMenu: FC = () => {
       </div>
 
       <div className='menu-item px-5'>
-        <a onClick={logout} className='menu-link px-5'>
+        <a
+          onClick={() => {
+            dispatch(userLoggedOut())
+          }}
+          className='menu-link px-5'
+        >
           Sign Out
         </a>
       </div>
