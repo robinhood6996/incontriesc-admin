@@ -12,6 +12,7 @@ import Loader from '../../Components/Custom Components/common/Loader'
 import NotFoundComponent from '../../Components/Custom Components/common/NotFoundComponent'
 import ErrorComponent from '../../Components/Custom Components/common/ErrorComponent'
 import {ToastContainer, toast} from 'react-toastify'
+import UpdateCategory from './UpdateCategory'
 
 type Props = {
   className: string
@@ -19,6 +20,9 @@ type Props = {
 
 const CategoriesList: React.FC<Props> = ({className}) => {
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [updateCategoryId, setUpdateCategoryId] = useState<string>('')
+  const [updateCategoryName, setUpdateCategoryName] = useState<string>('')
   const [deleteModal, setDeleteModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
   const [deleteCategoryId, setDeleteCategoryId] = useState<string>('')
@@ -32,13 +36,17 @@ const CategoriesList: React.FC<Props> = ({className}) => {
     setShowCreateModal(!showCreateModal)
   }
 
+  const handleUpdateModal = () => {
+    setShowUpdateModal(!showUpdateModal)
+  }
+
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
   }
 
-  const handleEdit = () => {
-    setEditModal(!editModal)
-  }
+  // const handleEdit = () => {
+  //   setEditModal(!editModal)
+  // }
 
   const handleDelete = () => {
     if (deleteCategoryId !== '') {
@@ -163,7 +171,11 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                                 </a> */}
                                 <button
                                   className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                                  onClick={handleEdit}
+                                  onClick={() => {
+                                    setUpdateCategoryId(category?._id)
+                                    setUpdateCategoryName(category?.name)
+                                    handleUpdateModal()
+                                  }}
                                 >
                                   <KTSVG
                                     path='/media/icons/duotune/art/art005.svg'
@@ -195,12 +207,21 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                 </div>
                 {/* begin::Body */}
                 <CreateCategory show={showCreateModal} handleClose={handleCreateModal} />
+                {showUpdateModal && updateCategoryId !== '' && updateCategoryName !== '' && (
+                  <UpdateCategory
+                    show={showUpdateModal}
+                    handleClose={handleUpdateModal}
+                    categoryId={updateCategoryId}
+                    categoryName={updateCategoryName}
+                  />
+                )}
+
                 <DeleteModal
                   show={deleteModal}
                   handleModal={handleDeleteModal}
                   handleDelete={handleDelete}
                 />
-                <EditCategory show={editModal} handleClose={handleEdit} />
+                {/* <EditCategory show={editModal} handleClose={handleEdit} /> */}
               </div>
             </>
           ) : (
