@@ -235,7 +235,7 @@ export function Login() {
         </button>
         {isError && (
           <>
-            <p className='text-center text-danger my-2'>{data?.message}</p>
+            <p className='text-center text-danger my-2'>Invalid Email or Password</p>
           </>
         )}
       </div>
