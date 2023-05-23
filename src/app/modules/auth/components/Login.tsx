@@ -70,7 +70,6 @@ export function Login() {
 
   useEffect(() => {
     if (!isLoading && !isError && isSuccess && data) {
-      console.log('login data', data)
       dispatch(userLoggedIn(data))
     }
   }, [data, isError, isLoading, isSuccess])
