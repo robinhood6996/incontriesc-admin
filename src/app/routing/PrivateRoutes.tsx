@@ -17,6 +17,7 @@ import EscortDetails from '../modules/Custom/Escorts/EscortDetails'
 import TourList from '../modules/Custom/Tours/TourList'
 import VerifieyRequestList from '../modules/Custom/verification/VerifieyRequestList'
 import VerifiedIDList from '../modules/Custom/verification/VerifiedIDList'
+import ReviewsList from '../modules/Custom/reviews/ReviewsList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -163,6 +164,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <VerifiedIDList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/reviews'
+          element={
+            <SuspensedView>
+              <ReviewsList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />

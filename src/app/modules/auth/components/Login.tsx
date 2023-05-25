@@ -10,6 +10,7 @@ import {useAuth} from '../core/Auth'
 import {useUserLoggedInMutation} from '../../../../redux/features/api/auth/authApi'
 import {useDispatch} from 'react-redux'
 import {userLoggedIn} from '../../../../redux/features/auth/authSlice'
+import Logo from '../../../../_metronic/assets/images/logoinc.png'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -83,6 +84,7 @@ export function Login() {
     >
       {/* begin::Heading */}
       <div className='text-center mb-11'>
+        <img alt='Logo' src={Logo} className='w-50 my-5' />
         <h1 className='text-dark fw-bolder mb-3'>Sign In</h1>
         {/* <div className='text-gray-500 fw-semibold fs-6'>Your Social Campaigns</div> */}
       </div>

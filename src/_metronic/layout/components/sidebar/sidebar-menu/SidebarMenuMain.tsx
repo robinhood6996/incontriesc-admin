@@ -70,7 +70,7 @@ const SidebarMenuMain = () => {
         icon='/media/icons/duotune/general/gen022.svg'
       />
       <SidebarMenuItem
-        to='/verify-ids'
+        to='/reviews'
         title='Reviews'
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'

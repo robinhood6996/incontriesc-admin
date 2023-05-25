@@ -24,7 +24,7 @@ const Sidebar = () => {
         <img src={Logo} alt='logo' />
       </div> */}
       <SidebarMenu />
-      <SidebarFooter />
+      {/* <SidebarFooter /> */}
     </div>
   )
 }
