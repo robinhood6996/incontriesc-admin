@@ -80,7 +80,7 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                     <span className='card-label fw-bold fs-3 mb-1'>Escorts</span>
                     <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Escorts</span>
                   </h3>
-                  <div
+                  {/* <div
                     className='card-toolbar'
                     data-bs-toggle='tooltip'
                     data-bs-placement='top'
@@ -96,7 +96,7 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                       <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
                       New Member
                     </a>
-                  </div>
+                  </div> */}
                 </div>
                 {/* end::Header */}
                 {/* begin::Body */}
@@ -108,11 +108,12 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                       {/* begin::Table head */}
                       <thead>
                         <tr className='fw-bold text-muted'>
-                          <th className='min-w-150px'>Name</th>
-                          <th className='min-w-140px'>Username</th>
+                          <th className='min-w-130px'>Name</th>
+                          <th className='min-w-110px'>Username</th>
                           <th className='min-w-120px'>Email</th>
-                          <th className='min-w-120px'>Photos</th>
-                          <th className='min-w-100px text-end'>Status</th>
+                          <th className='min-w-200px'>Photos</th>
+                          <th className='min-w-100px'>Status</th>
+                          <th className='min-w-100px text-end'>Actions</th>
                         </tr>
                       </thead>
                       {/* end::Table head */}
@@ -135,6 +136,34 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                                 <tr key={index}>
                                   <td>
                                     <div className='d-flex align-items-center'>
+                                      <div className='d-flex justify-content-start flex-column'>
+                                        <a
+                                          href='/'
+                                          className='text-dark fw-bold text-hover-primary fs-6'
+                                        >
+                                          {escort?.name}
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <a
+                                      href='/'
+                                      className='text-dark fw-bold text-hover-primary d-block fs-6'
+                                    >
+                                      {escort?.username}
+                                    </a>
+                                    {/* <span className='text-muted fw-semibold text-muted d-block fs-7'>
+                                      VIP
+                                    </span> */}
+                                  </td>
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2'>{escort?.email}</div>
+                                    </div>
+                                  </td>
+                                  <td className='text-start'>
+                                    <div className='d-flex flex-column w-100 me-2'>
                                       <div
                                         className='symbol symbol-45px me-5'
                                         onClick={() => {
@@ -148,37 +177,6 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                                           src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${escort?.profileImage}`}
                                           alt=''
                                         />
-                                      </div>
-                                      <div className='d-flex justify-content-start flex-column'>
-                                        <a
-                                          href='/'
-                                          className='text-dark fw-bold text-hover-primary fs-6'
-                                        >
-                                          {escort?.name}
-                                        </a>
-                                        <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                          {escort?.email}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <a
-                                      href='/'
-                                      className='text-dark fw-bold text-hover-primary d-block fs-6'
-                                    >
-                                      {escort?.category?.toUpperCase()}
-                                    </a>
-                                    {/* <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                      VIP
-                                    </span> */}
-                                  </td>
-                                  <td className='text-end'>
-                                    <div className='d-flex flex-column w-100 me-2'>
-                                      <div className='d-flex flex-stack mb-2'>
-                                        <span className='text-muted me-2 fs-7 fw-semibold'>
-                                          {moment(escort?.createdAt).format('MMM Do YYYY, h:mm a')}
-                                        </span>
                                       </div>
                                     </div>
                                   </td>
