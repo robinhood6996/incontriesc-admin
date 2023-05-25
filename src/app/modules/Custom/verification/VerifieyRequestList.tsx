@@ -10,14 +10,21 @@ import {
   useGetAllEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
+import ImageModal from '../Common/ImageModal'
 
 type Props = {
   className: string
 }
 
 const VerifieyRequestList: React.FC<Props> = ({className}) => {
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
   const [deleteModal, setDeleteModal] = useState(false)
+
+  const handleImageModal = () => {
+    setShowImageModal(!showImageModal)
+  }
   //api call
   const {data, isFetching, isError, isSuccess} = useGetAllEscortsQuery(null)
   const [
@@ -128,7 +135,15 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                                 <tr key={index}>
                                   <td>
                                     <div className='d-flex align-items-center'>
-                                      <div className='symbol symbol-45px me-5'>
+                                      <div
+                                        className='symbol symbol-45px me-5'
+                                        onClick={() => {
+                                          setSelectedImageURL(
+                                            `${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${escort?.profileImage}`
+                                          )
+                                          handleImageModal()
+                                        }}
+                                      >
                                         <img
                                           src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${escort?.profileImage}`}
                                           alt=''
@@ -231,7 +246,11 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <ToastContainer />
+      <ImageModal
+        show={showImageModal}
+        handleClose={handleImageModal}
+        imageURL={selectedImageURL}
+      />
     </>
   )
 }
