@@ -58,8 +58,14 @@ const SidebarMenuMain = () => {
         icon='/media/icons/duotune/general/gen022.svg'
       />
       <SidebarMenuItem
-        to='/verify-ids'
-        title='Verify Ids'
+        to='/verify-requested-ids'
+        title='Verify Requested Ids'
+        hasBullet={false}
+        icon='/media/icons/duotune/general/gen022.svg'
+      />
+      <SidebarMenuItem
+        to='/verified-ids'
+        title='Verified Ids'
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
       />

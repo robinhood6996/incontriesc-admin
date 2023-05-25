@@ -15,7 +15,7 @@ type Props = {
   className: string
 }
 
-const EscortList: React.FC<Props> = ({className}) => {
+const VerifiedIDList: React.FC<Props> = ({className}) => {
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
   const [deleteModal, setDeleteModal] = useState(false)
   //api call
@@ -101,17 +101,6 @@ const EscortList: React.FC<Props> = ({className}) => {
                       {/* begin::Table head */}
                       <thead>
                         <tr className='fw-bold text-muted'>
-                          {/* <th className='w-25px'>
-                            <div className='form-check form-check-sm form-check-custom form-check-solid'>
-                              <input
-                                className='form-check-input'
-                                type='checkbox'
-                                value='1'
-                                data-kt-check='true'
-                                data-kt-check-target='.widget-9-check'
-                              />
-                            </div>
-                          </th> */}
                           <th className='min-w-150px'>Name</th>
                           <th className='min-w-140px'>Category</th>
                           <th className='min-w-120px'>Join Date</th>
@@ -137,7 +126,6 @@ const EscortList: React.FC<Props> = ({className}) => {
                             return (
                               <>
                                 <tr key={index}>
-                                  {/* <tsole  */}
                                   <td>
                                     <div className='d-flex align-items-center'>
                                       <div className='symbol symbol-45px me-5'>
@@ -248,4 +236,4 @@ const EscortList: React.FC<Props> = ({className}) => {
   )
 }
 
-export default EscortList
+export default VerifiedIDList

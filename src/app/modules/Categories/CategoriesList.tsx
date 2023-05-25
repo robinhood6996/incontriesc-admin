@@ -108,7 +108,7 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                     <table className='table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3'>
                       <thead>
                         <tr className='fw-bold text-muted'>
-                          <th className='w-25px'>
+                          {/* <th className='w-25px'>
                             <div className='form-check form-check-sm form-check-custom form-check-solid'>
                               <input
                                 className='form-check-input'
@@ -118,9 +118,9 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                                 data-kt-check-target='.widget-13-check'
                               />
                             </div>
-                          </th>
-                          <th className='min-w-150px'>Serial</th>
-                          <th className='min-w-140px'>Name</th>
+                          </th> */}
+                          <th className='min-w-120px'>Serial</th>
+                          <th className='min-w-150px'>Name</th>
                           <th className='min-w-120px'>Status</th>
                           <th className='min-w-100px text-end'>Actions</th>
                         </tr>
@@ -129,7 +129,7 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                         {data?.map((category: {_id: string; name: string}, index: string) => {
                           return (
                             <tr key={index}>
-                              <td>
+                              {/* <td>
                                 <div className='form-check form-check-sm form-check-custom form-check-solid'>
                                   <input
                                     className='form-check-input widget-13-check'
@@ -137,7 +137,7 @@ const CategoriesList: React.FC<Props> = ({className}) => {
                                     value='1'
                                   />
                                 </div>
-                              </td>
+                              </td> */}
                               <td>
                                 <a href='/' className='text-dark fw-bold text-hover-primary fs-6'>
                                   {parseInt(index) + 1}
