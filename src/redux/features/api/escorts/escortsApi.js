@@ -98,6 +98,14 @@ export const escortsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['getEscortProfile'],
     }),
+    updateEscortStatusData: builder.mutation({
+      query: (status) => ({
+        url: `/escort/update-status`,
+        method: 'PUT',
+        body: status,
+      }),
+      invalidatesTags: ['getEscortProfile', 'getAllEscorts'],
+    }),
     deleteEscortImage: builder.mutation({
       query: (fileName) => ({
         url: `/escort/upload?filename=${fileName}`,
@@ -130,4 +138,5 @@ export const {
   useDeleteEscortImageMutation,
   useDeleteEscortVideoMutation,
   useDeleteSingleEscortMutation,
+  useUpdateEscortStatusDataMutation,
 } = escortsApi
