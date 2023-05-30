@@ -39,12 +39,21 @@ const SidebarMenuMain = () => {
         hasBullet={false}
         icon='/media/icons/duotune/communication/com006.svg'
       />
-      <SidebarMenuItem
+      <SidebarMenuItemWithSub
+        to='/active-escorts'
+        title='Escorts'
+        hasBullet={false}
+        icon='/media/icons/duotune/general/gen022.svg'
+      >
+        <SidebarMenuItem to='/active-escorts' title='Active Escorts' hasBullet={true} />
+        <SidebarMenuItem to='/inactive-escorts' title='Inactive Escorts' hasBullet={true} />
+      </SidebarMenuItemWithSub>
+      {/* <SidebarMenuItem
         to='/escorts'
         title='Escorts'
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
-      />
+      /> */}
       <SidebarMenuItem
         to='/ads'
         title='Classified Ads'

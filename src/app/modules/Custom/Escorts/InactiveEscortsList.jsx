@@ -8,16 +8,17 @@ import {ToastContainer, toast} from 'react-toastify'
 import {
   useDeleteSingleEscortMutation,
   useGetAllEscortsQuery,
+  useGetInactiveEscortsQuery,
   useUpdateEscortStatusDataMutation,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 
-const EscortList = ({className}) => {
+const InactiveEscortsList = ({className}) => {
   const [deleteEscortUserName, setDeleteEscortUserName] = useState('')
   const [deleteModal, setDeleteModal] = useState(false)
 
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetAllEscortsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetInactiveEscortsQuery()
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
@@ -62,7 +63,7 @@ const EscortList = ({className}) => {
         toast.dismiss('escortStatusError')
       }, 2000)
     }
-  }, [])
+  }, [isErrorStatus, isLoadingStatus, isSuccessStatus])
 
   //toast
   useEffect(() => {
@@ -84,7 +85,7 @@ const EscortList = ({className}) => {
         toast.dismiss('escortDeleteError')
       }, 2000)
     }
-  }, [])
+  }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
 
   return (
     <>
@@ -98,10 +99,12 @@ const EscortList = ({className}) => {
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Escorts</span>
-                    <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Escorts</span>
+                    <span className='card-label fw-bold fs-3 mb-1'>Inactive Escorts</span>
+                    <span className='text-muted mt-1 fw-semibold fs-7'>
+                      {data?.data?.length} Total Escorts
+                    </span>
                   </h3>
-                  <div
+                  {/* <div
                     className='card-toolbar'
                     data-bs-toggle='tooltip'
                     data-bs-placement='top'
@@ -117,7 +120,7 @@ const EscortList = ({className}) => {
                       <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
                       New Member
                     </a>
-                  </div>
+                  </div> */}
                 </div>
                 {/* end::Header */}
                 {/* begin::Body */}
@@ -271,4 +274,4 @@ const EscortList = ({className}) => {
   )
 }
 
-export default EscortList
+export default InactiveEscortsList

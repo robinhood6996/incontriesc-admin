@@ -12,6 +12,13 @@ export const escortsApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getAllEscorts'],
     }),
+    getInactiveEscorts: builder.query({
+      query: (searchQuery) => ({
+        url: `/escort/get-inactive`,
+        method: 'GET',
+      }),
+      providesTags: ['getInactiveEscorts'],
+    }),
 
     getEscortsByCategory: builder.query({
       query: (searchQuery) => ({
@@ -139,4 +146,5 @@ export const {
   useDeleteEscortVideoMutation,
   useDeleteSingleEscortMutation,
   useUpdateEscortStatusDataMutation,
+  useGetInactiveEscortsQuery,
 } = escortsApi
