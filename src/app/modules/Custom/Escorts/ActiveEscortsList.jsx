@@ -219,7 +219,7 @@ const ActiveEscortsList = ({className}) => {
                                 </td>
                                 <td>
                                   <div className='d-flex justify-content-end flex-shrink-0'>
-                                    <button
+                                    {/* <button
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                                       // onClick={handleEdit}
                                     >
@@ -227,7 +227,7 @@ const ActiveEscortsList = ({className}) => {
                                         path='/media/icons/duotune/art/art005.svg'
                                         className='svg-icon-3'
                                       />
-                                    </button>
+                                    </button> */}
                                     <button
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                       onClick={() => {
