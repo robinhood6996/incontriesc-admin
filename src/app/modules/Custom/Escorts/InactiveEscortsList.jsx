@@ -269,7 +269,6 @@ const InactiveEscortsList = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <ToastContainer />
     </>
   )
 }

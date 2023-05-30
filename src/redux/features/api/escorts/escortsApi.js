@@ -111,7 +111,7 @@ export const escortsApi = apiSlice.injectEndpoints({
         method: 'PUT',
         body: status,
       }),
-      invalidatesTags: ['getEscortProfile', 'getAllEscorts'],
+      invalidatesTags: ['getEscortProfile', 'getAllEscorts', 'getInactiveEscorts'],
     }),
     deleteEscortImage: builder.mutation({
       query: (fileName) => ({
