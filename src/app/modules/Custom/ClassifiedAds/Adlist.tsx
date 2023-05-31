@@ -1,18 +1,63 @@
-import React, {Key} from 'react'
+import React, {Key, useEffect, useState} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
-import {useGetAllFreeAdsQuery} from '../../../../redux/features/api/freeAds/freeAdsApi'
+import {
+  useDeleteSingleFreeAdsMutation,
+  useGetAllFreeAdsQuery,
+} from '../../../../redux/features/api/freeAds/freeAdsApi'
 import Loader from '../../../Components/Custom Components/common/Loader'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import moment from 'moment'
+import DeleteModal from '../Common/DeleteModal'
+import {toast} from 'react-toastify'
 
 type Props = {
   className: string
 }
 
 const AdList: React.FC<Props> = ({className}) => {
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteAdId, setDeleteAdId] = useState<string>('')
   //api call
   const {data, isFetching, isError, isSuccess} = useGetAllFreeAdsQuery(null)
+
+  const [
+    deleteAd,
+    {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
+  ] = useDeleteSingleFreeAdsMutation()
+
+  const handleDeleteModal = () => {
+    setDeleteModal(!deleteModal)
+  }
+
+  const handleDelete = () => {
+    if (deleteAdId !== '') {
+      deleteAd(deleteAdId)
+    }
+    setDeleteModal(false)
+  }
+
+  //toast
+  useEffect(() => {
+    if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
+      toast.success('Successfully deleted ad', {
+        hideProgressBar: true,
+        toastId: 'adDeleteSuccess',
+      })
+    }
+    if (!isLoadingDelete && isErrorDelete && !isSuccessDelete) {
+      toast.error('Failed to delete ad', {
+        hideProgressBar: true,
+        toastId: 'adDeleteError',
+      })
+    }
+    return () => {
+      setTimeout(() => {
+        toast.dismiss('adDeleteSuccess')
+        toast.dismiss('adDeleteError')
+      }, 2000)
+    }
+  }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
 
   return (
     <>
@@ -75,7 +120,10 @@ const AdList: React.FC<Props> = ({className}) => {
                         {/* begin::Table body */}
                         <tbody>
                           {data?.data?.map(
-                            (ad: {title: string; createdAt: string; email: string}, index: Key) => {
+                            (
+                              ad: {title: string; createdAt: string; email: string; _id: string},
+                              index: Key
+                            ) => {
                               return (
                                 <>
                                   <tr key={index}>
@@ -138,24 +186,24 @@ const AdList: React.FC<Props> = ({className}) => {
                                     </td>
                                     <td>
                                       <div className='d-flex justify-content-end flex-shrink-0'>
-                                        <a
-                                          href='/'
-                                          className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                                        >
+                                        <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
                                           <KTSVG
                                             path='/media/icons/duotune/art/art005.svg'
                                             className='svg-icon-3'
                                           />
-                                        </a>
-                                        <a
-                                          href='/'
+                                        </button>
+                                        <button
                                           className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                                          onClick={() => {
+                                            setDeleteAdId(ad?._id)
+                                            handleDeleteModal()
+                                          }}
                                         >
                                           <KTSVG
                                             path='/media/icons/duotune/general/gen027.svg'
                                             className='svg-icon-3'
                                           />
-                                        </a>
+                                        </button>
                                       </div>
                                     </td>
                                   </tr>
@@ -181,6 +229,7 @@ const AdList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
+      <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
     </>
   )
 }
