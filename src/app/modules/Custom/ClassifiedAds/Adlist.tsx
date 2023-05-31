@@ -29,10 +29,10 @@ const AdList: React.FC<Props> = ({className}) => {
                     <h3 className='card-title align-items-start flex-column'>
                       <span className='card-label fw-bold fs-3 mb-1'>Classified Ads</span>
                       <span className='text-muted mt-1 fw-semibold fs-7'>
-                        Total Ads: {data?.length}
+                        Total Ads: {data?.data?.length}
                       </span>
                     </h3>
-                    <div
+                    {/* <div
                       className='card-toolbar'
                       data-bs-toggle='tooltip'
                       data-bs-placement='top'
@@ -51,7 +51,7 @@ const AdList: React.FC<Props> = ({className}) => {
                         />
                         New Member
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                   {/* end::Header */}
                   {/* begin::Body */}
@@ -67,7 +67,7 @@ const AdList: React.FC<Props> = ({className}) => {
                             <th className='min-w-150px'>Author</th>
                             <th className='min-w-140px'>Create Date</th>
                             <th className='min-w-120px'>Expires</th>
-                            <th className='min-w-120px'>Views</th>
+                            <th className='min-w-120px'>Status</th>
                             <th className='min-w-100px text-end'>Actions</th>
                           </tr>
                         </thead>

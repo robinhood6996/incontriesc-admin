@@ -5,6 +5,7 @@ import ErrorComponent from '../../../Components/Custom Components/common/ErrorCo
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import moment from 'moment'
 import {useGetAllCityToursQuery} from '../../../../redux/features/api/cityTourApi/cityTourApi'
+import {useGetSingleEscortDetailsQuery} from '../../../../redux/features/api/escorts/escortsApi'
 
 type Props = {
   className: string
@@ -29,10 +30,10 @@ const TourList: React.FC<Props> = ({className}) => {
                     <h3 className='card-title align-items-start flex-column'>
                       <span className='card-label fw-bold fs-3 mb-1'>Ads</span>
                       <span className='text-muted mt-1 fw-semibold fs-7'>
-                        Total Ads: {data?.length}
+                        Total Ads: {data?.cityTours?.length}
                       </span>
                     </h3>
-                    <div
+                    {/* <div
                       className='card-toolbar'
                       data-bs-toggle='tooltip'
                       data-bs-placement='top'
@@ -51,7 +52,7 @@ const TourList: React.FC<Props> = ({className}) => {
                         />
                         New Member
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                   {/* end::Header */}
                   {/* begin::Body */}
@@ -75,7 +76,18 @@ const TourList: React.FC<Props> = ({className}) => {
                         {/* begin::Table body */}
                         <tbody>
                           {data?.cityTours?.map(
-                            (ad: {title: string; createdAt: string; email: string}, index: Key) => {
+                            (
+                              ad: {
+                                name: string
+                                createdAt: string
+                                email: string
+                                profileImage: string
+                                username: string
+                                dateTo: string
+                                dateFrom: string
+                              },
+                              index: Key
+                            ) => {
                               return (
                                 <>
                                   <tr key={index}>
@@ -83,7 +95,7 @@ const TourList: React.FC<Props> = ({className}) => {
                                       <div className='d-flex align-items-center'>
                                         <div className='d-flex justify-content-start flex-column'>
                                           <span className='text-dark fw-bold  fs-7'>
-                                            {ad?.title}
+                                            {ad?.name}
                                           </span>
                                         </div>
                                       </div>
@@ -92,7 +104,7 @@ const TourList: React.FC<Props> = ({className}) => {
                                       <div className='d-flex align-items-center'>
                                         <div className='symbol symbol-45px me-5'>
                                           <img
-                                            src={toAbsoluteUrl('/media/avatars/300-14.jpg')}
+                                            src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${ad?.profileImage}`}
                                             alt=''
                                           />
                                         </div>
@@ -101,7 +113,7 @@ const TourList: React.FC<Props> = ({className}) => {
                                             href='/'
                                             className='text-dark fw-bold text-hover-primary fs-6'
                                           >
-                                            Ana Simmons
+                                            {ad?.username}
                                           </a>
                                           <span className='text-muted fw-semibold text-muted d-block fs-7'>
                                             {ad?.email}
@@ -113,7 +125,7 @@ const TourList: React.FC<Props> = ({className}) => {
                                       <div className='d-flex flex-column w-100 me-2'>
                                         <div className='d-flex flex-stack mb-2'>
                                           <span className='text-muted me-2 fs-7 fw-semibold'>
-                                            {moment(ad?.createdAt).format('MMM Do YYYY, h:mm a')}
+                                            {moment(ad?.dateFrom).format('MMM Do YYYY, h:mm a')}
                                           </span>
                                         </div>
                                       </div>
@@ -122,7 +134,7 @@ const TourList: React.FC<Props> = ({className}) => {
                                       <div className='d-flex flex-column w-100 me-2'>
                                         <div className='d-flex flex-stack mb-2'>
                                           <span className='text-muted me-2 fs-7 fw-semibold'>
-                                            {moment(ad?.createdAt).format('MMM Do YYYY, h:mm a')}
+                                            {moment(ad?.dateTo).format('MMM Do YYYY, h:mm a')}
                                           </span>
                                         </div>
                                       </div>
