@@ -79,7 +79,9 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
                     <span className='card-label fw-bold fs-3 mb-1'>Reviews</span>
-                    <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Reviews</span>
+                    <span className='text-muted mt-1 fw-semibold fs-7'>
+                      {data?.data?.length ?? 0} Total Reviews
+                    </span>
                   </h3>
                   {/* <div
                     className='card-toolbar'
@@ -176,7 +178,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                       </div>
                                     </div>
                                   </td>
-                                  <td className='text-start'>8/10</td>
+                                  <td className='text-start'>{review?.serviceRate}/10</td>
                                   {/* <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='form-check form-switch form-check-custom form-check-solid'>
@@ -196,10 +198,10 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                       </button>
                                       <button
                                         className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
-                                        // onClick={() => {
-                                        //   setDeleteAdId(ad?._id)
-                                        //   handleDeleteModal()
-                                        // }}
+                                        onClick={() => {
+                                          // setDeleteAdId(ad?._id)
+                                          handleDeleteModal()
+                                        }}
                                       >
                                         <KTSVG
                                           path='/media/icons/duotune/general/gen027.svg'
