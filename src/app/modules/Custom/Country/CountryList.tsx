@@ -23,6 +23,7 @@ const CountryList: React.FC<Props> = ({className}) => {
   const [isEditModal, setIsEditModal] = useState(false)
   const [type, setType] = useState('')
   const [selectedForDelete, setSelectedForDelete] = useState<string>('')
+  const [selectedForEdit, setSelectedForEdit] = useState<string[]>([])
 
   //api call
   const {data, isFetching, isSuccess} = useGetAllCountryQuery(null)
@@ -139,6 +140,7 @@ const CountryList: React.FC<Props> = ({className}) => {
                                     <button
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                                       onClick={() => {
+                                        setSelectedForEdit([country?._id, country?.name])
                                         setType('edit-country')
                                         setIsCreateModal(true)
                                       }}
@@ -188,7 +190,12 @@ const CountryList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <CreateCountry show={isCreateModal} handleClose={handleCreateCountryModal} type={type} />
+      <CreateCountry
+        show={isCreateModal}
+        handleClose={handleCreateCountryModal}
+        type={type}
+        selectedForEdit={selectedForEdit}
+      />
       <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
     </>
   )

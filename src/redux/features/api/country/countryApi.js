@@ -26,8 +26,20 @@ export const countryApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['getAllCountry'],
     }),
+    editCountry: builder.mutation({
+      query: ({id, countryName}) => ({
+        url: `/country/${id}`,
+        method: 'PUT',
+        body: {name: countryName},
+      }),
+      invalidatesTags: ['getAllCountry'],
+    }),
   }),
 })
 
-export const {useGetAllCountryQuery, useDeleteSingleCountryMutation, useCreateCountryMutation} =
-  countryApi
+export const {
+  useGetAllCountryQuery,
+  useDeleteSingleCountryMutation,
+  useCreateCountryMutation,
+  useEditCountryMutation,
+} = countryApi

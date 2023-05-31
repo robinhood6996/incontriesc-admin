@@ -1,7 +1,10 @@
 import React, {useEffect, useRef} from 'react'
 import {Button, Modal} from 'react-bootstrap'
 import {KTSVG} from '../../../../_metronic/helpers'
-import {useCreateCountryMutation} from '../../../../redux/features/api/country/countryApi'
+import {
+  useCreateCountryMutation,
+  useEditCountryMutation,
+} from '../../../../redux/features/api/country/countryApi'
 import {toast} from 'react-toastify'
 
 // type Props = {
@@ -10,12 +13,15 @@ import {toast} from 'react-toastify'
 //   type: string
 // }
 
-export default function CreateCountry({show, handleClose, type}) {
+export default function CreateCountry({show, handleClose, type, selectedForEdit}) {
   const countryNameRef = useRef()
+  //api call
   const [
     createCountry,
     {isLoading: isLoadingCreate, isError: isErrorCreate, isSuccess: isSuccessCreate},
   ] = useCreateCountryMutation()
+  const [editCountry, {isLoading: isLoadingEdit, isError: isErrorEdit, isSuccess: isSuccessEidt}] =
+    useEditCountryMutation()
 
   const handleModal = (e) => {
     e.preventDefault()
@@ -28,9 +34,11 @@ export default function CreateCountry({show, handleClose, type}) {
     }
     if (
       type === 'edit-country' &&
-      (countryName !== null || countryName !== '' || countryName !== undefined)
+      selectedForEdit?.length === 2 &&
+      (selectedForEdit[0] !== null || selectedForEdit[0] !== '' || selectedForEdit[0] !== undefined)
     ) {
-      console.log('create', countryName)
+      // console.log('create', selectedForEdit)
+      editCountry({id: selectedForEdit[0], countryName})
     }
     handleClose()
   }
@@ -56,6 +64,27 @@ export default function CreateCountry({show, handleClose, type}) {
       }, 2000)
     }
   }, [isErrorCreate, isLoadingCreate, isSuccessCreate])
+  //toast create country
+  useEffect(() => {
+    if (!isLoadingEdit && !isErrorEdit && isSuccessEidt) {
+      toast.success('Successfully edited country name', {
+        hideProgressBar: true,
+        toastId: 'countryEditSuccess',
+      })
+    }
+    if (!isLoadingCreate && isErrorCreate && !isSuccessCreate) {
+      toast.error('Failed to create country', {
+        hideProgressBar: true,
+        toastId: 'countryEditError',
+      })
+    }
+    return () => {
+      setTimeout(() => {
+        toast.dismiss('countryEditSuccess')
+        toast.dismiss('countryEditError')
+      }, 2000)
+    }
+  }, [])
 
   return (
     <div>
@@ -97,6 +126,7 @@ export default function CreateCountry({show, handleClose, type}) {
                 name='country-name'
                 placeholder='Country name'
                 ref={countryNameRef}
+                defaultValue={selectedForEdit[1]}
               />
               {
                 <div className='fv-plugins-message-container'>
