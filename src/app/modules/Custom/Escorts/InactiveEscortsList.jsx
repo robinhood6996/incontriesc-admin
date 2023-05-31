@@ -230,7 +230,7 @@ const InactiveEscortsList = ({className}) => {
                                       />
                                     </button> */}
                                     <button
-                                      className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                                      className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
                                       onClick={() => {
                                         setDeleteEscortUserName(escort?.username)
                                         handleDeleteModal()

@@ -11,6 +11,7 @@ import {
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
+import {useGetAllRatingsQuery} from '../../../../redux/features/api/rating/ratingApi'
 
 type Props = {
   className: string
@@ -26,7 +27,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetAllEscortsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetAllRatingsQuery(null)
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
@@ -119,16 +120,14 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                       {/* end::Table head */}
                       {/* begin::Table body */}
                       <tbody>
-                        {data?.data?.slice(0, 2)?.map(
+                        {data?.data?.map(
                           (
-                            escort: {
-                              name: string
-                              email: string
-                              category: string
-                              createdAt: string
-                              profileImage: string
-                              username: string
-                              baseCity: string
+                            review: {
+                              meetingCity: string
+                              serviceRate: number
+                              updatedAt: string
+                              customerDetails: any
+                              escortDetails: any
                             },
                             index: Key
                           ) => {
@@ -142,7 +141,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                           href='/'
                                           className='text-dark fw-bold text-hover-primary fs-6'
                                         >
-                                          {moment(escort?.createdAt).format('MMM Do YYYY')}
+                                          {moment(review?.updatedAt).format('MMM Do YYYY')}
                                         </a>
                                       </div>
                                     </div>
@@ -154,7 +153,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                           href='/'
                                           className='text-dark fw-bold text-hover-primary fs-6'
                                         >
-                                          {escort?.name}
+                                          {review?.customerDetails?.username}
                                         </a>
                                       </div>
                                     </div>
@@ -164,7 +163,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                       href='/'
                                       className='text-dark fw-bold text-hover-primary d-block fs-6'
                                     >
-                                      {escort?.username}
+                                      {review?.escortDetails?.username}
                                     </a>
                                     {/* <span className='text-muted fw-semibold text-muted d-block fs-7'>
                                       VIP
@@ -173,7 +172,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='d-flex flex-stack mb-2'>
-                                        {escort?.baseCity?.toUpperCase()}
+                                        {review?.meetingCity?.toUpperCase()}
                                       </div>
                                     </div>
                                   </td>
@@ -192,8 +191,20 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                   </td> */}
                                   <td>
                                     <div className='d-flex justify-content-end flex-shrink-0'>
-                                      <button className='btn btn-bg-light btn-active-color-primary btn-sm'>
+                                      <button className='btn btn-bg-light btn-active-color-primary btn-sm me-2'>
                                         Go to reviews
+                                      </button>
+                                      <button
+                                        className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
+                                        // onClick={() => {
+                                        //   setDeleteAdId(ad?._id)
+                                        //   handleDeleteModal()
+                                        // }}
+                                      >
+                                        <KTSVG
+                                          path='/media/icons/duotune/general/gen027.svg'
+                                          className='svg-icon-3'
+                                        />
                                       </button>
                                     </div>
                                   </td>

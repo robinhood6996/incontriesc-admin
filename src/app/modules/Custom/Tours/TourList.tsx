@@ -210,7 +210,7 @@ const TourList: React.FC<Props> = ({className}) => {
                                           />
                                         </a>
                                         <button
-                                          className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                                          className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
                                           onClick={() => {
                                             setDeleteTourId(ad?._id)
                                             handleDeleteModal()

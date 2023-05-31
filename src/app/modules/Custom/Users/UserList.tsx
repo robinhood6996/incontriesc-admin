@@ -195,7 +195,7 @@ const UserList: React.FC<Props> = ({className}) => {
                                 </td>
                                 <td className='text-end'>
                                   <button
-                                    className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                                    className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
                                     onClick={() => {
                                       setDeleteUserName('')
                                       handleDeleteModal()
