@@ -1,20 +1,69 @@
-import React, {Key} from 'react'
+import React, {Key, useEffect, useState} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
 import Loader from '../../../Components/Custom Components/common/Loader'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import moment from 'moment'
-import {useGetAllCityToursQuery} from '../../../../redux/features/api/cityTourApi/cityTourApi'
+import {
+  useDeleteSingleCityTourMutation,
+  useGetAllCityToursQuery,
+} from '../../../../redux/features/api/cityTourApi/cityTourApi'
 import {useGetSingleEscortDetailsQuery} from '../../../../redux/features/api/escorts/escortsApi'
+import DeleteModal from '../Common/DeleteModal'
+import {toast} from 'react-toastify'
 
 type Props = {
   className: string
 }
 
 const TourList: React.FC<Props> = ({className}) => {
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteTourId, setDeleteTourId] = useState<string>('')
+
   //api call
   const {data, isFetching, isError, isSuccess} = useGetAllCityToursQuery(null)
+  const [
+    deleteSelectedTour,
+    {isLoading: isLoadingDelete, isSuccess: isSuccessDelete, isError: isErrorDelete},
+  ] = useDeleteSingleCityTourMutation()
 
+  const handleDeleteModal = () => {
+    setDeleteModal(!deleteModal)
+  }
+
+  const handleDeleteTour = () => {
+    if (
+      deleteTourId !== null &&
+      deleteTourId !== undefined &&
+      deleteTourId !== '' &&
+      deleteTourId?.length > 0
+    ) {
+      deleteSelectedTour(deleteTourId)
+    }
+    setDeleteModal(false)
+  }
+
+  //toast
+  useEffect(() => {
+    if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
+      toast.success('Successfully deleted tour', {
+        hideProgressBar: true,
+        toastId: 'tourDeleteSuccess',
+      })
+    }
+    if (!isLoadingDelete && isErrorDelete && !isSuccessDelete) {
+      toast.error('Failed to delete tour', {
+        hideProgressBar: true,
+        toastId: 'tourDeleteError',
+      })
+    }
+    return () => {
+      setTimeout(() => {
+        toast.dismiss('tourDeleteSuccess')
+        toast.dismiss('tourDeleteError')
+      }, 2000)
+    }
+  }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
   return (
     <>
       {isFetching ? (
@@ -85,6 +134,7 @@ const TourList: React.FC<Props> = ({className}) => {
                                 username: string
                                 dateTo: string
                                 dateFrom: string
+                                _id: string
                               },
                               index: Key
                             ) => {
@@ -159,15 +209,18 @@ const TourList: React.FC<Props> = ({className}) => {
                                             className='svg-icon-3'
                                           />
                                         </a>
-                                        <a
-                                          href='/'
+                                        <button
                                           className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                                          onClick={() => {
+                                            setDeleteTourId(ad?._id)
+                                            handleDeleteModal()
+                                          }}
                                         >
                                           <KTSVG
                                             path='/media/icons/duotune/general/gen027.svg'
                                             className='svg-icon-3'
                                           />
-                                        </a>
+                                        </button>
                                       </div>
                                     </td>
                                   </tr>
@@ -193,6 +246,11 @@ const TourList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
+      <DeleteModal
+        show={deleteModal}
+        handleModal={handleDeleteModal}
+        handleDelete={handleDeleteTour}
+      />
     </>
   )
 }
