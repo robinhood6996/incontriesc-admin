@@ -3,6 +3,7 @@ import {Button, Modal} from 'react-bootstrap'
 import {KTSVG} from '../../../../_metronic/helpers'
 import {useCreateCountryMutation} from '../../../../redux/features/api/country/countryApi'
 import {toast} from 'react-toastify'
+import {useCreateCityMutation} from '../../../../redux/features/api/citiesApi/citiesApi'
 
 // type Props = {
 //   show: boolean
@@ -10,25 +11,37 @@ import {toast} from 'react-toastify'
 //   type: string
 // }
 
-export default function CreateCountry({show, handleClose, type, countryId}) {
+export default function CreateCity({show, handleClose, type}) {
   const countryNameRef = useRef()
+  const cityNameRef = useRef()
   const [
-    createCountry,
+    createCity,
     {isLoading: isLoadingCreate, isError: isErrorCreate, isSuccess: isSuccessCreate},
-  ] = useCreateCountryMutation()
+  ] = useCreateCityMutation()
 
   const handleModal = (e) => {
     e.preventDefault()
     const countryName = countryNameRef.current.value
+    const cityName = cityNameRef.current.value
     if (
-      type === 'add-country' &&
-      (countryName !== null || countryName !== '' || countryName !== undefined)
+      type === 'add-city' &&
+      (countryName !== null ||
+        countryName !== '' ||
+        countryName !== undefined ||
+        cityName !== null ||
+        cityName !== '' ||
+        cityName !== undefined)
     ) {
-      createCountry(countryName)
+      createCity({name: cityName, country: countryName})
     }
     if (
-      type === 'edit-country' &&
-      (countryName !== null || countryName !== '' || countryName !== undefined)
+      type === 'edit-city' &&
+      (countryName !== null ||
+        countryName !== '' ||
+        countryName !== undefined ||
+        cityName !== null ||
+        cityName !== '' ||
+        cityName !== undefined)
     ) {
       console.log('create', countryName)
     }
@@ -38,21 +51,21 @@ export default function CreateCountry({show, handleClose, type, countryId}) {
   //toast create country
   useEffect(() => {
     if (!isLoadingCreate && !isErrorCreate && isSuccessCreate) {
-      toast.success('Successfully created country', {
+      toast.success('Successfully created city', {
         hideProgressBar: true,
-        toastId: 'countryCreateSuccess',
+        toastId: 'cityCreateSuccess',
       })
     }
     if (!isLoadingCreate && isErrorCreate && !isSuccessCreate) {
-      toast.error('Failed to create country', {
+      toast.error('Failed to create city', {
         hideProgressBar: true,
-        toastId: 'countryCreateError',
+        toastId: 'cityCreateError',
       })
     }
     return () => {
       setTimeout(() => {
-        toast.dismiss('countryCreateSuccess')
-        toast.dismiss('countryCreateError')
+        toast.dismiss('cityCreateSuccess')
+        toast.dismiss('cityCreateError')
       }, 2000)
     }
   }, [isErrorCreate, isLoadingCreate, isSuccessCreate])
@@ -85,11 +98,11 @@ export default function CreateCountry({show, handleClose, type, countryId}) {
             <div className='fv-row mb-10'>
               <label className='d-flex align-items-center fs-5 fw-semibold mb-2'>
                 <span className='required'>Country Name</span>
-                <i
+                {/* <i
                   className='fas fa-exclamation-circle ms-2 fs-7'
                   data-bs-toggle='tooltip'
                   title='Specify your desire country name'
-                ></i>
+                ></i> */}
               </label>
               <input
                 type='text'
@@ -102,6 +115,28 @@ export default function CreateCountry({show, handleClose, type, countryId}) {
                 <div className='fv-plugins-message-container'>
                   <div data-field='appname' data-validator='notEmpty' className='fv-help-block'>
                     Country name is required
+                  </div>
+                </div>
+              }
+              <label className='d-flex align-items-center fs-5 fw-semibold mb-2 mt-4'>
+                <span className='required'>City Name</span>
+                {/* <i
+                  className='fas fa-exclamation-circle ms-2 fs-7'
+                  data-bs-toggle='tooltip'
+                  title='Specify your desire country name'
+                ></i> */}
+              </label>
+              <input
+                type='text'
+                className='form-control form-control-lg form-control-solid'
+                name='city-name'
+                placeholder='City name'
+                ref={cityNameRef}
+              />
+              {
+                <div className='fv-plugins-message-container'>
+                  <div data-field='appname' data-validator='notEmpty' className='fv-help-block'>
+                    City name is required
                   </div>
                 </div>
               }

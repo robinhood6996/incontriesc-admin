@@ -11,6 +11,13 @@ export const countryApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getAllCountry'],
     }),
+    // getSingleCountry: builder.query({
+    //   query: () => ({
+    //     url: '/country',
+    //     method: 'GET',
+    //   }),
+    //   providesTags: ['getAllCountry'],
+    // }),
     deleteSingleCountry: builder.mutation({
       query: (id) => ({
         url: `/country/${id}`,
@@ -21,6 +28,14 @@ export const countryApi = apiSlice.injectEndpoints({
     createCountry: builder.mutation({
       query: (countryName) => ({
         url: `/country`,
+        method: 'POST',
+        body: {name: countryName},
+      }),
+      invalidatesTags: ['getAllCountry'],
+    }),
+    editCountry: builder.mutation({
+      query: ({id, countryName}) => ({
+        url: `/country/${id}`,
         method: 'POST',
         body: {name: countryName},
       }),
