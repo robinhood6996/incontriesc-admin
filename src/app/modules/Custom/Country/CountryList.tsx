@@ -24,6 +24,7 @@ const CountryList: React.FC<Props> = ({className}) => {
   const [type, setType] = useState('')
   const [selectedForDelete, setSelectedForDelete] = useState<string>('')
   const [countryId, setCountryId] = useState<string>('')
+  const [defaultName, setDefaultName] = useState<string>('')
 
   //api call
   const {data, isFetching, isSuccess} = useGetAllCountryQuery(null)
@@ -140,6 +141,7 @@ const CountryList: React.FC<Props> = ({className}) => {
                                     <button
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                                       onClick={() => {
+                                        setDefaultName(country?.name)
                                         setType('edit-country')
                                         setCountryId(country?._id)
                                         setIsCreateModal(true)
@@ -195,6 +197,7 @@ const CountryList: React.FC<Props> = ({className}) => {
         handleClose={handleCreateCountryModal}
         type={type}
         countryId={countryId}
+        defaultName={defaultName}
       />
       <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
     </>
