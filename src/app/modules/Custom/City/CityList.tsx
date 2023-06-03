@@ -22,12 +22,15 @@ const CityList: React.FC<Props> = ({className}) => {
   const [isEditModal, setIsEditModal] = useState(false)
   const [type, setType] = useState('')
   const [selectedForDelete, setSelectedForDelete] = useState<string>('')
+  const [defaultCountryName, setDefaultCountryName] = useState<string>('')
+  const [defaultCityName, setDefaultCityName] = useState<string>('')
+  const [cityId, setCityId] = useState<string>('')
 
   //api call
   const {data, isFetching, isSuccess} = useGetAllCitiesQuery(null)
 
   const [
-    deleteCountry,
+    deleteCity,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
   ] = useDeleteSingleCityMutation()
 
@@ -43,28 +46,28 @@ const CityList: React.FC<Props> = ({className}) => {
   }
 
   const handleDelete = () => {
-    deleteCountry(selectedForDelete)
+    deleteCity(selectedForDelete)
     setDeleteModal(!deleteModal)
   }
 
   //toast delete country
   useEffect(() => {
     if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
-      toast.success('Successfully deleted country', {
+      toast.success('Successfully deleted city', {
         hideProgressBar: true,
-        toastId: 'countryDeleteSuccess',
+        toastId: 'cityDeleteSuccess',
       })
     }
     if (!isLoadingDelete && isErrorDelete && !isSuccessDelete) {
-      toast.error('Failed to delete country', {
+      toast.error('Failed to delete city', {
         hideProgressBar: true,
-        toastId: 'countryDeleteError',
+        toastId: 'cityDeleteError',
       })
     }
     return () => {
       setTimeout(() => {
-        toast.dismiss('countryDeleteSuccess')
-        toast.dismiss('countryDeleteError')
+        toast.dismiss('cityDeleteSuccess')
+        toast.dismiss('cityDeleteError')
       }, 2000)
     }
   }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
@@ -141,6 +144,9 @@ const CityList: React.FC<Props> = ({className}) => {
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                                       onClick={() => {
                                         setType('edit-city')
+                                        setCityId(city?._id)
+                                        setDefaultCityName(city?.name)
+                                        setDefaultCountryName(city?.country)
                                         setIsCreateModal(true)
                                       }}
                                     >
@@ -189,7 +195,14 @@ const CityList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <CreateCity show={isCreateModal} handleClose={handleCreateCountryModal} type={type} />
+      <CreateCity
+        show={isCreateModal}
+        handleClose={handleCreateCountryModal}
+        type={type}
+        cityId={cityId}
+        defaultCountryName={defaultCountryName}
+        defaultCityName={defaultCityName}
+      />
       <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
     </>
   )

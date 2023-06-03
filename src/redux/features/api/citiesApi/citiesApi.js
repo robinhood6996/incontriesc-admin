@@ -33,6 +33,14 @@ export const citiesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['getAllCities'],
     }),
+    editCity: builder.mutation({
+      query: ({id, cityName}) => ({
+        url: `/city/${id}`,
+        method: 'PUT',
+        body: {name: cityName},
+      }),
+      invalidatesTags: ['getAllCities'],
+    }),
   }),
 })
 
@@ -41,4 +49,5 @@ export const {
   useGetCitiesByCountryQuery,
   useDeleteSingleCityMutation,
   useCreateCityMutation,
+  useEditCityMutation,
 } = citiesApi

@@ -73,7 +73,7 @@ export default function CreateCountry({show, handleClose, type, countryId, defau
       })
     }
     if (!isLoadingEdit && isErrorEdit && !isSuccessEdit) {
-      toast.error('Failed to create country', {
+      toast.error('Failed to edit country', {
         hideProgressBar: true,
         toastId: 'countryEditError',
       })
@@ -126,7 +126,7 @@ export default function CreateCountry({show, handleClose, type, countryId, defau
                 name='country-name'
                 placeholder='Country name'
                 ref={countryNameRef}
-                defaultValue={defaultName ?? ''}
+                defaultValue={type === 'edit-country' ? defaultName : ''}
               />
               {
                 <div className='fv-plugins-message-container'>

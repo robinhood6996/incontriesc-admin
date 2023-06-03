@@ -1,9 +1,15 @@
 import React, {useEffect, useRef} from 'react'
 import {Button, Modal} from 'react-bootstrap'
 import {KTSVG} from '../../../../_metronic/helpers'
-import {useCreateCountryMutation} from '../../../../redux/features/api/country/countryApi'
+import {
+  useCreateCountryMutation,
+  useGetAllCountryQuery,
+} from '../../../../redux/features/api/country/countryApi'
 import {toast} from 'react-toastify'
-import {useCreateCityMutation} from '../../../../redux/features/api/citiesApi/citiesApi'
+import {
+  useCreateCityMutation,
+  useEditCityMutation,
+} from '../../../../redux/features/api/citiesApi/citiesApi'
 
 // type Props = {
 //   show: boolean
@@ -11,13 +17,25 @@ import {useCreateCityMutation} from '../../../../redux/features/api/citiesApi/ci
 //   type: string
 // }
 
-export default function CreateCity({show, handleClose, type}) {
+export default function CreateCity({
+  show,
+  handleClose,
+  type,
+  cityId,
+  defaultCountryName,
+  defaultCityName,
+}) {
   const countryNameRef = useRef()
   const cityNameRef = useRef()
+
+  //api call
+  const {data, isFetching, isSuccess} = useGetAllCountryQuery(null)
   const [
     createCity,
     {isLoading: isLoadingCreate, isError: isErrorCreate, isSuccess: isSuccessCreate},
   ] = useCreateCityMutation()
+  const [editCity, {isLoading: isLoadingEdit, isError: isErrorEdit, isSuccess: isSuccessEdit}] =
+    useEditCityMutation()
 
   const handleModal = (e) => {
     e.preventDefault()
@@ -41,14 +59,16 @@ export default function CreateCity({show, handleClose, type}) {
         countryName !== undefined ||
         cityName !== null ||
         cityName !== '' ||
-        cityName !== undefined)
+        cityName !== undefined) &&
+      cityId
     ) {
-      console.log('create', countryName)
+      editCity({id: cityId, cityName: cityName})
+      // console.log('edit', cityId, countryName, cityName)
     }
     handleClose()
   }
 
-  //toast create country
+  //toast create city
   useEffect(() => {
     if (!isLoadingCreate && !isErrorCreate && isSuccessCreate) {
       toast.success('Successfully created city', {
@@ -69,6 +89,27 @@ export default function CreateCity({show, handleClose, type}) {
       }, 2000)
     }
   }, [isErrorCreate, isLoadingCreate, isSuccessCreate])
+  //toast Edit city
+  useEffect(() => {
+    if (!isLoadingEdit && !isErrorEdit && isSuccessEdit) {
+      toast.success('Successfully edited city', {
+        hideProgressBar: true,
+        toastId: 'cityEditSuccess',
+      })
+    }
+    if (!isLoadingEdit && isErrorEdit && !isSuccessEdit) {
+      toast.error('Failed to edit city', {
+        hideProgressBar: true,
+        toastId: 'cityEditError',
+      })
+    }
+    return () => {
+      setTimeout(() => {
+        toast.dismiss('cityEditSuccess')
+        toast.dismiss('cityEditError')
+      }, 2000)
+    }
+  }, [isErrorEdit, isLoadingEdit, isSuccessEdit])
 
   return (
     <div>
@@ -81,7 +122,7 @@ export default function CreateCity({show, handleClose, type}) {
         onHide={handleClose}
       >
         <div className='modal-header'>
-          <h2>{type === 'add-country' ? 'Add Country' : 'Edit Country'}</h2>
+          <h2>{type === 'add-city' ? 'Add City' : 'Edit City'}</h2>
           {/* begin::Close */}
           <div className='btn btn-sm btn-icon btn-active-color-primary' onClick={handleClose}>
             <KTSVG className='svg-icon-1' path='/media/icons/duotune/arrows/arr061.svg' />
@@ -104,13 +145,23 @@ export default function CreateCity({show, handleClose, type}) {
                   title='Specify your desire country name'
                 ></i> */}
               </label>
-              <input
-                type='text'
-                className='form-control form-control-lg form-control-solid'
-                name='country-name'
-                placeholder='Country name'
-                ref={countryNameRef}
-              />
+              <select className='form-select' aria-label='Select example' ref={countryNameRef}>
+                <option value={'default'}>Select age</option>
+                {data?.countries?.map((country, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={country?.name?.toLowerCase()}
+                      selected={
+                        type === 'edit-city' &&
+                        country?.name?.toLowerCase() === defaultCountryName?.toLowerCase()
+                      }
+                    >
+                      {country?.name?.toUpperCase()}
+                    </option>
+                  )
+                })}
+              </select>
               {
                 <div className='fv-plugins-message-container'>
                   <div data-field='appname' data-validator='notEmpty' className='fv-help-block'>
@@ -132,6 +183,7 @@ export default function CreateCity({show, handleClose, type}) {
                 name='city-name'
                 placeholder='City name'
                 ref={cityNameRef}
+                defaultValue={type === 'edit-city' ? defaultCityName : ''}
               />
               {
                 <div className='fv-plugins-message-container'>
