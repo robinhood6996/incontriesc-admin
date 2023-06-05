@@ -7,7 +7,7 @@ import Loader from '../../../Components/Custom Components/common/Loader'
 import {ToastContainer, toast} from 'react-toastify'
 import {
   useDeleteSingleEscortMutation,
-  useGetAllEscortsQuery,
+  useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
@@ -27,7 +27,7 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetAllVerificationQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},

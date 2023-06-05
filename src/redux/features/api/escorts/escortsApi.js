@@ -134,6 +134,13 @@ export const escortsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['getEscortProfile'],
     }),
+    getFeaturedEscorts: builder.query({
+      query: () => ({
+        url: '/escort-ad/featured',
+        method: 'GET',
+      }),
+      providesTags: ['getFeaturedEscorts'],
+    }),
   }),
 })
 
@@ -155,4 +162,5 @@ export const {
   useUpdateEscortStatusDataMutation,
   useGetInactiveEscortsQuery,
   useGetSingleEscortDetailsByEmailQuery,
+  useGetFeaturedEscortsQuery,
 } = escortsApi
