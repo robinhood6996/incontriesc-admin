@@ -11,6 +11,13 @@ export const countryApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getAllCountry'],
     }),
+    // getSingleCountry: builder.query({
+    //   query: () => ({
+    //     url: '/country',
+    //     method: 'GET',
+    //   }),
+    //   providesTags: ['getAllCountry'],
+    // }),
     deleteSingleCountry: builder.mutation({
       query: (id) => ({
         url: `/country/${id}`,

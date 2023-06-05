@@ -18,7 +18,36 @@ export const citiesApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getCitiesByCountry'],
     }),
+    deleteSingleCity: builder.mutation({
+      query: (id) => ({
+        url: `/city/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getAllCities'],
+    }),
+    createCity: builder.mutation({
+      query: (cityData) => ({
+        url: `/city`,
+        method: 'POST',
+        body: {name: cityData?.name, country: cityData?.country},
+      }),
+      invalidatesTags: ['getAllCities'],
+    }),
+    editCity: builder.mutation({
+      query: ({id, cityName}) => ({
+        url: `/city/${id}`,
+        method: 'PUT',
+        body: {name: cityName},
+      }),
+      invalidatesTags: ['getAllCities'],
+    }),
   }),
 })
 
-export const {useGetAllCitiesQuery, useGetCitiesByCountryQuery} = citiesApi
+export const {
+  useGetAllCitiesQuery,
+  useGetCitiesByCountryQuery,
+  useDeleteSingleCityMutation,
+  useCreateCityMutation,
+  useEditCityMutation,
+} = citiesApi

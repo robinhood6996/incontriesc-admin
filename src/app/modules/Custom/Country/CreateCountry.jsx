@@ -13,14 +13,15 @@ import {toast} from 'react-toastify'
 //   type: string
 // }
 
-export default function CreateCountry({show, handleClose, type, selectedForEdit}) {
+export default function CreateCountry({show, handleClose, type, countryId, defaultName}) {
   const countryNameRef = useRef()
+
   //api call
   const [
     createCountry,
     {isLoading: isLoadingCreate, isError: isErrorCreate, isSuccess: isSuccessCreate},
   ] = useCreateCountryMutation()
-  const [editCountry, {isLoading: isLoadingEdit, isError: isErrorEdit, isSuccess: isSuccessEidt}] =
+  const [editCountry, {isLoading: isLoadingEdit, isError: isErrorEdit, isSuccess: isSuccessEdit}] =
     useEditCountryMutation()
 
   const handleModal = (e) => {
@@ -34,11 +35,10 @@ export default function CreateCountry({show, handleClose, type, selectedForEdit}
     }
     if (
       type === 'edit-country' &&
-      selectedForEdit?.length === 2 &&
-      (selectedForEdit[0] !== null || selectedForEdit[0] !== '' || selectedForEdit[0] !== undefined)
+      (countryName !== null || countryName !== '' || countryName !== undefined) &&
+      (countryId !== null || countryId !== '' || countryId !== undefined)
     ) {
-      // console.log('create', selectedForEdit)
-      editCountry({id: selectedForEdit[0], countryName})
+      editCountry({id: countryId, countryName: countryName})
     }
     handleClose()
   }
@@ -64,16 +64,16 @@ export default function CreateCountry({show, handleClose, type, selectedForEdit}
       }, 2000)
     }
   }, [isErrorCreate, isLoadingCreate, isSuccessCreate])
-  //toast create country
+  //toast Edit country
   useEffect(() => {
-    if (!isLoadingEdit && !isErrorEdit && isSuccessEidt) {
-      toast.success('Successfully edited country name', {
+    if (!isLoadingEdit && !isErrorEdit && isSuccessEdit) {
+      toast.success('Successfully edited country', {
         hideProgressBar: true,
         toastId: 'countryEditSuccess',
       })
     }
-    if (!isLoadingCreate && isErrorCreate && !isSuccessCreate) {
-      toast.error('Failed to create country', {
+    if (!isLoadingEdit && isErrorEdit && !isSuccessEdit) {
+      toast.error('Failed to edit country', {
         hideProgressBar: true,
         toastId: 'countryEditError',
       })
@@ -84,7 +84,7 @@ export default function CreateCountry({show, handleClose, type, selectedForEdit}
         toast.dismiss('countryEditError')
       }, 2000)
     }
-  }, [])
+  }, [isErrorEdit, isLoadingEdit, isSuccessEdit])
 
   return (
     <div>
@@ -126,7 +126,7 @@ export default function CreateCountry({show, handleClose, type, selectedForEdit}
                 name='country-name'
                 placeholder='Country name'
                 ref={countryNameRef}
-                defaultValue={selectedForEdit[1]}
+                defaultValue={type === 'edit-country' ? defaultName : ''}
               />
               {
                 <div className='fv-plugins-message-container'>

@@ -23,7 +23,8 @@ const CountryList: React.FC<Props> = ({className}) => {
   const [isEditModal, setIsEditModal] = useState(false)
   const [type, setType] = useState('')
   const [selectedForDelete, setSelectedForDelete] = useState<string>('')
-  const [selectedForEdit, setSelectedForEdit] = useState<string[]>([])
+  const [countryId, setCountryId] = useState<string>('')
+  const [defaultName, setDefaultName] = useState<string>('')
 
   //api call
   const {data, isFetching, isSuccess} = useGetAllCountryQuery(null)
@@ -131,17 +132,18 @@ const CountryList: React.FC<Props> = ({className}) => {
                                   </td>
 
                                   <td className='text-end'>
-                                    <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                                    {/* <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
                                       <KTSVG
                                         path='/media/icons/duotune/general/gen019.svg'
                                         className='svg-icon-3'
                                       />
-                                    </button>
+                                    </button> */}
                                     <button
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                                       onClick={() => {
-                                        setSelectedForEdit([country?._id, country?.name])
+                                        setDefaultName(country?.name)
                                         setType('edit-country')
+                                        setCountryId(country?._id)
                                         setIsCreateModal(true)
                                       }}
                                     >
@@ -194,7 +196,8 @@ const CountryList: React.FC<Props> = ({className}) => {
         show={isCreateModal}
         handleClose={handleCreateCountryModal}
         type={type}
-        selectedForEdit={selectedForEdit}
+        countryId={countryId}
+        defaultName={defaultName}
       />
       <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
     </>
