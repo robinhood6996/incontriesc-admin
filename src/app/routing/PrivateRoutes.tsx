@@ -162,7 +162,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='/verify-requested-ids'
+          path='/pending-verification'
           element={
             <SuspensedView>
               <VerifieyRequestList className='mb-5 mb-xl-8' />
@@ -170,7 +170,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='/verified-ids'
+          path='/active-verification'
           element={
             <SuspensedView>
               <VerifiedIDList className='mb-5 mb-xl-8' />
