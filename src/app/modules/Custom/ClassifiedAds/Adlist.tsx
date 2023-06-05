@@ -188,6 +188,12 @@ const AdList: React.FC<Props> = ({className}) => {
                                       <div className='d-flex justify-content-end flex-shrink-0'>
                                         <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
                                           <KTSVG
+                                            path='/media/icons/eye-solid.svg'
+                                            className='svg-icon-3'
+                                          />
+                                        </button>
+                                        <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                                          <KTSVG
                                             path='/media/icons/duotune/art/art005.svg'
                                             className='svg-icon-3'
                                           />
