@@ -75,19 +75,16 @@ const SidebarMenuMain = () => {
         <SidebarMenuItem to='/active-verification' title='Active' hasBullet={true} />
         <SidebarMenuItem to='/pending-verification' title='Pending' hasBullet={true} />
       </SidebarMenuItemWithSub>
+      <SidebarMenuItemWithSub
+        to='/active-escort-ads'
+        title='Escort Ads'
+        hasBullet={false}
+        icon='/media/icons/duotune/general/gen022.svg'
+      >
+        <SidebarMenuItem to='/active-escort-ads' title='Active' hasBullet={true} />
+        <SidebarMenuItem to='/pending-escort-ads' title='Pending' hasBullet={true} />
+      </SidebarMenuItemWithSub>
 
-      {/* <SidebarMenuItem
-        to='/pending-verification'
-        title='Verify Requested Ids'
-        hasBullet={false}
-        icon='/media/icons/duotune/general/gen022.svg'
-      />
-      <SidebarMenuItem
-        to='/active-verification'
-        title='Active'
-        hasBullet={false}
-        icon='/media/icons/duotune/general/gen022.svg'
-      /> */}
       <SidebarMenuItem
         to='/reviews'
         title='Reviews'

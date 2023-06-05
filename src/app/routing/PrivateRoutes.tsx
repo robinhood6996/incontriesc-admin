@@ -20,6 +20,8 @@ import VerifiedIDList from '../modules/Custom/verification/VerifiedIDList'
 import ReviewsList from '../modules/Custom/reviews/ReviewsList'
 import ActiveEscortsList from '../modules/Custom/Escorts/ActiveEscortsList'
 import InactiveEscortsList from '../modules/Custom/Escorts/InactiveEscortsList'
+import EscortVerifieyRequestList from '../modules/Custom/Escort Ads/EscortVerifieyRequestList'
+import EscortVerifiedIDList from '../modules/Custom/Escort Ads/EscortVerifiedIDList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -174,6 +176,22 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <VerifiedIDList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/active-escort-ads'
+          element={
+            <SuspensedView>
+              <EscortVerifiedIDList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/pending-escort-ads'
+          element={
+            <SuspensedView>
+              <EscortVerifieyRequestList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />

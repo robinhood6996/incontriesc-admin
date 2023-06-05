@@ -17,7 +17,7 @@ type Props = {
   className: string
 }
 
-const VerifiedIDList: React.FC<Props> = ({className}) => {
+const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
   const [showImageModal, setShowImageModal] = useState(false)
   const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
@@ -81,6 +81,23 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
                     <span className='card-label fw-bold fs-3 mb-1'>Escorts</span>
                     <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Escorts</span>
                   </h3>
+                  {/* <div
+                    className='card-toolbar'
+                    data-bs-toggle='tooltip'
+                    data-bs-placement='top'
+                    data-bs-trigger='hover'
+                    title='Click to add a user'
+                  >
+                    <a
+                      href='/'
+                      className='btn btn-sm btn-light-primary'
+                      // data-bs-toggle='modal'
+                      // data-bs-target='#kt_modal_invite_friends'
+                    >
+                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+                      New Member
+                    </a>
+                  </div> */}
                 </div>
                 {/* end::Header */}
                 {/* begin::Body */}
@@ -251,4 +268,4 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
   )
 }
 
-export default VerifiedIDList
+export default EscortVerifiedIDList
