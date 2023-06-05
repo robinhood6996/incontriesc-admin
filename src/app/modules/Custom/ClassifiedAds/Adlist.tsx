@@ -7,57 +7,16 @@ import {
 import Loader from '../../../Components/Custom Components/common/Loader'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
-import moment from 'moment'
-import DeleteModal from '../Common/DeleteModal'
-import {toast} from 'react-toastify'
+import AdTableRow from './AdTableRow'
 
 type Props = {
   className: string
 }
 
 const AdList: React.FC<Props> = ({className}) => {
-  const [deleteModal, setDeleteModal] = useState(false)
   const [deleteAdId, setDeleteAdId] = useState<string>('')
   //api call
   const {data, isFetching, isError, isSuccess} = useGetAllFreeAdsQuery(null)
-
-  const [
-    deleteAd,
-    {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
-  ] = useDeleteSingleFreeAdsMutation()
-
-  const handleDeleteModal = () => {
-    setDeleteModal(!deleteModal)
-  }
-
-  const handleDelete = () => {
-    if (deleteAdId !== '') {
-      deleteAd(deleteAdId)
-    }
-    setDeleteModal(false)
-  }
-
-  //toast
-  useEffect(() => {
-    if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
-      toast.success('Successfully deleted ad', {
-        hideProgressBar: true,
-        toastId: 'adDeleteSuccess',
-      })
-    }
-    if (!isLoadingDelete && isErrorDelete && !isSuccessDelete) {
-      toast.error('Failed to delete ad', {
-        hideProgressBar: true,
-        toastId: 'adDeleteError',
-      })
-    }
-    return () => {
-      setTimeout(() => {
-        toast.dismiss('adDeleteSuccess')
-        toast.dismiss('adDeleteError')
-      }, 2000)
-    }
-  }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
 
   return (
     <>
@@ -77,26 +36,6 @@ const AdList: React.FC<Props> = ({className}) => {
                         Total Ads: {data?.data?.length}
                       </span>
                     </h3>
-                    {/* <div
-                      className='card-toolbar'
-                      data-bs-toggle='tooltip'
-                      data-bs-placement='top'
-                      data-bs-trigger='hover'
-                      title='Click to add a user'
-                    >
-                      <a
-                        href='/'
-                        className='btn btn-sm btn-light-primary'
-                        // data-bs-toggle='modal'
-                        // data-bs-target='#kt_modal_invite_friends'
-                      >
-                        <KTSVG
-                          path='media/icons/duotune/arrows/arr075.svg'
-                          className='svg-icon-3'
-                        />
-                        New Member
-                      </a>
-                    </div> */}
                   </div>
                   {/* end::Header */}
                   {/* begin::Body */}
@@ -119,104 +58,9 @@ const AdList: React.FC<Props> = ({className}) => {
                         {/* end::Table head */}
                         {/* begin::Table body */}
                         <tbody>
-                          {data?.data?.map(
-                            (
-                              ad: {title: string; createdAt: string; email: string; _id: string},
-                              index: Key
-                            ) => {
-                              return (
-                                <>
-                                  <tr key={index}>
-                                    <td>
-                                      <div className='d-flex align-items-center'>
-                                        <div className='d-flex justify-content-start flex-column'>
-                                          <span className='text-dark fw-bold  fs-7'>
-                                            {ad?.title}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className='d-flex align-items-center'>
-                                        <div className='symbol symbol-45px me-5'>
-                                          <img
-                                            src={toAbsoluteUrl('/media/avatars/300-14.jpg')}
-                                            alt=''
-                                          />
-                                        </div>
-                                        <div className='d-flex justify-content-start flex-column'>
-                                          <a
-                                            href='/'
-                                            className='text-dark fw-bold text-hover-primary fs-6'
-                                          >
-                                            Ana Simmons
-                                          </a>
-                                          <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                            {ad?.email}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className='d-flex flex-column w-100 me-2'>
-                                        <div className='d-flex flex-stack mb-2'>
-                                          <span className='text-muted me-2 fs-7 fw-semibold'>
-                                            {moment(ad?.createdAt).format('MMM Do YYYY, h:mm a')}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td className='text-end'>
-                                      <div className='d-flex flex-column w-100 me-2'>
-                                        <div className='d-flex flex-stack mb-2'>
-                                          <span className='text-muted me-2 fs-7 fw-semibold'>
-                                            {moment(ad?.createdAt).format('MMM Do YYYY, h:mm a')}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td className='text-end'>
-                                      <div className='d-flex flex-column w-100 me-2'>
-                                        <div className='d-flex flex-stack mb-2'>
-                                          <span className='text-muted me-2 fs-7 fw-semibold'>
-                                            Active
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className='d-flex justify-content-end flex-shrink-0'>
-                                        <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
-                                          <KTSVG
-                                            path='/media/icons/eye-solid.svg'
-                                            className='svg-icon-3'
-                                          />
-                                        </button>
-                                        <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
-                                          <KTSVG
-                                            path='/media/icons/duotune/art/art005.svg'
-                                            className='svg-icon-3'
-                                          />
-                                        </button>
-                                        <button
-                                          className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
-                                          onClick={() => {
-                                            setDeleteAdId(ad?._id)
-                                            handleDeleteModal()
-                                          }}
-                                        >
-                                          <KTSVG
-                                            path='/media/icons/duotune/general/gen027.svg'
-                                            className='svg-icon-3'
-                                          />
-                                        </button>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </>
-                              )
-                            }
-                          )}
+                          {data?.data?.map((ad: any, index: Key) => {
+                            return <AdTableRow key={index} ad={ad} />
+                          })}
                         </tbody>
                         {/* end::Table body */}
                       </table>
@@ -235,7 +79,6 @@ const AdList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
     </>
   )
 }
