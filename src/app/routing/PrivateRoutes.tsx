@@ -205,6 +205,30 @@ const PrivateRoutes = () => {
           }
         />
         <Route
+          path='/active-escort-banner-advertisement'
+          element={
+            <SuspensedView>
+              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/pending-escort-banner-advertisement'
+          element={
+            <SuspensedView>
+              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/expired-escort-banner-advertisement'
+          element={
+            <SuspensedView>
+              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
           path='/reviews'
           element={
             <SuspensedView>

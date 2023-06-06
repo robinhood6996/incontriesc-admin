@@ -85,6 +85,24 @@ const SidebarMenuMain = () => {
         <SidebarMenuItem to='/pending-escort-ads' title='Pending' hasBullet={true} />
         <SidebarMenuItem to='/expired-escort-ads' title='Expired' hasBullet={true} />
       </SidebarMenuItemWithSub>
+      <SidebarMenuItemWithSub
+        to='/active-escort-banner-advertisement'
+        title='Escort Banner Advertisement'
+        hasBullet={false}
+        icon='/media/icons/duotune/general/gen022.svg'
+      >
+        <SidebarMenuItem to='/active-escort-banner-advertisement' title='Active' hasBullet={true} />
+        <SidebarMenuItem
+          to='/pending-escort-banner-advertisement'
+          title='Pending'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/expired-escort-banner-advertisement'
+          title='Expired'
+          hasBullet={true}
+        />
+      </SidebarMenuItemWithSub>
 
       <SidebarMenuItem
         to='/reviews'
