@@ -22,6 +22,7 @@ import ActiveEscortsList from '../modules/Custom/Escorts/ActiveEscortsList'
 import InactiveEscortsList from '../modules/Custom/Escorts/InactiveEscortsList'
 import EscortVerifieyRequestList from '../modules/Custom/Escort Ads/EscortVerifieyRequestList'
 import EscortVerifiedIDList from '../modules/Custom/Escort Ads/EscortVerifiedIDList'
+import EscortExpiredAdsList from '../modules/Custom/Escort Ads/EscortExpiredAdsList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -192,6 +193,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <EscortVerifieyRequestList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/expired-escort-ads'
+          element={
+            <SuspensedView>
+              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />

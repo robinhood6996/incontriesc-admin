@@ -17,7 +17,7 @@ type Props = {
   className: string
 }
 
-const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
+const EscortExpiredAdsList: React.FC<Props> = ({className}) => {
   const [showImageModal, setShowImageModal] = useState(false)
   const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
@@ -78,7 +78,7 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Escorts Active Ads</span>
+                    <span className='card-label fw-bold fs-3 mb-1'>Escorts Expired Ads</span>
                     <span className='text-muted mt-1 fw-semibold fs-7'>
                       {data?.ads?.length ?? 0} Total Escorts
                     </span>
@@ -280,4 +280,4 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
   )
 }
 
-export default EscortVerifiedIDList
+export default EscortExpiredAdsList

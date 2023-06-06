@@ -83,6 +83,7 @@ const SidebarMenuMain = () => {
       >
         <SidebarMenuItem to='/active-escort-ads' title='Active' hasBullet={true} />
         <SidebarMenuItem to='/pending-escort-ads' title='Pending' hasBullet={true} />
+        <SidebarMenuItem to='/expired-escort-ads' title='Expired' hasBullet={true} />
       </SidebarMenuItemWithSub>
 
       <SidebarMenuItem

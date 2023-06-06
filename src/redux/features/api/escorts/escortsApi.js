@@ -136,7 +136,7 @@ export const escortsApi = apiSlice.injectEndpoints({
     }),
     getFeaturedEscorts: builder.query({
       query: () => ({
-        url: '/escort-ad/featured',
+        url: '/escort-ad/get-all',
         method: 'GET',
       }),
       providesTags: ['getFeaturedEscorts'],
