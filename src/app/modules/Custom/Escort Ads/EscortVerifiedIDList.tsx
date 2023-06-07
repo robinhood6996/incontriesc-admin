@@ -12,6 +12,7 @@ import {
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
 import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
+import EscortAdReceiptModal from './EscortAdReceiptModal'
 
 type Props = {
   className: string
@@ -21,7 +22,9 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
   const [showImageModal, setShowImageModal] = useState(false)
   const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
+  const [receiptModal, setReceiptModal] = useState<boolean>(false)
   const [deleteModal, setDeleteModal] = useState(false)
+  const [receiptData, setReceiptData] = useState<string>('')
 
   const handleImageModal = () => {
     setShowImageModal(!showImageModal)
@@ -42,6 +45,10 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
       deleteEscort(deleteEscortUserName)
     }
     setDeleteModal(false)
+  }
+
+  const handleReceiptModal = () => {
+    setReceiptModal(!receiptModal)
   }
 
   //toast
@@ -112,11 +119,12 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                       <thead>
                         <tr className='fw-bold text-muted'>
                           <th className='min-w-130px'>Name</th>
-                          <th className='min-w-110px'>Username</th>
                           <th className='min-w-120px'>Email</th>
-                          {/* <th className='min-w-200px'>Photos</th> */}
-                          {/* <th className='min-w-100px'>Status</th> */}
+                          <th className='min-w-120px'>Date</th>
                           <th className='min-w-100px'>Payment Type</th>
+                          <th className='min-w-100px'>Price</th>
+                          <th className='min-w-100px'>Package Type</th>
+                          <th className='min-w-100px'>Transaction ID</th>
                           <th className='min-w-100px'>Payment Status</th>
                           <th className='min-w-100px text-end'>Actions</th>
                         </tr>
@@ -134,8 +142,11 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                               profileImage: string
                               username: string
                               photos: any
+                              paymentDetails: any
                               isBank: boolean
                               isPaid: boolean
+                              payAmount: number
+                              packageType: number
                             },
                             index: Key
                           ) => {
@@ -154,59 +165,18 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                                       </div>
                                     </div>
                                   </td>
-                                  <td>
-                                    <a
-                                      href='/'
-                                      className='text-dark fw-bold text-hover-primary d-block fs-6'
-                                    >
-                                      {ad?.username}
-                                    </a>
-                                    {/* <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                      VIP
-                                    </span> */}
-                                  </td>
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='d-flex flex-stack mb-2'>{ad?.email}</div>
                                     </div>
                                   </td>
-                                  {/* <td className='text-start'>
-                                    <div className='d-flex w-100 me-2'>
-                                      {ad?.photos?.map((image: {filename: string}, index: Key) => {
-                                        return (
-                                          <>
-                                            <div
-                                              key={index}
-                                              className='symbol symbol-45px me-5'
-                                              onClick={() => {
-                                                setSelectedImageURL(
-                                                  `${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`
-                                                )
-                                                handleImageModal()
-                                              }}
-                                            >
-                                              <img
-                                                src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`}
-                                                alt=''
-                                              />
-                                            </div>
-                                          </>
-                                        )
-                                      })}
-                                    </div>
-                                  </td> */}
-                                  {/* <td className='text-end'>
+                                  <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
-                                      <div className='form-check form-switch form-check-custom form-check-solid'>
-                                        <input
-                                          className='form-check-input h-20px w-30px'
-                                          type='checkbox'
-                                          value=''
-                                          id='flexSwitchDefault'
-                                        />
+                                      <div className='d-flex flex-stack mb-2'>
+                                        {moment(ad?.createdAt).format('MMM Do YYYY, h:mm a')}
                                       </div>
                                     </div>
-                                  </td> */}
+                                  </td>
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='d-flex flex-stack mb-2 fw-bold'>
@@ -216,9 +186,36 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                                   </td>
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2 fw-bold'>
+                                        € {ad?.payAmount}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2 fw-bold'>
+                                        {ad?.packageType === 1
+                                          ? 'VIP'
+                                          : ad?.packageType === 2
+                                          ? 'Featured'
+                                          : ad?.packageType === 3
+                                          ? 'Girl of the month'
+                                          : 'GOd of Dick'}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2 fw-bold'>
+                                        {ad?.paymentDetails?.paymentIntentId}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
                                       <div className='d-flex flex-stack mb-2'>
                                         {ad?.isPaid ? (
-                                          <span className='badge badge-primary'>Paid</span>
+                                          <span className='badge badge-success'>Paid</span>
                                         ) : (
                                           <span className='badge badge-warning'>Pending</span>
                                         )}
@@ -227,20 +224,14 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                                   </td>
                                   <td>
                                     <div className='d-flex justify-content-end flex-shrink-0'>
-                                      <button className='btn btn-primary btn-sm me-1'>
-                                        View Receipt
-                                      </button>
                                       <button
-                                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                                        className='btn btn-primary btn-sm me-1'
                                         onClick={() => {
-                                          setDeleteEscortUserName(ad?.username)
-                                          handleDeleteModal()
+                                          setReceiptData('')
+                                          setReceiptModal(true)
                                         }}
                                       >
-                                        <KTSVG
-                                          path='/media/icons/duotune/general/gen027.svg'
-                                          className='svg-icon-3'
-                                        />
+                                        View Receipt
                                       </button>
                                     </div>
                                   </td>
@@ -256,11 +247,6 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                   </div>
                   {/* end::Table container */}
                 </div>
-                <DeleteModal
-                  show={deleteModal}
-                  handleModal={handleDeleteModal}
-                  handleDelete={handleDelete}
-                />
                 {/* begin::Body */}
               </div>
             </>
@@ -275,6 +261,11 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
         show={showImageModal}
         handleClose={handleImageModal}
         imageURL={selectedImageURL}
+      />
+      <EscortAdReceiptModal
+        show={receiptModal}
+        handleClose={handleReceiptModal}
+        data={receiptData}
       />
     </>
   )

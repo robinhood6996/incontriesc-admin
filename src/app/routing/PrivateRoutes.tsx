@@ -23,6 +23,9 @@ import InactiveEscortsList from '../modules/Custom/Escorts/InactiveEscortsList'
 import EscortVerifieyRequestList from '../modules/Custom/Escort Ads/EscortVerifieyRequestList'
 import EscortVerifiedIDList from '../modules/Custom/Escort Ads/EscortVerifiedIDList'
 import EscortExpiredAdsList from '../modules/Custom/Escort Ads/EscortExpiredAdsList'
+import ActiveBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/ActiveBannerAdvertisementList'
+import ExpiredBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/ExpiredBannerAdvertisementList'
+import PendingBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/PendingBannerAdvertisementList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -208,7 +211,7 @@ const PrivateRoutes = () => {
           path='/active-escort-banner-advertisement'
           element={
             <SuspensedView>
-              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
+              <ActiveBannerAdvertisementList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />
@@ -216,7 +219,7 @@ const PrivateRoutes = () => {
           path='/pending-escort-banner-advertisement'
           element={
             <SuspensedView>
-              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
+              <PendingBannerAdvertisementList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />
@@ -224,7 +227,7 @@ const PrivateRoutes = () => {
           path='/expired-escort-banner-advertisement'
           element={
             <SuspensedView>
-              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
+              <ExpiredBannerAdvertisementList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />
