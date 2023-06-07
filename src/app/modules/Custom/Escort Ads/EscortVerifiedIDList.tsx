@@ -13,6 +13,7 @@ import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
 import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 import EscortAdReceiptModal from './EscortAdReceiptModal'
+import {Button} from 'react-bootstrap'
 
 type Props = {
   className: string
@@ -51,6 +52,35 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
     setReceiptModal(!receiptModal)
   }
 
+  const paymentTypeOptions = [
+    {
+      label: 'Card',
+      value: 'card',
+    },
+    {
+      label: 'Bank',
+      value: 'bank',
+    },
+  ]
+  const packageTypeOptions = [
+    {
+      label: 'VIP',
+      value: 'vip',
+    },
+    {
+      label: 'Featured',
+      value: 'featured',
+    },
+    {
+      label: 'Girl of the month',
+      value: 'gom',
+    },
+    {
+      label: 'God of dick',
+      value: 'god',
+    },
+  ]
+
   //toast
   useEffect(() => {
     if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
@@ -81,6 +111,67 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
         <>
           {data?.ads?.length > 0 ? (
             <>
+              <div className='card card-xxl-stretch mb-5 mb-xl-8'>
+                <div className='row p-3 align-items-center'>
+                  <div className='col-lg-3 col-md-4 col-12'>
+                    <input
+                      className='form-control form-control-lg form-control-solid border border-secondary'
+                      placeholder='Search email'
+                      type='text'
+                      autoComplete='off'
+                    />
+                  </div>
+                  <div className='col-lg-2 col-md-4 col-6'>
+                    <select className='form-select' aria-label='Select example'>
+                      <option value={'default'}>Select payment type</option>
+                      {paymentTypeOptions?.map(
+                        (option: {label: string; value: string}, index: Key) => {
+                          return (
+                            <option key={index} value={option?.value}>
+                              {option?.label}
+                            </option>
+                          )
+                        }
+                      )}
+                    </select>
+                  </div>
+                  <div className='col-lg-2 col-md-4 col-6'>
+                    <select className='form-select' aria-label='Select example'>
+                      <option value={'default'}>Select package type</option>
+                      {packageTypeOptions?.map(
+                        (option: {label: string; value: string}, index: Key) => {
+                          return (
+                            <option key={index} value={option?.value}>
+                              {option?.label}
+                            </option>
+                          )
+                        }
+                      )}
+                    </select>
+                  </div>
+                  <div className='col-lg-1 col-md-4 col-6'>
+                    <Button
+                      // onClick={() => setShowCreateModal(true)}
+                      className='btn fw-bold btn-primary'
+                      data-bs-toggle='modal'
+                      data-bs-target='#kt_modal_create_app'
+                    >
+                      Search
+                    </Button>
+                  </div>
+                  {/* <div className='col-lg-2 col-md-4 col-6'>
+                    <Button
+                      // onClick={() => setShowCreateModal(true)}
+                      className='btn fw-bold btn-primary'
+                      data-bs-toggle='modal'
+                      data-bs-target='#kt_modal_create_app'
+                    >
+                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+                      Create User
+                    </Button>
+                  </div> */}
+                </div>
+              </div>
               <div className={`card ${className}`}>
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
