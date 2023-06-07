@@ -85,7 +85,7 @@ const PaginationSetQuery = ({
         >
           {'<'}
         </button>
-        <div className='w-25'>
+        <div className='mx-2'>
           <form
             action=''
             className='form fv-plugins-bootstrap5 fv-plugins-framework'
@@ -94,7 +94,7 @@ const PaginationSetQuery = ({
             }}
           >
             <input
-              className='form-control w-25'
+              className='form-control'
               type='number'
               min={1}
               ref={offsetRef}

@@ -14,12 +14,19 @@ import ImageModal from '../Common/ImageModal'
 import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 import EscortAdReceiptModal from './EscortAdReceiptModal'
 import {Button} from 'react-bootstrap'
+import PaginationSetQuery from '../../../Components/Custom Components/common/PaginationSetQuery'
 
 type Props = {
   className: string
 }
 
 const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
+  const limit: number = 16
+  const [page, setPage] = useState(1)
+  const [searchParams, setSearchParams] = useState({
+    limit,
+    offset: 0,
+  })
   const [showImageModal, setShowImageModal] = useState(false)
   const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
@@ -340,6 +347,15 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                 </div>
                 {/* begin::Body */}
               </div>
+              <PaginationSetQuery
+                limit={limit}
+                page={page}
+                dataLength={10}
+                params={searchParams}
+                setParams={setSearchParams}
+                setPage={setPage}
+                totalPage={10}
+              />
             </>
           ) : (
             <NotFoundComponent type='Escorts List' />
