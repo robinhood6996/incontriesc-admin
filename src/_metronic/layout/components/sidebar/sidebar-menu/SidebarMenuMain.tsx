@@ -39,12 +39,21 @@ const SidebarMenuMain = () => {
         hasBullet={false}
         icon='/media/icons/duotune/communication/com006.svg'
       />
-      <SidebarMenuItem
+      <SidebarMenuItemWithSub
+        to='/active-escorts'
+        title='Escorts'
+        hasBullet={false}
+        icon='/media/icons/duotune/general/gen022.svg'
+      >
+        <SidebarMenuItem to='/active-escorts' title='Active Escorts' hasBullet={true} />
+        <SidebarMenuItem to='/inactive-escorts' title='Inactive Escorts' hasBullet={true} />
+      </SidebarMenuItemWithSub>
+      {/* <SidebarMenuItem
         to='/escorts'
         title='Escorts'
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
-      />
+      /> */}
       <SidebarMenuItem
         to='/ads'
         title='Classified Ads'
@@ -57,18 +66,44 @@ const SidebarMenuMain = () => {
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
       />
-      <SidebarMenuItem
-        to='/verify-requested-ids'
-        title='Verify Requested Ids'
+      <SidebarMenuItemWithSub
+        to='/active-escorts'
+        title='Verification'
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
-      />
-      <SidebarMenuItem
-        to='/verified-ids'
-        title='Verified Ids'
+      >
+        <SidebarMenuItem to='/active-verification' title='Active' hasBullet={true} />
+        <SidebarMenuItem to='/pending-verification' title='Pending' hasBullet={true} />
+      </SidebarMenuItemWithSub>
+      <SidebarMenuItemWithSub
+        to='/active-escort-ads'
+        title='Escort Ads'
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
-      />
+      >
+        <SidebarMenuItem to='/active-escort-ads' title='Active' hasBullet={true} />
+        <SidebarMenuItem to='/pending-escort-ads' title='Pending' hasBullet={true} />
+        <SidebarMenuItem to='/expired-escort-ads' title='Expired' hasBullet={true} />
+      </SidebarMenuItemWithSub>
+      <SidebarMenuItemWithSub
+        to='/active-escort-banner-advertisement'
+        title='Escort Banner Advertisement'
+        hasBullet={false}
+        icon='/media/icons/duotune/general/gen022.svg'
+      >
+        <SidebarMenuItem to='/active-escort-banner-advertisement' title='Active' hasBullet={true} />
+        <SidebarMenuItem
+          to='/pending-escort-banner-advertisement'
+          title='Pending'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/expired-escort-banner-advertisement'
+          title='Expired'
+          hasBullet={true}
+        />
+      </SidebarMenuItemWithSub>
+
       <SidebarMenuItem
         to='/reviews'
         title='Reviews'

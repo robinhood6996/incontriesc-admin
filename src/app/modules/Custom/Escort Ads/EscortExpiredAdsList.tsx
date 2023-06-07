@@ -7,17 +7,17 @@ import Loader from '../../../Components/Custom Components/common/Loader'
 import {ToastContainer, toast} from 'react-toastify'
 import {
   useDeleteSingleEscortMutation,
-  useGetAllEscortsQuery,
+  useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
-import {useGetAllRatingsQuery} from '../../../../redux/features/api/rating/ratingApi'
+import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 
 type Props = {
   className: string
 }
 
-const ReviewsList: React.FC<Props> = ({className}) => {
+const EscortExpiredAdsList: React.FC<Props> = ({className}) => {
   const [showImageModal, setShowImageModal] = useState(false)
   const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
@@ -27,7 +27,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetAllRatingsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
@@ -72,15 +72,15 @@ const ReviewsList: React.FC<Props> = ({className}) => {
         <Loader />
       ) : !isFetching && !isError && isSuccess ? (
         <>
-          {data?.data?.length > 0 ? (
+          {data?.ads?.length > 0 ? (
             <>
               <div className={`card ${className}`}>
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Reviews</span>
+                    <span className='card-label fw-bold fs-3 mb-1'>Escorts Expired Ads</span>
                     <span className='text-muted mt-1 fw-semibold fs-7'>
-                      {data?.data?.length ?? 0} Total Reviews
+                      {data?.ads?.length ?? 0} Total Escorts
                     </span>
                   </h3>
                   {/* <div
@@ -111,25 +111,31 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                       {/* begin::Table head */}
                       <thead>
                         <tr className='fw-bold text-muted'>
-                          <th className='min-w-130px'>Date</th>
-                          <th className='min-w-130px'>Customer Name</th>
-                          <th className='min-w-110px'>Escort Username</th>
-                          <th className='min-w-120px'>Meeting City</th>
-                          <th className='min-w-200px'>Services</th>
+                          <th className='min-w-130px'>Name</th>
+                          <th className='min-w-110px'>Username</th>
+                          <th className='min-w-120px'>Email</th>
+                          {/* <th className='min-w-200px'>Photos</th> */}
+                          {/* <th className='min-w-100px'>Status</th> */}
+                          <th className='min-w-100px'>Payment Type</th>
+                          <th className='min-w-100px'>Payment Status</th>
                           <th className='min-w-100px text-end'>Actions</th>
                         </tr>
                       </thead>
                       {/* end::Table head */}
                       {/* begin::Table body */}
                       <tbody>
-                        {data?.data?.map(
+                        {data?.ads?.map(
                           (
-                            review: {
-                              meetingCity: string
-                              serviceRate: number
-                              updatedAt: string
-                              customerDetails: any
-                              escortDetails: any
+                            ad: {
+                              name: string
+                              email: string
+                              status: string
+                              createdAt: string
+                              profileImage: string
+                              username: string
+                              photos: any
+                              isBank: boolean
+                              isPaid: boolean
                             },
                             index: Key
                           ) => {
@@ -143,19 +149,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                           href='/'
                                           className='text-dark fw-bold text-hover-primary fs-6'
                                         >
-                                          {moment(review?.updatedAt).format('MMM Do YYYY')}
-                                        </a>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className='d-flex align-items-center'>
-                                      <div className='d-flex justify-content-start flex-column'>
-                                        <a
-                                          href='/'
-                                          className='text-dark fw-bold text-hover-primary fs-6'
-                                        >
-                                          {review?.customerDetails?.username}
+                                          {ad?.name}
                                         </a>
                                       </div>
                                     </div>
@@ -165,7 +159,7 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                       href='/'
                                       className='text-dark fw-bold text-hover-primary d-block fs-6'
                                     >
-                                      {review?.escortDetails?.username}
+                                      {ad?.username}
                                     </a>
                                     {/* <span className='text-muted fw-semibold text-muted d-block fs-7'>
                                       VIP
@@ -173,12 +167,34 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                   </td>
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
-                                      <div className='d-flex flex-stack mb-2'>
-                                        {review?.meetingCity?.toUpperCase()}
-                                      </div>
+                                      <div className='d-flex flex-stack mb-2'>{ad?.email}</div>
                                     </div>
                                   </td>
-                                  <td className='text-start'>{review?.serviceRate}/10</td>
+                                  {/* <td className='text-start'>
+                                    <div className='d-flex w-100 me-2'>
+                                      {ad?.photos?.map((image: {filename: string}, index: Key) => {
+                                        return (
+                                          <>
+                                            <div
+                                              key={index}
+                                              className='symbol symbol-45px me-5'
+                                              onClick={() => {
+                                                setSelectedImageURL(
+                                                  `${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`
+                                                )
+                                                handleImageModal()
+                                              }}
+                                            >
+                                              <img
+                                                src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`}
+                                                alt=''
+                                              />
+                                            </div>
+                                          </>
+                                        )
+                                      })}
+                                    </div>
+                                  </td> */}
                                   {/* <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='form-check form-switch form-check-custom form-check-solid'>
@@ -191,15 +207,33 @@ const ReviewsList: React.FC<Props> = ({className}) => {
                                       </div>
                                     </div>
                                   </td> */}
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2 fw-bold'>
+                                        {ad?.isBank ? 'Bank' : 'Card'}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2'>
+                                        {ad?.isPaid ? (
+                                          <span className='badge badge-primary'>Paid</span>
+                                        ) : (
+                                          <span className='badge badge-warning'>Pending</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </td>
                                   <td>
                                     <div className='d-flex justify-content-end flex-shrink-0'>
-                                      <button className='btn btn-bg-light btn-active-color-primary btn-sm me-2'>
-                                        Go to reviews
+                                      <button className='btn btn-primary btn-sm me-1'>
+                                        View Receipt
                                       </button>
                                       <button
-                                        className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
+                                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                         onClick={() => {
-                                          // setDeleteAdId(ad?._id)
+                                          setDeleteEscortUserName(ad?.username)
                                           handleDeleteModal()
                                         }}
                                       >
@@ -237,8 +271,13 @@ const ReviewsList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
+      <ImageModal
+        show={showImageModal}
+        handleClose={handleImageModal}
+        imageURL={selectedImageURL}
+      />
     </>
   )
 }
 
-export default ReviewsList
+export default EscortExpiredAdsList

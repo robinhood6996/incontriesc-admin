@@ -9,7 +9,7 @@ import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import Categories from '../modules/Categories/Categories'
 import UserList from '../modules/Custom/Users/UserList'
-import EscortList from '../modules/Custom/Escorts/EscortsList'
+import EscortList from '../modules/Custom/Escorts/ActiveEscortsList'
 import CountryList from '../modules/Custom/Country/CountryList'
 import CityList from '../modules/Custom/City/CityList'
 import AdList from '../modules/Custom/ClassifiedAds/Adlist'
@@ -18,6 +18,14 @@ import TourList from '../modules/Custom/Tours/TourList'
 import VerifieyRequestList from '../modules/Custom/verification/VerifieyRequestList'
 import VerifiedIDList from '../modules/Custom/verification/VerifiedIDList'
 import ReviewsList from '../modules/Custom/reviews/ReviewsList'
+import ActiveEscortsList from '../modules/Custom/Escorts/ActiveEscortsList'
+import InactiveEscortsList from '../modules/Custom/Escorts/InactiveEscortsList'
+import EscortVerifieyRequestList from '../modules/Custom/Escort Ads/EscortVerifieyRequestList'
+import EscortVerifiedIDList from '../modules/Custom/Escort Ads/EscortVerifiedIDList'
+import EscortExpiredAdsList from '../modules/Custom/Escort Ads/EscortExpiredAdsList'
+import ActiveBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/ActiveBannerAdvertisementList'
+import ExpiredBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/ExpiredBannerAdvertisementList'
+import PendingBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/PendingBannerAdvertisementList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -104,10 +112,18 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='/escorts'
+          path='/active-escorts'
           element={
             <SuspensedView>
-              <EscortList className='card-xxl-stretch mb-5 mb-xl-8' />
+              <ActiveEscortsList className='card-xxl-stretch mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/inactive-escorts'
+          element={
+            <SuspensedView>
+              <InactiveEscortsList className='card-xxl-stretch mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />
@@ -152,7 +168,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='/verify-requested-ids'
+          path='/pending-verification'
           element={
             <SuspensedView>
               <VerifieyRequestList className='mb-5 mb-xl-8' />
@@ -160,10 +176,58 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='/verified-ids'
+          path='/active-verification'
           element={
             <SuspensedView>
               <VerifiedIDList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/active-escort-ads'
+          element={
+            <SuspensedView>
+              <EscortVerifiedIDList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/pending-escort-ads'
+          element={
+            <SuspensedView>
+              <EscortVerifieyRequestList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/expired-escort-ads'
+          element={
+            <SuspensedView>
+              <EscortExpiredAdsList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/active-escort-banner-advertisement'
+          element={
+            <SuspensedView>
+              <ActiveBannerAdvertisementList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/pending-escort-banner-advertisement'
+          element={
+            <SuspensedView>
+              <PendingBannerAdvertisementList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/expired-escort-banner-advertisement'
+          element={
+            <SuspensedView>
+              <ExpiredBannerAdvertisementList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />

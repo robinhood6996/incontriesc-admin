@@ -12,6 +12,13 @@ export const escortsApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getAllEscorts'],
     }),
+    getInactiveEscorts: builder.query({
+      query: (searchQuery) => ({
+        url: `/escort/get-inactive`,
+        method: 'GET',
+      }),
+      providesTags: ['getInactiveEscorts'],
+    }),
 
     getEscortsByCategory: builder.query({
       query: (searchQuery) => ({
@@ -27,6 +34,13 @@ export const escortsApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       providesTags: ['getSingleEscortDetails'],
+    }),
+    getSingleEscortDetailsByEmail: builder.query({
+      query: (email) => ({
+        url: `/escort?email=${email}`,
+        method: 'GET',
+      }),
+      providesTags: ['getSingleEscortDetailsByEmail'],
     }),
     deleteSingleEscort: builder.mutation({
       query: (username) => ({
@@ -98,6 +112,14 @@ export const escortsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['getEscortProfile'],
     }),
+    updateEscortStatusData: builder.mutation({
+      query: (status) => ({
+        url: `/escort/update-status`,
+        method: 'PUT',
+        body: status,
+      }),
+      invalidatesTags: ['getEscortProfile', 'getAllEscorts', 'getInactiveEscorts'],
+    }),
     deleteEscortImage: builder.mutation({
       query: (fileName) => ({
         url: `/escort/upload?filename=${fileName}`,
@@ -111,6 +133,13 @@ export const escortsApi = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: ['getEscortProfile'],
+    }),
+    getFeaturedEscorts: builder.query({
+      query: () => ({
+        url: '/escort-ad/get-all',
+        method: 'GET',
+      }),
+      providesTags: ['getFeaturedEscorts'],
     }),
   }),
 })
@@ -130,4 +159,8 @@ export const {
   useDeleteEscortImageMutation,
   useDeleteEscortVideoMutation,
   useDeleteSingleEscortMutation,
+  useUpdateEscortStatusDataMutation,
+  useGetInactiveEscortsQuery,
+  useGetSingleEscortDetailsByEmailQuery,
+  useGetFeaturedEscortsQuery,
 } = escortsApi

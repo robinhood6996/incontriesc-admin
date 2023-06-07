@@ -12,6 +12,8 @@ import {ErrorsPage} from '../modules/errors/ErrorsPage'
 import {Logout, AuthPage, useAuth} from '../modules/auth'
 import {App} from '../App'
 import {useSelector} from 'react-redux'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 /**
  * Base URL of the website.
@@ -42,6 +44,7 @@ const AppRoutes: FC = () => {
           )}
         </Route>
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   )
 }

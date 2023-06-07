@@ -7,19 +7,27 @@ import Loader from '../../../Components/Custom Components/common/Loader'
 import {ToastContainer, toast} from 'react-toastify'
 import {
   useDeleteSingleEscortMutation,
-  useGetAllEscortsQuery,
+  useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
+import ImageModal from '../Common/ImageModal'
+import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 
 type Props = {
   className: string
 }
 
-const EscortList: React.FC<Props> = ({className}) => {
+const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
   const [deleteModal, setDeleteModal] = useState(false)
+
+  const handleImageModal = () => {
+    setShowImageModal(!showImageModal)
+  }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetAllEscortsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
@@ -64,16 +72,18 @@ const EscortList: React.FC<Props> = ({className}) => {
         <Loader />
       ) : !isFetching && !isError && isSuccess ? (
         <>
-          {data?.data?.length > 0 ? (
+          {data?.ads?.length > 0 ? (
             <>
               <div className={`card ${className}`}>
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Escorts</span>
-                    <span className='text-muted mt-1 fw-semibold fs-7'>120 Total Escorts</span>
+                    <span className='card-label fw-bold fs-3 mb-1'>Escorts Pending Ads</span>
+                    <span className='text-muted mt-1 fw-semibold fs-7'>
+                      {data?.ads?.length ?? 0} Total Escorts
+                    </span>
                   </h3>
-                  <div
+                  {/* <div
                     className='card-toolbar'
                     data-bs-toggle='tooltip'
                     data-bs-placement='top'
@@ -89,7 +99,7 @@ const EscortList: React.FC<Props> = ({className}) => {
                       <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
                       New Member
                     </a>
-                  </div>
+                  </div> */}
                 </div>
                 {/* end::Header */}
                 {/* begin::Body */}
@@ -101,61 +111,46 @@ const EscortList: React.FC<Props> = ({className}) => {
                       {/* begin::Table head */}
                       <thead>
                         <tr className='fw-bold text-muted'>
-                          {/* <th className='w-25px'>
-                            <div className='form-check form-check-sm form-check-custom form-check-solid'>
-                              <input
-                                className='form-check-input'
-                                type='checkbox'
-                                value='1'
-                                data-kt-check='true'
-                                data-kt-check-target='.widget-9-check'
-                              />
-                            </div>
-                          </th> */}
-                          <th className='min-w-150px'>Name</th>
-                          <th className='min-w-140px'>Category</th>
-                          <th className='min-w-120px'>Join Date</th>
-                          <th className='min-w-120px'>Status</th>
+                          <th className='min-w-130px'>Name</th>
+                          <th className='min-w-110px'>Username</th>
+                          <th className='min-w-120px'>Email</th>
+                          {/* <th className='min-w-200px'>Photos</th> */}
+                          {/* <th className='min-w-100px'>Status</th> */}
+                          <th className='min-w-100px'>Payment Type</th>
+                          <th className='min-w-100px'>Payment Status</th>
                           <th className='min-w-100px text-end'>Actions</th>
                         </tr>
                       </thead>
                       {/* end::Table head */}
                       {/* begin::Table body */}
                       <tbody>
-                        {data?.data?.map(
+                        {data?.ads?.map(
                           (
-                            escort: {
+                            ad: {
                               name: string
                               email: string
-                              category: string
+                              status: string
                               createdAt: string
                               profileImage: string
                               username: string
+                              photos: any
+                              isBank: boolean
+                              isPaid: boolean
                             },
                             index: Key
                           ) => {
                             return (
                               <>
                                 <tr key={index}>
-                                  {/* <tsole  */}
                                   <td>
                                     <div className='d-flex align-items-center'>
-                                      <div className='symbol symbol-45px me-5'>
-                                        <img
-                                          src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${escort?.profileImage}`}
-                                          alt=''
-                                        />
-                                      </div>
                                       <div className='d-flex justify-content-start flex-column'>
                                         <a
                                           href='/'
                                           className='text-dark fw-bold text-hover-primary fs-6'
                                         >
-                                          {escort?.name}
+                                          {ad?.name}
                                         </a>
-                                        <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                          {escort?.email}
-                                        </span>
                                       </div>
                                     </div>
                                   </td>
@@ -164,7 +159,7 @@ const EscortList: React.FC<Props> = ({className}) => {
                                       href='/'
                                       className='text-dark fw-bold text-hover-primary d-block fs-6'
                                     >
-                                      {escort?.category?.toUpperCase()}
+                                      {ad?.username}
                                     </a>
                                     {/* <span className='text-muted fw-semibold text-muted d-block fs-7'>
                                       VIP
@@ -172,14 +167,35 @@ const EscortList: React.FC<Props> = ({className}) => {
                                   </td>
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
-                                      <div className='d-flex flex-stack mb-2'>
-                                        <span className='text-muted me-2 fs-7 fw-semibold'>
-                                          {moment(escort?.createdAt).format('MMM Do YYYY, h:mm a')}
-                                        </span>
-                                      </div>
+                                      <div className='d-flex flex-stack mb-2'>{ad?.email}</div>
                                     </div>
                                   </td>
-                                  <td className='text-end'>
+                                  {/* <td className='text-start'>
+                                    <div className='d-flex w-100 me-2'>
+                                      {ad?.photos?.map((image: {filename: string}, index: Key) => {
+                                        return (
+                                          <>
+                                            <div
+                                              key={index}
+                                              className='symbol symbol-45px me-5'
+                                              onClick={() => {
+                                                setSelectedImageURL(
+                                                  `${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`
+                                                )
+                                                handleImageModal()
+                                              }}
+                                            >
+                                              <img
+                                                src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`}
+                                                alt=''
+                                              />
+                                            </div>
+                                          </>
+                                        )
+                                      })}
+                                    </div>
+                                  </td> */}
+                                  {/* <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='form-check form-switch form-check-custom form-check-solid'>
                                         <input
@@ -190,22 +206,34 @@ const EscortList: React.FC<Props> = ({className}) => {
                                         />
                                       </div>
                                     </div>
+                                  </td> */}
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2 fw-bold'>
+                                        {ad?.isBank ? 'Bank' : 'Card'}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className='text-end'>
+                                    <div className='d-flex flex-column w-100 me-2'>
+                                      <div className='d-flex flex-stack mb-2'>
+                                        {ad?.isPaid ? (
+                                          <span className='badge badge-primary'>Paid</span>
+                                        ) : (
+                                          <span className='badge badge-warning'>Pending</span>
+                                        )}
+                                      </div>
+                                    </div>
                                   </td>
                                   <td>
                                     <div className='d-flex justify-content-end flex-shrink-0'>
-                                      <button
-                                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                                        // onClick={handleEdit}
-                                      >
-                                        <KTSVG
-                                          path='/media/icons/duotune/art/art005.svg'
-                                          className='svg-icon-3'
-                                        />
+                                      <button className='btn btn-primary btn-sm me-1'>
+                                        View Receipt
                                       </button>
                                       <button
                                         className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                         onClick={() => {
-                                          setDeleteEscortUserName(escort?.username)
+                                          setDeleteEscortUserName(ad?.username)
                                           handleDeleteModal()
                                         }}
                                       >
@@ -243,9 +271,13 @@ const EscortList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <ToastContainer />
+      <ImageModal
+        show={showImageModal}
+        handleClose={handleImageModal}
+        imageURL={selectedImageURL}
+      />
     </>
   )
 }
 
-export default EscortList
+export default EscortVerifieyRequestList
