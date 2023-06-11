@@ -26,8 +26,8 @@ export const authApi = apiSlice.injectEndpoints({
       invalidatesTags: [],
     }),
     getAllUser: builder.query({
-      query: () => ({
-        url: `/auth/user`,
+      query: ({search}) => ({
+        url: `/auth/user?search=${search}`,
         method: 'GET',
       }),
       providesTags: ['getAllUser'],
