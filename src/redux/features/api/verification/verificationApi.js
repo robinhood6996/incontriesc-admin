@@ -9,7 +9,26 @@ export const verificationApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getAllVerification'],
     }),
+    deleteVerification: builder.mutation({
+      query: (id) => ({
+        url: `/verification/delete?id=${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getAllVerification'],
+    }),
+    updateVerification: builder.mutation({
+      query: ({id, status}) => ({
+        url: `/verification/update`,
+        method: 'PUT',
+        body: {id, status},
+      }),
+      providesTags: ['getAllVerification'],
+    }),
   }),
 })
 
-export const {useGetAllVerificationQuery} = verificationApi
+export const {
+  useGetAllVerificationQuery,
+  useDeleteVerificationMutation,
+  useUpdateVerificationMutation,
+} = verificationApi

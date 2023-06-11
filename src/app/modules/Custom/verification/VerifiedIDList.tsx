@@ -1,17 +1,15 @@
 import React, {Key, useEffect, useState} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
+import {KTSVG} from '../../../../_metronic/helpers'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import DeleteModal from '../Common/DeleteModal'
 import Loader from '../../../Components/Custom Components/common/Loader'
-import {ToastContainer, toast} from 'react-toastify'
-import {
-  useDeleteSingleEscortMutation,
-  useGetAllEscortsQuery,
-} from '../../../../redux/features/api/escorts/escortsApi'
-import moment from 'moment'
+import {toast} from 'react-toastify'
 import ImageModal from '../Common/ImageModal'
-import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
+import {
+  useDeleteVerificationMutation,
+  useGetAllVerificationQuery,
+} from '../../../../redux/features/api/verification/verificationApi'
 
 type Props = {
   className: string
@@ -28,10 +26,11 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
   }
   //api call
   const {data, isFetching, isError, isSuccess} = useGetAllVerificationQuery(null)
+  console.log('data', data)
   const [
-    deleteEscort,
+    deleteVerification,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
-  ] = useDeleteSingleEscortMutation()
+  ] = useDeleteVerificationMutation()
 
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
@@ -39,7 +38,7 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
 
   const handleDelete = () => {
     if (deleteEscortUserName !== '') {
-      deleteEscort(deleteEscortUserName)
+      deleteVerification(deleteEscortUserName)
     }
     setDeleteModal(false)
   }
@@ -106,6 +105,7 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
                         {data?.map(
                           (
                             escort: {
+                              _id: string
                               name: string
                               userEmail: string
                               status: string
@@ -116,7 +116,7 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
                             },
                             index: Key
                           ) => {
-                            if (escort?.status === 'active') {
+                            if (escort?.status === 'approved') {
                               return (
                                 <>
                                   <tr key={index}>
@@ -183,8 +183,9 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
                                           <input
                                             className='form-check-input h-20px w-30px'
                                             type='checkbox'
-                                            value=''
                                             id='flexSwitchDefault'
+                                            defaultChecked={true}
+                                            disabled
                                           />
                                         </div>
                                       </div>
@@ -203,7 +204,7 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
                                         <button
                                           className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                           onClick={() => {
-                                            setDeleteEscortUserName(escort?.username)
+                                            setDeleteEscortUserName(escort?._id)
                                             handleDeleteModal()
                                           }}
                                         >

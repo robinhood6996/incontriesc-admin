@@ -1,17 +1,16 @@
 import React, {Key, useEffect, useState} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
+import {KTSVG} from '../../../../_metronic/helpers'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import DeleteModal from '../Common/DeleteModal'
 import Loader from '../../../Components/Custom Components/common/Loader'
-import {ToastContainer, toast} from 'react-toastify'
-import {
-  useDeleteSingleEscortMutation,
-  useGetAllEscortsQuery,
-} from '../../../../redux/features/api/escorts/escortsApi'
-import moment from 'moment'
+import {toast} from 'react-toastify'
 import ImageModal from '../Common/ImageModal'
-import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
+import {
+  useDeleteVerificationMutation,
+  useGetAllVerificationQuery,
+  useUpdateVerificationMutation,
+} from '../../../../redux/features/api/verification/verificationApi'
 
 type Props = {
   className: string
@@ -20,26 +19,34 @@ type Props = {
 const VerifieyRequestList: React.FC<Props> = ({className}) => {
   const [showImageModal, setShowImageModal] = useState(false)
   const [selectedImageURL, setSelectedImageURL] = useState('')
-  const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
+  const [deleteEscortUserId, setDeleteEscortUserId] = useState<string>('')
   const [deleteModal, setDeleteModal] = useState(false)
-
+  const [
+    updateVerification,
+    {
+      data: verificationResult,
+      isLoading: verificationLoading,
+      isSuccess: vSuccess,
+      isError: vIsError,
+    },
+  ] = useUpdateVerificationMutation()
   const handleImageModal = () => {
     setShowImageModal(!showImageModal)
   }
   //api call
   const {data, isFetching, isError, isSuccess} = useGetAllVerificationQuery(null)
   const [
-    deleteEscort,
+    deleteVerification,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
-  ] = useDeleteSingleEscortMutation()
+  ] = useDeleteVerificationMutation()
 
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
   }
 
   const handleDelete = () => {
-    if (deleteEscortUserName !== '') {
-      deleteEscort(deleteEscortUserName)
+    if (deleteEscortUserId !== '') {
+      deleteVerification(deleteEscortUserId)
     }
     setDeleteModal(false)
   }
@@ -65,6 +72,19 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
       }, 2000)
     }
   }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
+  //toast
+  useEffect(() => {
+    if (!verificationLoading && !vIsError && vSuccess) {
+      toast.success('Successfully updated', {
+        hideProgressBar: true,
+      })
+    }
+    if (!verificationLoading && vIsError && !vSuccess) {
+      toast.error('Failed to update verification', {
+        hideProgressBar: true,
+      })
+    }
+  }, [vIsError, vSuccess, verificationLoading])
 
   return (
     <>
@@ -123,6 +143,7 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                         {data?.map(
                           (
                             escort: {
+                              _id: string
                               name: string
                               userEmail: string
                               status: string
@@ -200,8 +221,13 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                                           <input
                                             className='form-check-input h-20px w-30px'
                                             type='checkbox'
-                                            value=''
                                             id='flexSwitchDefault'
+                                            onChange={() =>
+                                              updateVerification({
+                                                id: escort?._id,
+                                                status: 'approved',
+                                              })
+                                            }
                                           />
                                         </div>
                                       </div>
@@ -220,7 +246,7 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
                                         <button
                                           className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                           onClick={() => {
-                                            setDeleteEscortUserName(escort?.username)
+                                            setDeleteEscortUserId(escort?._id)
                                             handleDeleteModal()
                                           }}
                                         >
