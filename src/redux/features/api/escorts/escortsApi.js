@@ -135,11 +135,18 @@ export const escortsApi = apiSlice.injectEndpoints({
       invalidatesTags: ['getEscortProfile'],
     }),
     getFeaturedEscorts: builder.query({
-      query: () => ({
-        url: '/escort-ad/get-all',
+      query: (search) => ({
+        url: `/escort-ad/get-all?${objectToParam(search)}`,
         method: 'GET',
       }),
       providesTags: ['getFeaturedEscorts'],
+    }),
+    deleteEscortAd: builder.mutation({
+      query: (adId) => ({
+        url: `/escort-ad/${adId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getFeaturedEscorts'],
     }),
   }),
 })
@@ -163,4 +170,5 @@ export const {
   useGetInactiveEscortsQuery,
   useGetSingleEscortDetailsByEmailQuery,
   useGetFeaturedEscortsQuery,
+  useDeleteEscortAdMutation
 } = escortsApi

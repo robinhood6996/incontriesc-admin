@@ -27,7 +27,8 @@ const EscortExpiredAdsList: React.FC<Props> = ({className}) => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
+  const [query, setQuery] = useState({isPaid: true, expired: true, limit: 50, offset: 0})
+  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(query, {skip: !query})
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
@@ -265,7 +266,7 @@ const EscortExpiredAdsList: React.FC<Props> = ({className}) => {
               </div>
             </>
           ) : (
-            <NotFoundComponent type='Escorts List' />
+            <NotFoundComponent type='Expired Ad' />
           )}
         </>
       ) : (

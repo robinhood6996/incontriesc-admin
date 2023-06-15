@@ -1,20 +1,18 @@
 import React, {Key, useEffect, useState} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
-import DeleteModal from '../Common/DeleteModal'
 import Loader from '../../../Components/Custom Components/common/Loader'
-import {ToastContainer, toast} from 'react-toastify'
 import {
+  useDeleteEscortAdMutation,
   useDeleteSingleEscortMutation,
   useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
-import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 import EscortAdReceiptModal from './EscortAdReceiptModal'
 import {Button} from 'react-bootstrap'
 import PaginationSetQuery from '../../../Components/Custom Components/common/PaginationSetQuery'
+import { toast } from 'react-toastify'
 
 type Props = {
   className: string
@@ -31,18 +29,18 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
   const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
   const [receiptModal, setReceiptModal] = useState<boolean>(false)
+  const [receiptData, setReceiptData] = useState<any>({})
   const [deleteModal, setDeleteModal] = useState(false)
-  const [receiptData, setReceiptData] = useState<string>('')
-
+  const [query, setQuery] = useState({isPaid: true, expired: false, limit: 50, offset: 0})
   const handleImageModal = () => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(query, {skip: !query})
   const [
-    deleteEscort,
+    deleteAd,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
-  ] = useDeleteSingleEscortMutation()
+  ] = useDeleteEscortAdMutation()
 
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
@@ -50,7 +48,7 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
 
   const handleDelete = () => {
     if (deleteEscortUserName !== '') {
-      deleteEscort(deleteEscortUserName)
+      deleteAd(deleteEscortUserName)
     }
     setDeleteModal(false)
   }
@@ -245,6 +243,7 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                               isPaid: boolean
                               payAmount: number
                               packageType: number
+                              paymentMedia: string
                             },
                             index: Key
                           ) => {
@@ -321,17 +320,18 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                                     </div>
                                   </td>
                                   <td>
-                                    <div className='d-flex justify-content-end flex-shrink-0'>
+                                    {ad?.paymentMedia === 'bank' && <div className='d-flex justify-content-end flex-shrink-0'>
                                       <button
                                         className='btn btn-primary btn-sm me-1'
                                         onClick={() => {
-                                          setReceiptData('')
+                                          setReceiptData({...ad?.paymentDetails})
                                           setReceiptModal(true)
                                         }}
                                       >
                                         View Receipt
                                       </button>
                                     </div>
+                                     }
                                   </td>
                                 </tr>
                               </>
@@ -358,7 +358,7 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
               />
             </>
           ) : (
-            <NotFoundComponent type='Escorts List' />
+            <NotFoundComponent type='Active Ad' />
           )}
         </>
       ) : (

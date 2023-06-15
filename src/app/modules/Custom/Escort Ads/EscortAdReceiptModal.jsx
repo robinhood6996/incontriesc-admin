@@ -25,7 +25,7 @@ export default function EscortAdReceiptModal({show, handleClose, data}) {
         </div>
         <div className='modal-body py-lg-10 px-lg-10'>
           <div className='d-flex align-items-center justify-content-center'>
-            <img className='w-75' src={toAbsoluteUrl('/media/receipt.jpeg')} alt='' />
+            <img className='w-75' src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/bank/${data?.receipt?.filename}`} alt='' />
           </div>
         </div>
       </Modal>

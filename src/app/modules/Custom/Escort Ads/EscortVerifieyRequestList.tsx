@@ -6,12 +6,14 @@ import DeleteModal from '../Common/DeleteModal'
 import Loader from '../../../Components/Custom Components/common/Loader'
 import {ToastContainer, toast} from 'react-toastify'
 import {
+  useDeleteEscortAdMutation,
   useDeleteSingleEscortMutation,
   useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
 import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
+import EscortAdReceiptModal from './EscortAdReceiptModal'
 
 type Props = {
   className: string
@@ -19,19 +21,20 @@ type Props = {
 
 const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
   const [showImageModal, setShowImageModal] = useState(false)
-  const [selectedImageURL, setSelectedImageURL] = useState('')
   const [deleteEscortUserName, setDeleteEscortUserName] = useState<string>('')
-  const [deleteModal, setDeleteModal] = useState(false)
-
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [receiptModal, setReceiptModal] = useState<boolean>(false)
+  const [receiptData, setReceiptData] = useState<any>({})
   const handleImageModal = () => {
-    setShowImageModal(!showImageModal)
+    setReceiptModal(!receiptModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
+  const [query, setQuery] = useState({isPaid: false, expired: false, limit: 50, offset: 0})
+  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(query, {skip: !query})
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
-  ] = useDeleteSingleEscortMutation()
+  ] = useDeleteEscortAdMutation()
 
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
@@ -114,19 +117,16 @@ const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
                           <th className='min-w-130px'>Name</th>
                           <th className='min-w-110px'>Username</th>
                           <th className='min-w-120px'>Email</th>
-                          {/* <th className='min-w-200px'>Photos</th> */}
-                          {/* <th className='min-w-100px'>Status</th> */}
                           <th className='min-w-100px'>Payment Type</th>
                           <th className='min-w-100px'>Payment Status</th>
                           <th className='min-w-100px text-end'>Actions</th>
                         </tr>
                       </thead>
-                      {/* end::Table head */}
-                      {/* begin::Table body */}
                       <tbody>
                         {data?.ads?.map(
                           (
                             ad: {
+                              _id: string
                               name: string
                               email: string
                               status: string
@@ -136,6 +136,8 @@ const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
                               photos: any
                               isBank: boolean
                               isPaid: boolean
+                              paymentMedia: string
+                              paymentDetails: any
                             },
                             index: Key
                           ) => {
@@ -161,52 +163,13 @@ const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
                                     >
                                       {ad?.username}
                                     </a>
-                                    {/* <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                      VIP
-                                    </span> */}
                                   </td>
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='d-flex flex-stack mb-2'>{ad?.email}</div>
                                     </div>
                                   </td>
-                                  {/* <td className='text-start'>
-                                    <div className='d-flex w-100 me-2'>
-                                      {ad?.photos?.map((image: {filename: string}, index: Key) => {
-                                        return (
-                                          <>
-                                            <div
-                                              key={index}
-                                              className='symbol symbol-45px me-5'
-                                              onClick={() => {
-                                                setSelectedImageURL(
-                                                  `${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`
-                                                )
-                                                handleImageModal()
-                                              }}
-                                            >
-                                              <img
-                                                src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`}
-                                                alt=''
-                                              />
-                                            </div>
-                                          </>
-                                        )
-                                      })}
-                                    </div>
-                                  </td> */}
-                                  {/* <td className='text-end'>
-                                    <div className='d-flex flex-column w-100 me-2'>
-                                      <div className='form-check form-switch form-check-custom form-check-solid'>
-                                        <input
-                                          className='form-check-input h-20px w-30px'
-                                          type='checkbox'
-                                          value=''
-                                          id='flexSwitchDefault'
-                                        />
-                                      </div>
-                                    </div>
-                                  </td> */}
+                                  
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='d-flex flex-stack mb-2 fw-bold'>
@@ -227,13 +190,18 @@ const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
                                   </td>
                                   <td>
                                     <div className='d-flex justify-content-end flex-shrink-0'>
-                                      <button className='btn btn-primary btn-sm me-1'>
-                                        View Receipt
-                                      </button>
+                                      {ad?.paymentMedia === 'bank' && (
+                                        <button className='btn btn-primary btn-sm me-1'  onClick={() => {
+                                          setReceiptData({...ad?.paymentDetails})
+                                          setReceiptModal(true)
+                                        }}>
+                                          View Receipt
+                                        </button>
+                                      )}
                                       <button
                                         className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                         onClick={() => {
-                                          setDeleteEscortUserName(ad?.username)
+                                          setDeleteEscortUserName(ad?._id)
                                           handleDeleteModal()
                                         }}
                                       >
@@ -265,16 +233,16 @@ const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
               </div>
             </>
           ) : (
-            <NotFoundComponent type='Escorts List' />
+            <NotFoundComponent type='Pending Ad' />
           )}
         </>
       ) : (
         <ErrorComponent />
       )}
-      <ImageModal
-        show={showImageModal}
+       <EscortAdReceiptModal
+        show={receiptModal}
         handleClose={handleImageModal}
-        imageURL={selectedImageURL}
+        data={receiptData}
       />
     </>
   )
