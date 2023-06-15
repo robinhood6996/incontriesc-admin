@@ -5,6 +5,7 @@
 // General mode
 .app-main {
     display: flex;
+    min-height: calc(100vh - 70px);
 }
 
 // Desktop mode

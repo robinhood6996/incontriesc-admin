@@ -14,6 +14,7 @@ import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
 import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 import EscortAdReceiptModal from './EscortAdReceiptModal'
+import { Button } from 'react-bootstrap'
 
 type Props = {
   className: string
@@ -68,9 +69,104 @@ const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
       }, 2000)
     }
   }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
-
+  const paymentTypeOptions = [
+    {
+      label: 'Card',
+      value: 'card',
+    },
+    {
+      label: 'Bank',
+      value: 'bank',
+    },
+  ]
+  const packageTypeOptions = [
+    {
+      label: 'VIP',
+      value: '1',
+    },
+    {
+      label: 'Featured',
+      value: '2',
+    },
+    {
+      label: 'Girl of the month',
+      value: '3',
+    },
+    {
+      label: 'God of the day',
+      value: '4',
+    },
+  ]
   return (
     <>
+     <div className='card card-xxl-stretch mb-5 mb-xl-8'>
+        <div className='row p-3 align-items-center'>
+          <div className='col-lg-4 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.payment = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.payment
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select payment type</option>
+              {paymentTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-4 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.package = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.package
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select package type</option>
+              {packageTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-1 col-md-4 col-6'>
+            <Button
+              // onClick={() => setShowCreateModal(true)}
+              className='btn fw-bold btn-primary'
+              data-bs-toggle='modal'
+              data-bs-target='#kt_modal_create_app'
+            >
+              Search
+            </Button>
+          </div>
+        </div>
+      </div>
       {isFetching ? (
         <Loader />
       ) : !isFetching && !isError && isSuccess ? (
@@ -86,23 +182,7 @@ const EscortVerifieyRequestList: React.FC<Props> = ({className}) => {
                       {data?.ads?.length ?? 0} Total Escorts
                     </span>
                   </h3>
-                  {/* <div
-                    className='card-toolbar'
-                    data-bs-toggle='tooltip'
-                    data-bs-placement='top'
-                    data-bs-trigger='hover'
-                    title='Click to add a user'
-                  >
-                    <a
-                      href='/'
-                      className='btn btn-sm btn-light-primary'
-                      // data-bs-toggle='modal'
-                      // data-bs-target='#kt_modal_invite_friends'
-                    >
-                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-                      New Member
-                    </a>
-                  </div> */}
+                 
                 </div>
                 {/* end::Header */}
                 {/* begin::Body */}

@@ -21,11 +21,12 @@ import ReviewsList from '../modules/Custom/reviews/ReviewsList'
 import ActiveEscortsList from '../modules/Custom/Escorts/ActiveEscortsList'
 import InactiveEscortsList from '../modules/Custom/Escorts/InactiveEscortsList'
 import EscortVerifieyRequestList from '../modules/Custom/Escort Ads/EscortVerifieyRequestList'
-import EscortVerifiedIDList from '../modules/Custom/Escort Ads/EscortVerifiedIDList'
+import EscortVerifiedIDList from '../modules/Custom/Escort Ads/ActiveAdList'
 import EscortExpiredAdsList from '../modules/Custom/Escort Ads/EscortExpiredAdsList'
 import ActiveBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/ActiveBannerAdvertisementList'
 import ExpiredBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/ExpiredBannerAdvertisementList'
 import PendingBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/PendingBannerAdvertisementList'
+import ActiveAdList from '../modules/Custom/Escort Ads/ActiveAdList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -187,7 +188,7 @@ const PrivateRoutes = () => {
           path='/active-escort-ads'
           element={
             <SuspensedView>
-              <EscortVerifiedIDList className='mb-5 mb-xl-8' />
+              <ActiveAdList className='mb-5 mb-xl-8' />
             </SuspensedView>
           }
         />

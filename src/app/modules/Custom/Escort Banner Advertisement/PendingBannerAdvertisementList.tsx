@@ -1,18 +1,17 @@
-import React, {Key, useEffect, useState} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
+import React, {Key, useEffect, useRef, useState} from 'react'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
-import DeleteModal from '../Common/DeleteModal'
 import Loader from '../../../Components/Custom Components/common/Loader'
-import {ToastContainer, toast} from 'react-toastify'
 import {
   useDeleteSingleEscortMutation,
   useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
-import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 import EscortAdReceiptModal from '../Escort Ads/EscortAdReceiptModal'
+import { Button } from 'react-bootstrap'
+import { toast } from 'react-toastify'
+import { useGetAllBannersQuery } from '../../../../redux/features/api/bannerAdvertising/bannerApi'
 
 type Props = {
   className: string
@@ -25,12 +24,13 @@ const PendingBannerAdvertisementList: React.FC<Props> = ({className}) => {
   const [receiptModal, setReceiptModal] = useState<boolean>(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [receiptData, setReceiptData] = useState<string>('')
-
+  const searchRef = useRef<any>()
+  const [query, setQuery] = useState<any>({active: false, expired: false, limit: 50, offset: 0})
   const handleImageModal = () => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetAllBannersQuery(query, {skip: !query})
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
@@ -73,40 +73,137 @@ const PendingBannerAdvertisementList: React.FC<Props> = ({className}) => {
     }
   }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
 
+  const paymentTypeOptions = [
+    {
+      label: 'Card',
+      value: 'card',
+    },
+    {
+      label: 'Bank',
+      value: 'bank',
+    },
+  ]
+  const packageTypeOptions = [
+    {
+      label: 'Profile Top',
+      value: 'profile',
+    },
+    {
+      label: 'Left sidebar',
+      value: 'left',
+    },
+    {
+      label: 'Right sidebar',
+      value: 'right',
+    },
+  ]
   return (
     <>
+     <div className='card card-xxl-stretch mb-5 mb-xl-8'>
+                <div className='row p-3 align-items-center'>
+                  <div className='col-lg-3 col-md-4 col-12'>
+                    <input
+                      className='form-control form-control-lg form-control-solid border border-secondary'
+                      placeholder='Search email'
+                      type='text'
+                      autoComplete='off'
+                    />
+                  </div>
+                  <div className='col-lg-2 col-md-4 col-6'>
+                    <select
+                      className='form-select'
+                      aria-label='Select example'
+                      onChange={(e) => {
+                        setQuery((prev: any) => {
+                          let oldQ = {...prev}
+                          if (e.target.value !== 'default') {
+                            oldQ.payment = e.target.value
+                            return oldQ
+                          } else {
+                            delete oldQ.payment
+                            return oldQ
+                          }
+                        })
+                      }}
+                    >
+                      <option value={'default'}>Select payment type</option>
+                      {paymentTypeOptions?.map(
+                        (option: {label: string; value: string}, index: Key) => {
+                          return (
+                            <option key={index} value={option?.value}>
+                              {option?.label}
+                            </option>
+                          )
+                        }
+                      )}
+                    </select>
+                  </div>
+                  <div className='col-lg-2 col-md-4 col-6'>
+                    <select className='form-select' aria-label='Select example'
+                     onChange={(e) => {
+                      setQuery((prev: any) => {
+                        let oldQ = {...prev}
+                        if (e.target.value !== 'default') {
+                          oldQ.package = e.target.value
+                          return oldQ
+                        } else {
+                          delete oldQ.package
+                          return oldQ
+                        }
+                      })
+                    }}
+                    >
+                      <option value={'default'}>Select package type</option>
+                      {packageTypeOptions?.map(
+                        (option: {label: string; value: string}, index: Key) => {
+                          return (
+                            <option key={index} value={option?.value}>
+                              {option?.label}
+                            </option>
+                          )
+                        }
+                      )}
+                    </select>
+                  </div>
+                  <div className='col-lg-1 col-md-4 col-6'>
+                    <Button
+                      // onClick={() => setShowCreateModal(true)}
+                      className='btn fw-bold btn-primary'
+                      data-bs-toggle='modal'
+                      data-bs-target='#kt_modal_create_app'
+                    >
+                      Search
+                    </Button>
+                  </div>
+                  {/* <div className='col-lg-2 col-md-4 col-6'>
+                    <Button
+                      // onClick={() => setShowCreateModal(true)}
+                      className='btn fw-bold btn-primary'
+                      data-bs-toggle='modal'
+                      data-bs-target='#kt_modal_create_app'
+                    >
+                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+                      Create User
+                    </Button>
+                  </div> */}
+                </div>
+              </div>
       {isFetching ? (
         <Loader />
       ) : !isFetching && !isError && isSuccess ? (
         <>
-          {data?.ads?.length > 0 ? (
+          {data?.banners?.length > 0 ? (
             <>
               <div className={`card ${className}`}>
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Escorts Active Ads</span>
+                    <span className='card-label fw-bold fs-3 mb-1'>Pending Banners</span>
                     <span className='text-muted mt-1 fw-semibold fs-7'>
                       {data?.ads?.length ?? 0} Total Escorts
                     </span>
                   </h3>
-                  {/* <div
-                    className='card-toolbar'
-                    data-bs-toggle='tooltip'
-                    data-bs-placement='top'
-                    data-bs-trigger='hover'
-                    title='Click to add a user'
-                  >
-                    <a
-                      href='/'
-                      className='btn btn-sm btn-light-primary'
-                      // data-bs-toggle='modal'
-                      // data-bs-target='#kt_modal_invite_friends'
-                    >
-                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-                      New Member
-                    </a>
-                  </div> */}
+                 
                 </div>
                 {/* end::Header */}
                 {/* begin::Body */}
@@ -132,7 +229,7 @@ const PendingBannerAdvertisementList: React.FC<Props> = ({className}) => {
                       {/* end::Table head */}
                       {/* begin::Table body */}
                       <tbody>
-                        {data?.ads?.map(
+                        {data?.banners?.map(
                           (
                             ad: {
                               name: string
@@ -227,7 +324,7 @@ const PendingBannerAdvertisementList: React.FC<Props> = ({className}) => {
                                       <button
                                         className='btn btn-primary btn-sm me-1'
                                         onClick={() => {
-                                          setReceiptData('')
+                                          setReceiptData(ad?.paymentDetails)
                                           setReceiptModal(true)
                                         }}
                                       >

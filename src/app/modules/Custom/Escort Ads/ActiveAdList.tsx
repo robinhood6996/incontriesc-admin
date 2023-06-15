@@ -4,7 +4,6 @@ import NotFoundComponent from '../../../Components/Custom Components/common/NotF
 import Loader from '../../../Components/Custom Components/common/Loader'
 import {
   useDeleteEscortAdMutation,
-  useDeleteSingleEscortMutation,
   useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
@@ -12,13 +11,13 @@ import ImageModal from '../Common/ImageModal'
 import EscortAdReceiptModal from './EscortAdReceiptModal'
 import {Button} from 'react-bootstrap'
 import PaginationSetQuery from '../../../Components/Custom Components/common/PaginationSetQuery'
-import { toast } from 'react-toastify'
+import {toast} from 'react-toastify'
 
 type Props = {
   className: string
 }
 
-const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
+const ActiveAdList: React.FC<Props> = ({className}) => {
   const limit: number = 16
   const [page, setPage] = useState(1)
   const [searchParams, setSearchParams] = useState({
@@ -31,7 +30,7 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
   const [receiptModal, setReceiptModal] = useState<boolean>(false)
   const [receiptData, setReceiptData] = useState<any>({})
   const [deleteModal, setDeleteModal] = useState(false)
-  const [query, setQuery] = useState({isPaid: true, expired: false, limit: 50, offset: 0})
+  const [query, setQuery] = useState<any>({isPaid: true, expired: false, limit: 50, offset: 0})
   const handleImageModal = () => {
     setShowImageModal(!showImageModal)
   }
@@ -41,17 +40,6 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
     deleteAd,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
   ] = useDeleteEscortAdMutation()
-
-  const handleDeleteModal = () => {
-    setDeleteModal(!deleteModal)
-  }
-
-  const handleDelete = () => {
-    if (deleteEscortUserName !== '') {
-      deleteAd(deleteEscortUserName)
-    }
-    setDeleteModal(false)
-  }
 
   const handleReceiptModal = () => {
     setReceiptModal(!receiptModal)
@@ -70,19 +58,19 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
   const packageTypeOptions = [
     {
       label: 'VIP',
-      value: 'vip',
+      value: '1',
     },
     {
       label: 'Featured',
-      value: 'featured',
+      value: '2',
     },
     {
       label: 'Girl of the month',
-      value: 'gom',
+      value: '3',
     },
     {
-      label: 'God of dick',
-      value: 'god',
+      label: 'God of the day',
+      value: '4',
     },
   ]
 
@@ -110,124 +98,112 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
 
   return (
     <>
-      {isFetching ? (
-        <Loader />
-      ) : !isFetching && !isError && isSuccess ? (
-        <>
-          {data?.ads?.length > 0 ? (
-            <>
-              <div className='card card-xxl-stretch mb-5 mb-xl-8'>
-                <div className='row p-3 align-items-center'>
-                  <div className='col-lg-3 col-md-4 col-12'>
-                    <input
-                      className='form-control form-control-lg form-control-solid border border-secondary'
-                      placeholder='Search email'
-                      type='text'
-                      autoComplete='off'
-                    />
-                  </div>
-                  <div className='col-lg-2 col-md-4 col-6'>
-                    <select className='form-select' aria-label='Select example'>
-                      <option value={'default'}>Select payment type</option>
-                      {paymentTypeOptions?.map(
-                        (option: {label: string; value: string}, index: Key) => {
-                          return (
-                            <option key={index} value={option?.value}>
-                              {option?.label}
-                            </option>
-                          )
-                        }
-                      )}
-                    </select>
-                  </div>
-                  <div className='col-lg-2 col-md-4 col-6'>
-                    <select className='form-select' aria-label='Select example'>
-                      <option value={'default'}>Select package type</option>
-                      {packageTypeOptions?.map(
-                        (option: {label: string; value: string}, index: Key) => {
-                          return (
-                            <option key={index} value={option?.value}>
-                              {option?.label}
-                            </option>
-                          )
-                        }
-                      )}
-                    </select>
-                  </div>
-                  <div className='col-lg-1 col-md-4 col-6'>
-                    <Button
-                      // onClick={() => setShowCreateModal(true)}
-                      className='btn fw-bold btn-primary'
-                      data-bs-toggle='modal'
-                      data-bs-target='#kt_modal_create_app'
-                    >
-                      Search
-                    </Button>
-                  </div>
-                  {/* <div className='col-lg-2 col-md-4 col-6'>
-                    <Button
-                      // onClick={() => setShowCreateModal(true)}
-                      className='btn fw-bold btn-primary'
-                      data-bs-toggle='modal'
-                      data-bs-target='#kt_modal_create_app'
-                    >
-                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-                      Create User
-                    </Button>
-                  </div> */}
-                </div>
-              </div>
-              <div className={`card ${className}`}>
-                {/* begin::Header */}
-                <div className='card-header border-0 pt-5'>
-                  <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Escorts Active Ads</span>
-                    <span className='text-muted mt-1 fw-semibold fs-7'>
-                      {data?.ads?.length ?? 0} Total Escorts
-                    </span>
-                  </h3>
-                  {/* <div
-                    className='card-toolbar'
-                    data-bs-toggle='tooltip'
-                    data-bs-placement='top'
-                    data-bs-trigger='hover'
-                    title='Click to add a user'
-                  >
-                    <a
-                      href='/'
-                      className='btn btn-sm btn-light-primary'
-                      // data-bs-toggle='modal'
-                      // data-bs-target='#kt_modal_invite_friends'
-                    >
-                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-                      New Member
-                    </a>
-                  </div> */}
-                </div>
-                {/* end::Header */}
-                {/* begin::Body */}
-                <div className='card-body py-3'>
-                  {/* begin::Table container */}
-                  <div className='table-responsive'>
-                    {/* begin::Table */}
-                    <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4'>
-                      {/* begin::Table head */}
-                      <thead>
-                        <tr className='fw-bold text-muted'>
-                          <th className='min-w-130px'>Name</th>
-                          <th className='min-w-120px'>Email</th>
-                          <th className='min-w-120px'>Date</th>
-                          <th className='min-w-100px'>Payment Type</th>
-                          <th className='min-w-100px'>Price</th>
-                          <th className='min-w-100px'>Package Type</th>
-                          <th className='min-w-100px'>Transaction ID</th>
-                          <th className='min-w-100px'>Payment Status</th>
-                          <th className='min-w-100px text-end'>Actions</th>
-                        </tr>
-                      </thead>
-                      {/* end::Table head */}
-                      {/* begin::Table body */}
-                      <tbody>
+      <div className='card card-xxl-stretch mb-5 mb-xl-8'>
+        <div className='row p-3 align-items-center'>
+          <div className='col-lg-4 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.payment = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.payment
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select payment type</option>
+              {paymentTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-4 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.package = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.package
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select package type</option>
+              {packageTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-1 col-md-4 col-6'>
+            <Button
+              // onClick={() => setShowCreateModal(true)}
+              className='btn fw-bold btn-primary'
+              data-bs-toggle='modal'
+              data-bs-target='#kt_modal_create_app'
+            >
+              Search
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className={`card ${className}`}>
+        {/* begin::Header */}
+        <div className='card-header border-0 pt-5'>
+          <h3 className='card-title align-items-start flex-column'>
+            <span className='card-label fw-bold fs-3 mb-1'>Escorts Active Ads</span>
+            <span className='text-muted mt-1 fw-semibold fs-7'>
+              {data?.ads?.length ?? 0} Total Escorts
+            </span>
+          </h3>
+        </div>
+        {/* end::Header */}
+        {/* begin::Body */}
+        <div className='card-body py-3'>
+          {/* begin::Table container */}
+          <div className='table-responsive'>
+            {/* begin::Table */}
+            <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4'>
+              {/* begin::Table head */}
+              <thead>
+                <tr className='fw-bold text-muted'>
+                  <th className='min-w-130px'>Name</th>
+                  <th className='min-w-120px'>Email</th>
+                  <th className='min-w-120px'>Date</th>
+                  <th className='min-w-100px'>Payment Type</th>
+                  <th className='min-w-100px'>Price</th>
+                  <th className='min-w-100px'>Package Type</th>
+                  <th className='min-w-100px'>Transaction ID</th>
+                  <th className='min-w-100px'>Payment Status</th>
+                  <th className='min-w-100px text-end'>Actions</th>
+                </tr>
+              </thead>
+              {/* end::Table head */}
+              {/* begin::Table body */}
+              {isFetching ? (
+                <Loader />
+              ) : !isFetching && !isError && isSuccess ? (
+                <>{data?.ads?.length > 0 ? <> 
+                <tbody>
                         {data?.ads?.map(
                           (
                             ad: {
@@ -339,31 +315,28 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
                           }
                         )}
                       </tbody>
-                      {/* end::Table body */}
-                    </table>
-                    {/* end::Table */}
-                  </div>
-                  {/* end::Table container */}
-                </div>
-                {/* begin::Body */}
-              </div>
-              <PaginationSetQuery
-                limit={limit}
-                page={page}
-                dataLength={10}
-                params={searchParams}
-                setParams={setSearchParams}
-                setPage={setPage}
-                totalPage={10}
-              />
-            </>
-          ) : (
-            <NotFoundComponent type='Active Ad' />
-          )}
-        </>
-      ) : (
-        <ErrorComponent />
-      )}
+                </> : <>Not Found ad</>}</>
+              ) : (
+                <ErrorComponent />
+              )}
+              {/* end::Table body */}
+            </table>
+            {/* end::Table */}
+          </div>
+          {/* end::Table container */}
+        </div>
+        {/* begin::Body */}
+      </div>
+      <PaginationSetQuery
+        limit={limit}
+        page={page}
+        dataLength={10}
+        params={searchParams}
+        setParams={setSearchParams}
+        setPage={setPage}
+        totalPage={10}
+      />
+
       <ImageModal
         show={showImageModal}
         handleClose={handleImageModal}
@@ -378,4 +351,4 @@ const EscortVerifiedIDList: React.FC<Props> = ({className}) => {
   )
 }
 
-export default EscortVerifiedIDList
+export default ActiveAdList

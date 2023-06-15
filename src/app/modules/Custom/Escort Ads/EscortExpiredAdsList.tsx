@@ -6,12 +6,14 @@ import DeleteModal from '../Common/DeleteModal'
 import Loader from '../../../Components/Custom Components/common/Loader'
 import {ToastContainer, toast} from 'react-toastify'
 import {
+  useDeleteEscortAdMutation,
   useDeleteSingleEscortMutation,
   useGetFeaturedEscortsQuery,
 } from '../../../../redux/features/api/escorts/escortsApi'
 import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
 import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
+import { Button } from 'react-bootstrap'
 
 type Props = {
   className: string
@@ -32,7 +34,7 @@ const EscortExpiredAdsList: React.FC<Props> = ({className}) => {
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
-  ] = useDeleteSingleEscortMutation()
+  ] = useDeleteEscortAdMutation()
 
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
@@ -66,9 +68,104 @@ const EscortExpiredAdsList: React.FC<Props> = ({className}) => {
       }, 2000)
     }
   }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
-
+  const paymentTypeOptions = [
+    {
+      label: 'Card',
+      value: 'card',
+    },
+    {
+      label: 'Bank',
+      value: 'bank',
+    },
+  ]
+  const packageTypeOptions = [
+    {
+      label: 'VIP',
+      value: '1',
+    },
+    {
+      label: 'Featured',
+      value: '2',
+    },
+    {
+      label: 'Girl of the month',
+      value: '3',
+    },
+    {
+      label: 'God of the day',
+      value: '4',
+    },
+  ]
   return (
     <>
+     <div className='card card-xxl-stretch mb-5 mb-xl-8'>
+        <div className='row p-3 align-items-center'>
+          <div className='col-lg-4 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.payment = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.payment
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select payment type</option>
+              {paymentTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-4 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.package = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.package
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select package type</option>
+              {packageTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-1 col-md-4 col-6'>
+            <Button
+              // onClick={() => setShowCreateModal(true)}
+              className='btn fw-bold btn-primary'
+              data-bs-toggle='modal'
+              data-bs-target='#kt_modal_create_app'
+            >
+              Search
+            </Button>
+          </div>
+        </div>
+      </div>
       {isFetching ? (
         <Loader />
       ) : !isFetching && !isError && isSuccess ? (

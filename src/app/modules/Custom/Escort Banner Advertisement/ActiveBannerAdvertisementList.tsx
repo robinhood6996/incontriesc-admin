@@ -1,4 +1,4 @@
-import React, {Key, useEffect, useState} from 'react'
+import React, {Key, useEffect, useRef, useState} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
 import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
@@ -15,6 +15,7 @@ import {useGetAllVerificationQuery} from '../../../../redux/features/api/verific
 import EscortAdReceiptModal from '../Escort Ads/EscortAdReceiptModal'
 import PaginationSetQuery from '../../../Components/Custom Components/common/PaginationSetQuery'
 import {Button} from 'react-bootstrap'
+import {useGetAllBannersQuery} from '../../../../redux/features/api/bannerAdvertising/bannerApi'
 
 type Props = {
   className: string
@@ -33,12 +34,13 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
   const [receiptModal, setReceiptModal] = useState<boolean>(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [receiptData, setReceiptData] = useState<string>('')
-
+  const searchRef = useRef<any>()
+  const [query, setQuery] = useState<any>({active: true, expired: false, limit: 50, offset: 0})
   const handleImageModal = () => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetAllBannersQuery(query, {skip: !query})
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
@@ -71,20 +73,16 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
   ]
   const packageTypeOptions = [
     {
-      label: 'VIP',
-      value: 'vip',
+      label: 'Profile Top',
+      value: 'profile',
     },
     {
-      label: 'Featured',
-      value: 'featured',
+      label: 'Left sidebar',
+      value: 'left',
     },
     {
-      label: 'Girl of the month',
-      value: 'gom',
-    },
-    {
-      label: 'God of dick',
-      value: 'god',
+      label: 'Right sidebar',
+      value: 'right',
     },
   ]
 
@@ -112,99 +110,98 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
 
   return (
     <>
+      <div className='card card-xxl-stretch mb-5 mb-xl-8'>
+        <div className='row p-3 align-items-center'>
+          <div className='col-lg-3 col-md-4 col-12'>
+            <input
+              ref={searchRef}
+              className='form-control form-control-lg form-control-solid border border-secondary'
+              placeholder='Search email'
+              type='text'
+              autoComplete='off'
+            />
+          </div>
+          <div className='col-lg-2 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.payment = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.payment
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select payment type</option>
+              {paymentTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-2 col-md-4 col-6'>
+            <select
+              className='form-select'
+              aria-label='Select example'
+              onChange={(e) => {
+                setQuery((prev: any) => {
+                  let oldQ = {...prev}
+                  if (e.target.value !== 'default') {
+                    oldQ.package = e.target.value
+                    return oldQ
+                  } else {
+                    delete oldQ.package
+                    return oldQ
+                  }
+                })
+              }}
+            >
+              <option value={'default'}>Select package type</option>
+              {packageTypeOptions?.map((option: {label: string; value: string}, index: Key) => {
+                return (
+                  <option key={index} value={option?.value}>
+                    {option?.label}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div className='col-lg-1 col-md-4 col-6'>
+            <Button
+              // onClick={() => setShowCreateModal(true)}
+              className='btn fw-bold btn-primary'
+              data-bs-toggle='modal'
+              data-bs-target='#kt_modal_create_app'
+            >
+              Search
+            </Button>
+          </div>
+        </div>
+      </div>
       {isFetching ? (
         <Loader />
       ) : !isFetching && !isError && isSuccess ? (
         <>
-          {data?.ads?.length > 0 ? (
+          {data?.banners?.length > 0 ? (
             <>
-              <div className='card card-xxl-stretch mb-5 mb-xl-8'>
-                <div className='row p-3 align-items-center'>
-                  <div className='col-lg-3 col-md-4 col-12'>
-                    <input
-                      className='form-control form-control-lg form-control-solid border border-secondary'
-                      placeholder='Search email'
-                      type='text'
-                      autoComplete='off'
-                    />
-                  </div>
-                  <div className='col-lg-2 col-md-4 col-6'>
-                    <select className='form-select' aria-label='Select example'>
-                      <option value={'default'}>Select payment type</option>
-                      {paymentTypeOptions?.map(
-                        (option: {label: string; value: string}, index: Key) => {
-                          return (
-                            <option key={index} value={option?.value}>
-                              {option?.label}
-                            </option>
-                          )
-                        }
-                      )}
-                    </select>
-                  </div>
-                  <div className='col-lg-2 col-md-4 col-6'>
-                    <select className='form-select' aria-label='Select example'>
-                      <option value={'default'}>Select package type</option>
-                      {packageTypeOptions?.map(
-                        (option: {label: string; value: string}, index: Key) => {
-                          return (
-                            <option key={index} value={option?.value}>
-                              {option?.label}
-                            </option>
-                          )
-                        }
-                      )}
-                    </select>
-                  </div>
-                  <div className='col-lg-1 col-md-4 col-6'>
-                    <Button
-                      // onClick={() => setShowCreateModal(true)}
-                      className='btn fw-bold btn-primary'
-                      data-bs-toggle='modal'
-                      data-bs-target='#kt_modal_create_app'
-                    >
-                      Search
-                    </Button>
-                  </div>
-                  {/* <div className='col-lg-2 col-md-4 col-6'>
-                    <Button
-                      // onClick={() => setShowCreateModal(true)}
-                      className='btn fw-bold btn-primary'
-                      data-bs-toggle='modal'
-                      data-bs-target='#kt_modal_create_app'
-                    >
-                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-                      Create User
-                    </Button>
-                  </div> */}
-                </div>
-              </div>
               <div className={`card ${className}`}>
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Escorts Active Banner Ads</span>
+                    <span className='card-label fw-bold fs-3 mb-1'>Active Banners</span>
                     <span className='text-muted mt-1 fw-semibold fs-7'>
-                      {data?.ads?.length ?? 0} Total Escorts
+                      {data?.banners?.length ?? 0} Total Escorts
                     </span>
                   </h3>
-                  {/* <div
-                    className='card-toolbar'
-                    data-bs-toggle='tooltip'
-                    data-bs-placement='top'
-                    data-bs-trigger='hover'
-                    title='Click to add a user'
-                  >
-                    <a
-                      href='/'
-                      className='btn btn-sm btn-light-primary'
-                      // data-bs-toggle='modal'
-                      // data-bs-target='#kt_modal_invite_friends'
-                    >
-                      <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-                      New Member
-                    </a>
-                  </div> */}
                 </div>
                 {/* end::Header */}
                 {/* begin::Body */}
@@ -230,7 +227,7 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
                       {/* end::Table head */}
                       {/* begin::Table body */}
                       <tbody>
-                        {data?.ads?.map(
+                        {data?.banners?.map(
                           (
                             ad: {
                               name: string
@@ -244,7 +241,8 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
                               isBank: boolean
                               isPaid: boolean
                               payAmount: number
-                              packageType: number
+                              position: string
+                              paymentMedia: string
                             },
                             index: Key
                           ) => {
@@ -292,13 +290,11 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
                                   <td className='text-end'>
                                     <div className='d-flex flex-column w-100 me-2'>
                                       <div className='d-flex flex-stack mb-2 fw-bold'>
-                                        {ad?.packageType === 1
-                                          ? 'VIP'
-                                          : ad?.packageType === 2
-                                          ? 'Featured'
-                                          : ad?.packageType === 3
-                                          ? 'Girl of the month'
-                                          : 'GOd of Dick'}
+                                        {ad?.position === 'profile'
+                                          ? 'Profile Top'
+                                          : ad?.position === 'left'
+                                          ? 'Left sidebar'
+                                          : 'Right sidebar'}
                                       </div>
                                     </div>
                                   </td>
@@ -322,15 +318,15 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
                                   </td>
                                   <td>
                                     <div className='d-flex justify-content-end flex-shrink-0'>
-                                      <button
+                                      {ad?.paymentMedia === 'bank' && <button
                                         className='btn btn-primary btn-sm me-1'
                                         onClick={() => {
-                                          setReceiptData('')
+                                          setReceiptData(ad?.paymentDetails)
                                           setReceiptModal(true)
                                         }}
                                       >
                                         View Receipt
-                                      </button>
+                                      </button>}
                                     </div>
                                   </td>
                                 </tr>
@@ -364,11 +360,7 @@ const ActiveBannerAdvertisementList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <ImageModal
-        show={showImageModal}
-        handleClose={handleImageModal}
-        imageURL={selectedImageURL}
-      />
+     
       <EscortAdReceiptModal
         show={receiptModal}
         handleClose={handleReceiptModal}
