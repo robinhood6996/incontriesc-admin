@@ -13,6 +13,7 @@ import moment from 'moment'
 import ImageModal from '../Common/ImageModal'
 import {useGetAllVerificationQuery} from '../../../../redux/features/api/verification/verificationApi'
 import EscortAdReceiptModal from '../Escort Ads/EscortAdReceiptModal'
+import { useGetAllBannersQuery } from '../../../../redux/features/api/bannerAdvertising/bannerApi'
 
 type Props = {
   className: string
@@ -25,12 +26,13 @@ const ExpiredBannerAdvertisementList: React.FC<Props> = ({className}) => {
   const [receiptModal, setReceiptModal] = useState<boolean>(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [receiptData, setReceiptData] = useState<string>('')
+  const [query, setQuery] = useState<any>({active: false, expired: true, limit: 50, offset: 0});
 
   const handleImageModal = () => {
     setShowImageModal(!showImageModal)
   }
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetFeaturedEscortsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetAllBannersQuery(query, {skip: !query})
   const [
     deleteEscort,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
