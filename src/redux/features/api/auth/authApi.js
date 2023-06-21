@@ -39,7 +39,14 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['getAllUser'],
     }),
-
+    userRegistration: builder.mutation({
+      query: (registerData) => ({
+        url: '/auth/register',
+        method: 'POST',
+        body: registerData,
+      }),
+      invalidatesTags: ['getAllUser'],
+    }),
     // userLoggedOut: builder.query({
     //   query: () => ({
     //     url: '/asiris_auth/auth/logout',
@@ -64,4 +71,9 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 })
 
-export const {useUserLoggedInMutation, useGetAllUserQuery, useDeleteSingleUserMutation} = authApi
+export const {
+  useUserLoggedInMutation,
+  useGetAllUserQuery,
+  useDeleteSingleUserMutation,
+  useUserRegistrationMutation,
+} = authApi

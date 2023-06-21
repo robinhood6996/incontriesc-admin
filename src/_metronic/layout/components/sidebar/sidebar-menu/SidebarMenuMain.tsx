@@ -33,12 +33,15 @@ const SidebarMenuMain = () => {
         hasBullet={false}
         icon='/media/icons/duotune/general/gen025.svg'
       />
-      <SidebarMenuItem
+      <SidebarMenuItemWithSub
         to='/users'
         title='Users'
         hasBullet={false}
         icon='/media/icons/duotune/communication/com006.svg'
-      />
+      >
+        <SidebarMenuItem to='/users' title='All Users' hasBullet={true} />
+        <SidebarMenuItem to='/create-user' title='Create User' hasBullet={true} />
+      </SidebarMenuItemWithSub>
       <SidebarMenuItemWithSub
         to='/active-escorts'
         title='Escorts'
@@ -119,6 +122,7 @@ const SidebarMenuMain = () => {
         <SidebarMenuItem to='/countries' title='Countries' hasBullet={true} />
         <SidebarMenuItem to='/cities' title='Cities' hasBullet={true} />
       </SidebarMenuItemWithSub>
+
       {/* <SidebarMenuItemWithSub
         to='/crafted/pages'
         title='Pages'

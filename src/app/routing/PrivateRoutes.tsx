@@ -27,6 +27,7 @@ import ActiveBannerAdvertisementList from '../modules/Custom/Escort Banner Adver
 import ExpiredBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/ExpiredBannerAdvertisementList'
 import PendingBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/PendingBannerAdvertisementList'
 import ActiveAdList from '../modules/Custom/Escort Ads/ActiveAdList'
+import {CreateUser} from '../modules/Custom/Users/CreateUser'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -109,6 +110,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <UserList className='card-xxl-stretch mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/create-user'
+          element={
+            <SuspensedView>
+              <CreateUser />
             </SuspensedView>
           }
         />
