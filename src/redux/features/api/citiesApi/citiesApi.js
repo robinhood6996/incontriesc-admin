@@ -29,17 +29,47 @@ export const citiesApi = apiSlice.injectEndpoints({
       query: (cityData) => ({
         url: `/city`,
         method: 'POST',
-        body: {name: cityData?.name, country: cityData?.country},
+        body: {...cityData},
       }),
       invalidatesTags: ['getAllCities'],
     }),
     editCity: builder.mutation({
-      query: ({id, cityName}) => ({
+      query: ({id, cityName, description}) => ({
         url: `/city/${id}`,
         method: 'PUT',
-        body: {name: cityName},
+        body: {name: cityName, description},
       }),
       invalidatesTags: ['getAllCities'],
+    }),
+    createArea: builder.mutation({
+      query: (cityData) => ({
+        url: `/area`,
+        method: 'POST',
+        body: {...cityData},
+      }),
+      invalidatesTags: ['getAllArea'],
+    }),
+    getAllAreas: builder.query({
+      query: () => ({
+        url: '/area',
+        method: 'GET',
+      }),
+      providesTags: ['getAllArea'],
+    }),
+    deleteSingleAra: builder.mutation({
+      query: (id) => ({
+        url: `/area/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getAllArea'],
+    }),
+    editArea: builder.mutation({
+      query: ({id, name, description}) => ({
+        url: `/area/${id}`,
+        method: 'PUT',
+        body: {name, description},
+      }),
+      invalidatesTags: ['getAllArea'],
     }),
   }),
 })
@@ -47,7 +77,12 @@ export const citiesApi = apiSlice.injectEndpoints({
 export const {
   useGetAllCitiesQuery,
   useGetCitiesByCountryQuery,
+  useLazyGetCitiesByCountryQuery,
   useDeleteSingleCityMutation,
   useCreateCityMutation,
   useEditCityMutation,
+  useCreateAreaMutation,
+  useGetAllAreasQuery,
+  useDeleteSingleAraMutation,
+  useEditAreaMutation,
 } = citiesApi

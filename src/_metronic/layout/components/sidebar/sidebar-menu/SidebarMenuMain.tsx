@@ -1,12 +1,14 @@
 /* eslint-disable react/jsx-no-target-blank */
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useIntl} from 'react-intl'
 import {KTSVG} from '../../../../helpers'
 import {SidebarMenuItemWithSub} from './SidebarMenuItemWithSub'
 import {SidebarMenuItem} from './SidebarMenuItem'
+import {useSelector} from 'react-redux'
 
 const SidebarMenuMain = () => {
   const intl = useIntl()
+  const {setLogout} = useSelector((state: any) => state.config)
 
   return (
     <>
@@ -57,12 +59,17 @@ const SidebarMenuMain = () => {
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
       /> */}
-      <SidebarMenuItem
+      <SidebarMenuItemWithSub
         to='/ads'
         title='Classified Ads'
         hasBullet={false}
         icon='/media/icons/duotune/general/gen022.svg'
-      />
+      >
+        <SidebarMenuItem to='/ads' title='Active Ad list' hasBullet={true} />
+        <SidebarMenuItem to='/pending-ads' title='Pending list' hasBullet={true} />
+        <SidebarMenuItem to='/create-ad' title='Create ad' hasBullet={true} />
+      </SidebarMenuItemWithSub>
+
       <SidebarMenuItem
         to='/tours'
         title='Tours'
@@ -121,6 +128,7 @@ const SidebarMenuMain = () => {
       >
         <SidebarMenuItem to='/countries' title='Countries' hasBullet={true} />
         <SidebarMenuItem to='/cities' title='Cities' hasBullet={true} />
+        <SidebarMenuItem to='/area' title='Areas' hasBullet={true} />
       </SidebarMenuItemWithSub>
 
       {/* <SidebarMenuItemWithSub

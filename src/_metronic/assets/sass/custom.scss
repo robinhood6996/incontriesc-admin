@@ -5,3 +5,11 @@
     max-height: unset !important;
   }
 }
+.flag-lang button {
+  padding: 5px;
+  border: none;
+}
+
+.flag-lang button span span {
+  color: var(--kt-text-gray-700);
+}

@@ -28,6 +28,9 @@ import ExpiredBannerAdvertisementList from '../modules/Custom/Escort Banner Adve
 import PendingBannerAdvertisementList from '../modules/Custom/Escort Banner Advertisement/PendingBannerAdvertisementList'
 import ActiveAdList from '../modules/Custom/Escort Ads/ActiveAdList'
 import {CreateUser} from '../modules/Custom/Users/CreateUser'
+import AreaList from '../modules/Custom/Area/AreaList'
+import {CreateAd} from '../modules/Custom/ClassifiedAds/CreateAd'
+import PendingAdList from '../modules/Custom/ClassifiedAds/PendingAdList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -162,10 +165,34 @@ const PrivateRoutes = () => {
           }
         />
         <Route
+          path='/area'
+          element={
+            <SuspensedView>
+              <AreaList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
           path='/ads'
           element={
             <SuspensedView>
               <AdList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/pending-ads'
+          element={
+            <SuspensedView>
+              <PendingAdList className='mb-5 mb-xl-8' />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/create-ad'
+          element={
+            <SuspensedView>
+              <CreateAd />
             </SuspensedView>
           }
         />

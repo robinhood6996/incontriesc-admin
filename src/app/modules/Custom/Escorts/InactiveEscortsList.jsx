@@ -16,7 +16,7 @@ import moment from 'moment'
 const InactiveEscortsList = ({className}) => {
   const [deleteEscortUserName, setDeleteEscortUserName] = useState('')
   const [deleteModal, setDeleteModal] = useState(false)
-
+  console.log('deleteEscortUserName', deleteEscortUserName)
   //api call
   const {data, isFetching, isError, isSuccess} = useGetInactiveEscortsQuery()
   const [
@@ -232,7 +232,7 @@ const InactiveEscortsList = ({className}) => {
                                     <button
                                       className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
                                       onClick={() => {
-                                        setDeleteEscortUserName(escort?.username)
+                                        setDeleteEscortUserName(escort?.userName)
                                         handleDeleteModal()
                                       }}
                                     >

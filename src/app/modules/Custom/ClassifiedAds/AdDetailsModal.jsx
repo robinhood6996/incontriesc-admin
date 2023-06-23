@@ -6,7 +6,7 @@ import {Modal} from 'react-bootstrap'
 export default function AdDetailsModal({show, handleClose, data}) {
   console.log('data', data)
   return (
-    <div>
+    <div className='w-100 d-block'>
       <Modal
         id='kt_modal_create_app'
         tabIndex={-1}
@@ -56,15 +56,16 @@ export default function AdDetailsModal({show, handleClose, data}) {
           <p className='m-0 mb-2'>
             <span className='fw-bold'>Images</span>
           </p>
-          <div className='w-100 d-flex'>
+          <div className='w-100 d-flex justify-content-start flex-wrap overflow-hidden'>
             {data?.photos?.map((image, index) => {
               return (
-                <img
-                  key={index}
-                  className='w-75'
-                  src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`}
-                  alt=''
-                />
+                <div key={index} className='mx-2 my-2'>
+                  <img
+                    src={`${process.env.REACT_APP_CUSTOM_BASE_URL}/esc/${image?.filename}`}
+                    alt=''
+                    width={250}
+                  />
+                </div>
               )
             })}
           </div>

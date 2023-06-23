@@ -12,6 +12,13 @@ export const freeAdsApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['getAllFreeAds'],
     }),
+    getAllInactiveFreeAds: builder.query({
+      query: () => ({
+        url: `/freead/inactive`,
+        method: 'GET',
+      }),
+      providesTags: ['getAllInactiveAd'],
+    }),
     myFreeAds: builder.query({
       query: () => ({
         url: `/freead/my`,
@@ -24,14 +31,14 @@ export const freeAdsApi = apiSlice.injectEndpoints({
         url: `/freead/${adId}`,
         method: 'GET',
       }),
-      providesTags: ['getSingleFreeAds'],
+      invalidatesTags: ['getSingleFreeAds'],
     }),
     deleteSingleFreeAds: builder.mutation({
       query: (adId) => ({
         url: `/freead/${adId}`,
         method: 'DELETE',
       }),
-      providesTags: ['getAllFreeAds'],
+      invalidatesTags: ['getAllFreeAds'],
     }),
     createFreeAd: builder.mutation({
       query: (apiData) => ({
@@ -40,6 +47,14 @@ export const freeAdsApi = apiSlice.injectEndpoints({
         body: apiData,
       }),
       invalidatesTags: ['getSingleFreeAds', 'getAllFreeAds'],
+    }),
+    editFreeAd: builder.mutation({
+      query: ({id, status}) => ({
+        url: `/freead/update/${id}`,
+        method: 'PUT',
+        body: {status},
+      }),
+      invalidatesTags: ['getAllFreeAds', 'getAllInactiveAd'],
     }),
   }),
 })
@@ -50,4 +65,6 @@ export const {
   useCreateFreeAdMutation,
   useDeleteSingleFreeAdsMutation,
   useMyFreeAdsQuery,
+  useGetAllInactiveFreeAdsQuery,
+  useEditFreeAdMutation,
 } = freeAdsApi

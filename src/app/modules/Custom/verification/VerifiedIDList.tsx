@@ -237,7 +237,7 @@ const VerifiedIDList: React.FC<Props> = ({className}) => {
               </div>
             </>
           ) : (
-            <NotFoundComponent type='Escorts List' />
+            <NotFoundComponent type='Verified Escort' />
           )}
         </>
       ) : (

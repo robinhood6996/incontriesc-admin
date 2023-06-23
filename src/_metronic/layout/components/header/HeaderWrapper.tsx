@@ -90,6 +90,7 @@ export function HeaderWrapper() {
               </div>
             )}
           <Navbar />
+          <div id='google_translate_element'></div>
         </div>
       </div>
     </div>

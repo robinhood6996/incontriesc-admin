@@ -19,7 +19,7 @@ export function CreateUser() {
     email: '',
     password: '',
     confirmPassword: '',
-    gender: 'female',
+    gender: '',
     age: '',
     phone: '',
     acceptTerms: false,
@@ -48,7 +48,16 @@ export function CreateUser() {
     initialValues,
     validationSchema: registrationSchema,
     onSubmit: async (values, {setStatus, setSubmitting}) => {
+      if (!values.gender || values.gender === 'default') {
+        toast.error('Please select gender', {hideProgressBar: true})
+        return
+      }
+      if (!values.type || values.type === 'default') {
+        toast.error('Please select type', {hideProgressBar: true})
+        return
+      }
       setLoading(true)
+
       const registerData = {
         name: values.name,
         email: values.email,
@@ -93,23 +102,17 @@ export function CreateUser() {
   })
   useEffect(() => {
     if (!isLoading && !isError && isSuccess) {
-      toast.success('Successfully registered! please login.', {
+      toast.success('Successfully created user', {
         hideProgressBar: true,
         toastId: 'registerSuccess',
       })
+      navigate('/users')
     }
     if (!isLoading && isError && !isSuccess) {
-      toast.error('Failed to update biography data! Retry.', {
+      toast.error('Failed to create user', {
         hideProgressBar: true,
         toastId: 'registerError',
       })
-    }
-    return () => {
-      setTimeout(() => {
-        toast.dismiss('registerSuccess')
-        toast.dismiss('registerError')
-        navigate('/users')
-      }, 4000)
     }
   }, [isError, isLoading, isSuccess])
   return (
@@ -218,6 +221,9 @@ export function CreateUser() {
                 required
                 {...formik.getFieldProps('gender')}
               >
+                <option value='default' selected>
+                  Select Gender
+                </option>
                 <option value='male'>Male</option>
                 <option value='female'>Female</option>
                 <option value='trans'>Transsexual</option>
@@ -262,6 +268,9 @@ export function CreateUser() {
                 required
                 {...formik.getFieldProps('type')}
               >
+                <option value='default' selected>
+                  Select Type
+                </option>
                 <option value='escort'>Escort</option>
                 <option value='default'>Default User</option>
                 <option value='admin'>Admin</option>

@@ -10,7 +10,7 @@ import {
 import {toast} from 'react-toastify'
 import AdDetailsModal from './AdDetailsModal'
 
-const AdTableRow = ({ad}) => {
+const PendingAdTableRow = ({ad}) => {
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteAdId, setDeleteAdId] = useState('')
   const [addDetailsModal, setAddDetailsModal] = useState(false)
@@ -19,12 +19,13 @@ const AdTableRow = ({ad}) => {
   const {data, isFetching, isSuccess, isError} = useGetSingleEscortDetailsQuery(ad?.username, {
     skip: !ad?.username,
   })
+  const [updateStatus, {isLoading, isError: editError, error}] = useEditFreeAdMutation()
 
   const [
     deleteAd,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
   ] = useDeleteSingleFreeAdsMutation()
-  const [updateStatus, {isLoading, isError: editError, error}] = useEditFreeAdMutation()
+
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal)
   }
@@ -61,8 +62,9 @@ const AdTableRow = ({ad}) => {
       }, 2000)
     }
   }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
+
   const handleStatusChange = (option) => {
-    updateStatus({id: option?.id, status: 'pending'})
+    updateStatus({id: option?.id, status: 'active'})
   }
   return (
     <>
@@ -117,7 +119,6 @@ const AdTableRow = ({ad}) => {
                 className='form-check-input h-20px w-30px'
                 type='checkbox'
                 id='flexSwitchDefault'
-                defaultChecked={ad.status === 'active'}
                 onChange={() => {
                   handleStatusChange({
                     status: 'active',
@@ -164,4 +165,4 @@ const AdTableRow = ({ad}) => {
   )
 }
 
-export default AdTableRow
+export default PendingAdTableRow

@@ -1,22 +1,22 @@
 import React, {Key, useEffect, useState} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
 import {
-  useDeleteSingleFreeAdsMutation,
   useGetAllFreeAdsQuery,
+  useGetAllInactiveFreeAdsQuery,
 } from '../../../../redux/features/api/freeAds/freeAdsApi'
 import Loader from '../../../Components/Custom Components/common/Loader'
-import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
-import AdTableRow from './AdTableRow'
+import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
+import PendingAdTableRow from './PenAdTableRow'
 
 type Props = {
   className: string
 }
 
-const AdList: React.FC<Props> = ({className}) => {
+const PendingAdList: React.FC<Props> = ({className}) => {
   const [deleteAdId, setDeleteAdId] = useState<string>('')
+  const [searchQ, setSearchQ] = useState({status: 'pending'})
   //api call
-  const {data, isFetching, isError, isSuccess} = useGetAllFreeAdsQuery(null)
+  const {data, isFetching, isError, isSuccess} = useGetAllInactiveFreeAdsQuery(null)
 
   return (
     <>
@@ -31,7 +31,7 @@ const AdList: React.FC<Props> = ({className}) => {
                   {/* begin::Header */}
                   <div className='card-header border-0 pt-5'>
                     <h3 className='card-title align-items-start flex-column'>
-                      <span className='card-label fw-bold fs-3 mb-1'>Active Classified Ads</span>
+                      <span className='card-label fw-bold fs-3 mb-1'>Pending Classified Ads</span>
                       <span className='text-muted mt-1 fw-semibold fs-7'>
                         Total Ads: {data?.data?.length}
                       </span>
@@ -59,7 +59,7 @@ const AdList: React.FC<Props> = ({className}) => {
                         {/* begin::Table body */}
                         <tbody>
                           {data?.data?.map((ad: any, index: Key) => {
-                            return <AdTableRow key={index} ad={ad} />
+                            return <PendingAdTableRow key={index} ad={ad} />
                           })}
                         </tbody>
                         {/* end::Table body */}
@@ -83,4 +83,4 @@ const AdList: React.FC<Props> = ({className}) => {
   )
 }
 
-export default AdList
+export default PendingAdList

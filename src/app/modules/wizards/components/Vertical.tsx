@@ -103,10 +103,7 @@ const Vertical = () => {
                 {/* end::Icon*/}
 
                 {/* begin::Label*/}
-                <div className='stepper-label'>
-                  <h3 className='stepper-title'>Account Settings</h3>
-                  <div className='stepper-desc fw-semibold'>Setup Your Account Settings</div>
-                </div>
+
                 {/* end::Label*/}
               </div>
               {/* end::Wrapper*/}

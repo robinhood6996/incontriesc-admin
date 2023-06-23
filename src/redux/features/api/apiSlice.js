@@ -1,4 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {setShouldLogout} from '../auth/configSlice'
+import {userLoggedOut} from '../auth/authSlice'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_CUSTOM_BASE_URL,
@@ -26,7 +28,8 @@ export const apiSlice = createApi({
       console.log('error=> apislice', result.error, extraOptions)
       if (result.error.status === 401) {
         console.log('401')
-        // api.dispatch(setIsLoggedOut(true))
+        api.dispatch(userLoggedOut())
+        api.dispatch(setShouldLogout())
       }
     }
     return result

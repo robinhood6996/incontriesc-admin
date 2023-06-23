@@ -24,6 +24,7 @@ const CityList: React.FC<Props> = ({className}) => {
   const [selectedForDelete, setSelectedForDelete] = useState<string>('')
   const [defaultCountryName, setDefaultCountryName] = useState<string>('')
   const [defaultCityName, setDefaultCityName] = useState<string>('')
+  const [defaultDescription, setDefaultDescription] = useState<string>('')
   const [cityId, setCityId] = useState<string>('')
 
   //api call
@@ -111,27 +112,23 @@ const CityList: React.FC<Props> = ({className}) => {
                           <th className='min-w-10px'>Serial</th>
                           <th className='min-w-140px'>City Name</th>
                           <th className='min-w-140px'>Country Name</th>
-                          <th className='min-w-120px'>Status</th>
+                          <th className='min-w-120px'>Description</th>
                           <th className='min-w-100px text-end'>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {data?.cities?.map(
-                          (city: {name: string; _id: string; country: string}, index: string) => {
+                          (
+                            city: {name: string; _id: string; country: string; description: string},
+                            index: string
+                          ) => {
                             return (
                               <>
                                 <tr key={index}>
                                   <td>{index + 1}</td>
                                   <td className='fw-bold'>{city?.name?.toUpperCase()}</td>
                                   <td className='fw-bold'>{city?.country?.toUpperCase()}</td>
-                                  <td>
-                                    <a
-                                      href='/'
-                                      className='text-dark fw-bold text-hover-primary d-block mb-1 fs-6'
-                                    >
-                                      Active
-                                    </a>
-                                  </td>
+                                  <td>{city?.description}</td>
 
                                   <td className='text-end'>
                                     {/* <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
@@ -147,6 +144,7 @@ const CityList: React.FC<Props> = ({className}) => {
                                         setCityId(city?._id)
                                         setDefaultCityName(city?.name)
                                         setDefaultCountryName(city?.country)
+                                        setDefaultDescription(city?.description ?? '')
                                         setIsCreateModal(true)
                                       }}
                                     >
@@ -202,6 +200,7 @@ const CityList: React.FC<Props> = ({className}) => {
         cityId={cityId}
         defaultCountryName={defaultCountryName}
         defaultCityName={defaultCityName}
+        defaultDescription={defaultDescription}
       />
       <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
     </>

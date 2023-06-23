@@ -13,9 +13,16 @@ import {toast} from 'react-toastify'
 //   type: string
 // }
 
-export default function CreateCountry({show, handleClose, type, countryId, defaultName}) {
+export default function CreateCountry({
+  show,
+  handleClose,
+  type,
+  countryId,
+  defaultName,
+  defaultDescription,
+}) {
   const countryNameRef = useRef()
-
+  const descriptionRef = useRef()
   //api call
   const [
     createCountry,
@@ -31,14 +38,18 @@ export default function CreateCountry({show, handleClose, type, countryId, defau
       type === 'add-country' &&
       (countryName !== null || countryName !== '' || countryName !== undefined)
     ) {
-      createCountry(countryName)
+      createCountry({countryName, description: descriptionRef?.current?.value ?? ''})
     }
     if (
       type === 'edit-country' &&
       (countryName !== null || countryName !== '' || countryName !== undefined) &&
       (countryId !== null || countryId !== '' || countryId !== undefined)
     ) {
-      editCountry({id: countryId, countryName: countryName})
+      editCountry({
+        id: countryId,
+        countryName: countryName,
+        description: descriptionRef?.current?.value ?? defaultDescription,
+      })
     }
     handleClose()
   }
@@ -128,13 +139,17 @@ export default function CreateCountry({show, handleClose, type, countryId, defau
                 ref={countryNameRef}
                 defaultValue={type === 'edit-country' ? defaultName : ''}
               />
-              {
-                <div className='fv-plugins-message-container'>
-                  <div data-field='appname' data-validator='notEmpty' className='fv-help-block'>
-                    Country name is required
-                  </div>
-                </div>
-              }
+              <label className='d-flex align-items-center fs-5 fw-semibold mb-2'>
+                <span className='required'>Description</span>
+              </label>
+              <div>
+                <textarea
+                  ref={descriptionRef}
+                  className='form-control form-control-lg form-control-solid'
+                >
+                  {defaultDescription ?? ''}
+                </textarea>
+              </div>
             </div>
             <div className='d-flex justify-content-end mb-2'>
               <Button

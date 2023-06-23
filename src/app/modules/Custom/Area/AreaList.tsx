@@ -1,39 +1,43 @@
 import React, {Key, useEffect, useState} from 'react'
 import {Button} from 'react-bootstrap'
-import {KTSVG} from '../../../../_metronic/helpers'
-import CreateCountry from './CreateCountry'
-import {
-  useCreateCountryMutation,
-  useDeleteSingleCountryMutation,
-  useGetAllCountryQuery,
-} from '../../../../redux/features/api/country/countryApi'
-import Loader from '../../../Components/Custom Components/common/Loader'
-import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
-import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
 import {toast} from 'react-toastify'
 import DeleteModal from '../Common/DeleteModal'
+
+import CreateArea from './CreateArea'
+import {
+  useDeleteSingleAraMutation,
+  useDeleteSingleCityMutation,
+  useGetAllAreasQuery,
+  useGetAllCitiesQuery,
+} from '../../../../redux/features/api/citiesApi/citiesApi'
+import Loader from '../../../Components/Custom Components/common/Loader'
+import {KTSVG} from '../../../../_metronic/helpers'
+import NotFoundComponent from '../../../Components/Custom Components/common/NotFoundComponent'
+import ErrorComponent from '../../../Components/Custom Components/common/ErrorComponent'
 
 type Props = {
   className: string
 }
 
-const CountryList: React.FC<Props> = ({className}) => {
+const AreaList: React.FC<Props> = ({className}) => {
   const [deleteModal, setDeleteModal] = useState(false)
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isEditModal, setIsEditModal] = useState(false)
   const [type, setType] = useState('')
   const [selectedForDelete, setSelectedForDelete] = useState<string>('')
-  const [countryId, setCountryId] = useState<string>('')
-  const [defaultName, setDefaultName] = useState<string>('')
+  const [defaultCountryName, setDefaultCountryName] = useState<string>('')
+  const [defaultCityName, setDefaultCityName] = useState<string>('')
+  const [defaultAreaName, setDefaultAreaName] = useState<string>('')
   const [defaultDescription, setDefaultDescription] = useState<string>('')
+  const [cityId, setCityId] = useState<string>('')
 
   //api call
-  const {data, isFetching, isSuccess} = useGetAllCountryQuery(null)
+  const {data, isFetching, isSuccess} = useGetAllAreasQuery(null)
 
   const [
-    deleteCountry,
+    deleteCity,
     {isLoading: isLoadingDelete, isError: isErrorDelete, isSuccess: isSuccessDelete},
-  ] = useDeleteSingleCountryMutation()
+  ] = useDeleteSingleAraMutation()
 
   const handleCreateCountryModal = () => {
     setIsCreateModal(!isCreateModal)
@@ -47,28 +51,28 @@ const CountryList: React.FC<Props> = ({className}) => {
   }
 
   const handleDelete = () => {
-    deleteCountry(selectedForDelete)
+    deleteCity(selectedForDelete)
     setDeleteModal(!deleteModal)
   }
 
   //toast delete country
   useEffect(() => {
     if (!isLoadingDelete && !isErrorDelete && isSuccessDelete) {
-      toast.success('Successfully deleted country', {
+      toast.success('Successfully deleted city', {
         hideProgressBar: true,
-        toastId: 'countryDeleteSuccess',
+        toastId: 'cityDeleteSuccess',
       })
     }
     if (!isLoadingDelete && isErrorDelete && !isSuccessDelete) {
-      toast.error('Failed to delete country', {
+      toast.error('Failed to delete city', {
         hideProgressBar: true,
-        toastId: 'countryDeleteError',
+        toastId: 'cityDeleteError',
       })
     }
     return () => {
       setTimeout(() => {
-        toast.dismiss('countryDeleteSuccess')
-        toast.dismiss('countryDeleteError')
+        toast.dismiss('cityDeleteSuccess')
+        toast.dismiss('cityDeleteError')
       }, 2000)
     }
   }, [isErrorDelete, isLoadingDelete, isSuccessDelete])
@@ -78,29 +82,29 @@ const CountryList: React.FC<Props> = ({className}) => {
       <div className='d-flex justify-content-end mb-2'>
         <Button
           onClick={() => {
-            setType('add-country')
+            setType('add-city')
             setIsCreateModal(true)
           }}
           className='btn btn-sm fw-bold btn-primary'
           // data-bs-toggle='modal'
           // data-bs-target='#kt_modal_create_app'
         >
-          Add Country
+          Add Area
         </Button>
       </div>
       {isFetching ? (
         <Loader />
       ) : !isFetching && isSuccess ? (
         <>
-          {data?.countries?.length > 0 ? (
+          {data?.length > 0 ? (
             <>
               <div className={`card ${className}`}>
                 {/* begin::Header */}
                 <div className='card-header border-0 pt-5'>
                   <h3 className='card-title align-items-start flex-column'>
-                    <span className='card-label fw-bold fs-3 mb-1'>Countries</span>
+                    <span className='card-label fw-bold fs-3 mb-1'>Areas</span>
                     <span className='text-muted mt-1 fw-semibold fs-7'>
-                      Total Countries: {data?.countries?.length ?? 0}
+                      Total cities: {data?.length ?? 0}
                     </span>
                   </h3>
                 </div>
@@ -110,23 +114,33 @@ const CountryList: React.FC<Props> = ({className}) => {
                       <thead>
                         <tr className='fw-bold text-muted'>
                           <th className='min-w-10px'>Serial</th>
-                          <th className='min-w-140px'>Name</th>
-                          <th className='min-w-120px'>Description</th>
+                          <th className='min-w-120px'>Area</th>
+                          <th className='min-w-140px'>City Name</th>
+                          <th className='min-w-140px'>Country Name</th>
+                          <th className='min-w-140px'>Description</th>
                           <th className='min-w-100px text-end'>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data?.countries?.map(
+                        {data?.map(
                           (
-                            country: {name: string; _id: string; description: string},
+                            area: {
+                              name: string
+                              _id: string
+                              country: string
+                              city: string
+                              description: string
+                            },
                             index: string
                           ) => {
                             return (
                               <>
                                 <tr key={index}>
                                   <td>{index + 1}</td>
-                                  <td className='fw-bold'>{country?.name?.toUpperCase()}</td>
-                                  <td>{country?.description}</td>
+                                  <td className='fw-bold'>{area?.name?.toUpperCase()}</td>
+                                  <td className='fw-bold'>{area?.city?.toUpperCase()}</td>
+                                  <td className='fw-bold'>{area?.country?.toUpperCase()}</td>
+                                  <td className='fw-bold'>{area?.description}</td>
 
                                   <td className='text-end'>
                                     {/* <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
@@ -138,10 +152,12 @@ const CountryList: React.FC<Props> = ({className}) => {
                                     <button
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                                       onClick={() => {
-                                        setDefaultName(country?.name)
-                                        setDefaultDescription(country?.description)
-                                        setType('edit-country')
-                                        setCountryId(country?._id)
+                                        setType('edit-city')
+                                        setCityId(area?._id)
+                                        setDefaultCityName(area?.city)
+                                        setDefaultCountryName(area?.country)
+                                        setDefaultAreaName(area?.name)
+                                        setDefaultDescription(area?.description ?? '')
                                         setIsCreateModal(true)
                                       }}
                                     >
@@ -153,7 +169,7 @@ const CountryList: React.FC<Props> = ({className}) => {
                                     <button
                                       className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                                       onClick={() => {
-                                        setSelectedForDelete(country?._id)
+                                        setSelectedForDelete(area?._id)
                                         handleDeleteModal()
                                       }}
                                     >
@@ -190,12 +206,14 @@ const CountryList: React.FC<Props> = ({className}) => {
       ) : (
         <ErrorComponent />
       )}
-      <CreateCountry
+      <CreateArea
         show={isCreateModal}
         handleClose={handleCreateCountryModal}
         type={type}
-        countryId={countryId}
-        defaultName={defaultName}
+        cityId={cityId}
+        defaultCountryName={defaultCountryName}
+        defaultCityName={defaultCityName}
+        defaultAreaName={defaultAreaName}
         defaultDescription={defaultDescription}
       />
       <DeleteModal show={deleteModal} handleModal={handleDeleteModal} handleDelete={handleDelete} />
@@ -203,4 +221,4 @@ const CountryList: React.FC<Props> = ({className}) => {
   )
 }
 
-export default CountryList
+export default AreaList

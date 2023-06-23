@@ -279,7 +279,7 @@ const VerifieyRequestList: React.FC<Props> = ({className}) => {
               </div>
             </>
           ) : (
-            <NotFoundComponent type='Escorts List' />
+            <NotFoundComponent type='Pending Verification' />
           )}
         </>
       ) : (
