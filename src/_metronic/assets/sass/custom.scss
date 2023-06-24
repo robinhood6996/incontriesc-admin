@@ -13,3 +13,12 @@
 .flag-lang button span span {
   color: var(--kt-text-gray-700);
 }
+.skiptranslate{
+  display: none;
+}
+#google_translate_element{
+  display: none;
+}
+div#goog-gt-tt {
+  display: none !important;
+}
